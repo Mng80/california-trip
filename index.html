@@ -578,44 +578,23 @@ h3 { font-family:'Montserrat',sans-serif; font-weight:600; }
   <script>
   (function() {
     function tick() {
-      var now = new Date();
-      var utc = now.getTime() + now.getTimezoneOffset() * 60000;
+      var now = Date.now();
       function fmtTime(utcMs, offsetH) {
         var d = new Date(utcMs + offsetH * 3600000);
-        var h = ('0'+d.getUTCHours()).slice(-2);
-        var m = ('0'+d.getUTCMinutes()).slice(-2);
-        var s = ('0'+d.getUTCSeconds()).slice(-2);
-        return h+':'+m+':'+s;
+        return ('0'+d.getUTCHours()).slice(-2)+':'+('0'+d.getUTCMinutes()).slice(-2)+':'+('0'+d.getUTCSeconds()).slice(-2);
       }
       var elIt = document.getElementById('dc-time-it');
       var elSF = document.getElementById('dc-time-sf');
-      if (elIt) elIt.textContent = fmtTime(utc, 2);   // CEST +2
-      if (elSF) elSF.textContent = fmtTime(utc, -7);  // PDT -7
-      // countdown
-      var target = new Date('2026-09-09T06:30:00+02:00').getTime();
-      var diff = target - now.getTime();
+      if (elIt) elIt.textContent = fmtTime(now, 2);
+      if (elSF) elSF.textContent = fmtTime(now, -7);
+      var diff = 1788928200000 - now;
       var el = document.getElementById('countdown');
-      if (el) {
-        if (diff <= 0) {
-          el.innerHTML = '<span style="color:var(--accent);font-size:16px;font-weight:700;">🎉 Buon viaggio!</span>';
-        } else {
-          var dd = Math.floor(diff/86400000);
-          var hh = Math.floor((diff%86400000)/3600000);
-          var mm = Math.floor((diff%3600000)/60000);
-          var ss = Math.floor((diff%60000)/1000);
-          el.innerHTML =
-            '<div class="cd-unit"><div class="cd-num">'+dd+'</div><div class="cd-lbl">giorni</div></div>'+
-            '<div class="cd-sep">:</div>'+
-            '<div class="cd-unit"><div class="cd-num">'+('0'+hh).slice(-2)+'</div><div class="cd-lbl">ore</div></div>'+
-            '<div class="cd-sep">:</div>'+
-            '<div class="cd-unit"><div class="cd-num">'+('0'+mm).slice(-2)+'</div><div class="cd-lbl">min</div></div>'+
-            '<div class="cd-sep">:</div>'+
-            '<div class="cd-unit"><div class="cd-num">'+('0'+ss).slice(-2)+'</div><div class="cd-lbl">sec</div></div>';
-        }
+      if (el && diff > 0) {
+        var dd=Math.floor(diff/86400000), hh=Math.floor((diff%86400000)/3600000), mm=Math.floor((diff%3600000)/60000), ss=Math.floor((diff%60000)/1000);
+        el.innerHTML='<div class="cd-unit"><div class="cd-num">'+dd+'</div><div class="cd-lbl">giorni</div></div><div class="cd-sep">:</div><div class="cd-unit"><div class="cd-num">'+('0'+hh).slice(-2)+'</div><div class="cd-lbl">ore</div></div><div class="cd-sep">:</div><div class="cd-unit"><div class="cd-num">'+('0'+mm).slice(-2)+'</div><div class="cd-lbl">min</div></div><div class="cd-sep">:</div><div class="cd-unit"><div class="cd-num">'+('0'+ss).slice(-2)+'</div><div class="cd-lbl">sec</div></div>';
       }
     }
-    tick();
-    setInterval(tick, 1000);
+    tick(); setInterval(tick,1000);
   })();
   </script>
   <!-- SCROLL CONTENT -->
