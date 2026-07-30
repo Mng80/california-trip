@@ -348,6 +348,20 @@ h3 { font-family:'Montserrat',sans-serif; font-weight:600; }
 @keyframes pulse { 0%,100%{opacity:.4} 50%{opacity:1} }
 .loading-pulse { animation:pulse 1.5s ease-in-out infinite; }
 
+/* ── GUIDE GIORNALIERE ── */
+.guide-schedule { margin-bottom:14px; }
+.guide-slot { margin-bottom:12px; }
+.guide-time { font-size:11px; font-weight:700; color:var(--accent); text-transform:uppercase; letter-spacing:.6px; margin-bottom:8px; padding-left:2px; }
+.guide-content { display:flex; flex-direction:column; gap:8px; }
+.guide-item { background:var(--card2); border-radius:10px; padding:12px; border-left:3px solid var(--accent); }
+.guide-item strong { font-size:13px; display:block; margin-bottom:3px; color:var(--text); }
+.guide-item p { font-size:12px; color:var(--text-muted); line-height:1.5; margin-bottom:6px; }
+.guide-meta { font-size:11px; color:var(--text-muted); }
+.guide-eat { background:rgba(34,197,94,.07); border-radius:10px; padding:12px; border:1px solid rgba(34,197,94,.2); margin-top:12px; }
+.guide-eat-title { font-size:12px; font-weight:700; color:var(--green); margin-bottom:8px; }
+.guide-eat-items { display:flex; flex-direction:column; gap:6px; }
+.guide-eat-item { font-size:12px; color:var(--text-muted); line-height:1.5; }
+
 /* ── LIVE badge pulse ── */
 @keyframes live-blink { 0%,100%{opacity:1} 50%{opacity:.3} }
 .live-dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--red); animation:live-blink 1s infinite; margin-right:4px; }
@@ -450,12 +464,47 @@ h3 { font-family:'Montserrat',sans-serif; font-weight:600; }
         <div class="day-chevron">›</div>
       </div>
       <div class="day-body">
-        <ul class="day-activities">
-          <li>Volo BRI → FCO (06:30, AZ1602)</li>
-          <li>Volo FCO → SFO (09:10, AZ640) — arrivo sera SF</li>
-          <li>Check-in Cornell Hotel de France</li>
-          <li>Passeggiata serale Union Square</li>
-        </ul>
+        <div class="guide-schedule">
+          <div class="guide-slot">
+            <div class="guide-time">🌅 Mattina / Pomeriggio</div>
+            <div class="guide-content">
+              <div class="guide-item">
+                <strong>✈️ Volo BRI → FCO → SFO</strong>
+                <p>Partenza Bari 06:30 (AZ1602), coincidenza Roma FCO 09:10 (AZ640). Arrivo SFO nel pomeriggio locale (~14:30). Ritira i bagagli, attiva SIM/eSIM USA al terminal.</p>
+                <div class="guide-meta">⏱️ Viaggio lungo · 💰 Volo prenotato · 📍 SFO International Terminal G</div>
+              </div>
+              <div class="guide-item">
+                <strong>🚇 BART da SFO a Union Square</strong>
+                <p>Il modo più economico per arrivare in centro: prendi la BART dalla stazione sotto al terminal. Scendi a Powell St Station, a pochi passi dall'hotel.</p>
+                <div class="guide-meta">⏱️ ~35 min · 💰 $10.55 · 📍 SFO BART Station → Powell St</div>
+              </div>
+              <div class="guide-item">
+                <strong>🏨 Check-in Cornell Hotel de France</strong>
+                <p>Il tuo quartier generale per 4 notti. Union Square è il cuore di SF: shopping, trasporti, ristoranti a portata di mano. Lascia i bagagli e respira — hai appena attraversato 9 fusi orari.</p>
+                <div class="guide-meta">⏱️ Check-in dal tardo pomeriggio · 📍 715 Bush St, Union Square</div>
+              </div>
+            </div>
+          </div>
+          <div class="guide-slot">
+            <div class="guide-time">🌆 Sera</div>
+            <div class="guide-content">
+              <div class="guide-item">
+                <strong>🛍️ Prima passeggiata Union Square</strong>
+                <p>Fatti un'idea del quartiere, assapora l'aria di SF. Union Square è il centro dello shopping cittadino con negozi di lusso e street performers. Niente tour impegnativi — rispetta il jet lag!</p>
+                <div class="guide-meta">⏱️ 30–45 min · 💰 Gratis · 📍 Geary St & Powell St</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="day-tip">💡 <strong>Tip:</strong> Appena atterrati, resisti alla tentazione di dormire subito. Stai sveglio fino alle 21:00 ora locale per regolare il fuso orario più in fretta.</div>
+        <div class="guide-eat">
+          <div class="guide-eat-title">🍽️ Dove mangiare</div>
+          <div class="guide-eat-items">
+            <span class="guide-eat-item">🥖 <strong>Boudin Bakery</strong> — cena, sourdough bread tipico di SF, zuppe in pane, casual $$ · 160 Jefferson St</span>
+            <span class="guide-eat-item">🍝 <strong>Perbacco</strong> — cena, cucina italiana-californiana sofisticata, vicino Union Square $$$ · 230 California St</span>
+            <span class="guide-eat-item">☕ <strong>Blue Bottle Coffee</strong> — colazione/snack, caffè specialty per ricaricarsi dopo l'atterraggio $ · più sedi in centro</span>
+          </div>
+        </div>
         <div class="day-badges">
           <span class="badge badge-green">✅ Hotel prenotato</span>
           <span class="badge badge-orange">✈️ Volo ITA</span>
@@ -474,13 +523,57 @@ h3 { font-family:'Montserrat',sans-serif; font-weight:600; }
         <div class="day-chevron">›</div>
       </div>
       <div class="day-body">
-        <ul class="day-activities">
-          <li>Alcatraz Island Tour (prenotare online in anticipo!)</li>
-          <li>Fisherman's Wharf &amp; Pier 39</li>
-          <li>North Beach — caffè storici</li>
-          <li>Chinatown — la più grande degli USA</li>
-          <li>Cena in Chinatown</li>
-        </ul>
+        <div class="guide-schedule">
+          <div class="guide-slot">
+            <div class="guide-time">🌅 Mattina</div>
+            <div class="guide-content">
+              <div class="guide-item">
+                <strong>⛵ Alcatraz Island Tour</strong>
+                <p>L'ex-prigione federale più famosa del mondo — qui fu rinchiuso Al Capone. L'audioguida inclusa (narrata da ex-detenuti e guardie) è una delle migliori al mondo. Prenota con settimane di anticipo su alcatrazcruises.com!</p>
+                <div class="guide-meta">⏱️ 3h (ferry + visita) · 💰 ~$45/persona · 📍 Pier 33, Embarcadero</div>
+              </div>
+            </div>
+          </div>
+          <div class="guide-slot">
+            <div class="guide-time">☀️ Pomeriggio</div>
+            <div class="guide-content">
+              <div class="guide-item">
+                <strong>🐟 Fisherman's Wharf &amp; Pier 39</strong>
+                <p>Il porto storico di SF: leoni marini che prendono il sole sul molo, bancarelle di sourdough clam chowder, street performers. Turistico ma imperdibile al primo viaggio.</p>
+                <div class="guide-meta">⏱️ 1h · 💰 Gratis · 📍 Pier 39, Beach St</div>
+              </div>
+              <div class="guide-item">
+                <strong>📚 North Beach &amp; City Lights Bookstore</strong>
+                <p>Il quartiere italiano di SF, culla della Beat Generation. City Lights è la libreria indipendente più famosa d'America — fondato da Lawrence Ferlinghetti. Caffè Vesuvio accanto è storico.</p>
+                <div class="guide-meta">⏱️ 1–2h · 💰 Gratis · 📍 261 Columbus Ave, North Beach</div>
+              </div>
+              <div class="guide-item">
+                <strong>🗼 Coit Tower</strong>
+                <p>Torre art déco sulla collina di Telegraph Hill. Il panorama sulla baia di SF da qui è spettacolare. I murales interni WPA degli anni '30 sono un capolavoro poco noto.</p>
+                <div class="guide-meta">⏱️ 45 min · 💰 $13 ascensore (esterno gratis) · 📍 1 Telegraph Hill Blvd</div>
+              </div>
+            </div>
+          </div>
+          <div class="guide-slot">
+            <div class="guide-time">🌆 Sera</div>
+            <div class="guide-content">
+              <div class="guide-item">
+                <strong>🏮 Chinatown di San Francisco</strong>
+                <p>La Chinatown più antica degli Stati Uniti (1848). Entra dalla Dragon's Gate su Bush St, esplora Grant Ave, visita la Golden Gate Fortune Cookie Factory dove i biscotti si fanno ancora a mano (gratis da guardare).</p>
+                <div class="guide-meta">⏱️ 1–2h · 💰 Gratis · 📍 Grant Ave &amp; Bush St</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="day-tip">💡 <strong>Tip:</strong> Prenota Alcatraz almeno 3–4 settimane prima — i tour si esauriscono rapidamente, soprattutto le partenze serali (Alcatraz Night Tour vale il prezzo extra).</div>
+        <div class="guide-eat">
+          <div class="guide-eat-title">🍽️ Dove mangiare</div>
+          <div class="guide-eat-items">
+            <span class="guide-eat-item">🦞 <strong>Sotto Mare</strong> — pranzo/cena, pesce freschissimo, famoso per il cioppino (zuppa di pesce SF) $$$  · 552 Green St, North Beach</span>
+            <span class="guide-eat-item">🍕 <strong>Golden Boy Pizza</strong> — pranzo, fettone di pizza calda al taglio a ~$4, coda sempre ma veloce $ · 542 Green St</span>
+            <span class="guide-eat-item">🥢 <strong>Z&amp;Y Restaurant</strong> — cena, cucina cinese del Sichuan piccante e autentica, in Chinatown $$ · 655 Jackson St</span>
+          </div>
+        </div>
         <div class="day-badges">
           <span class="badge badge-green">✅ Cornell Hotel</span>
           <span class="badge badge-yellow">⚠️ Prenotare Alcatraz</span>
@@ -499,14 +592,57 @@ h3 { font-family:'Montserrat',sans-serif; font-weight:600; }
         <div class="day-chevron">›</div>
       </div>
       <div class="day-body">
-        <ul class="day-activities">
-          <li>Muir Woods National Monument — sequoie costiere</li>
-          <li>Vista Golden Gate Bridge da Sausalito</li>
-          <li>Pranzo a Sausalito (fronte mare)</li>
-          <li>Rientro SF in traghetto da Sausalito</li>
-          <li>Sera: Mission District o Haight-Ashbury</li>
-        </ul>
-        <div class="day-tip">⚠️ <strong>Shuttle obbligatorio Muir Woods</strong> — prenotare su gomuirwoods.com con largo anticipo. L'accesso in auto privata è limitato.</div>
+        <div class="guide-schedule">
+          <div class="guide-slot">
+            <div class="guide-time">🌅 Mattina</div>
+            <div class="guide-content">
+              <div class="guide-item">
+                <strong>🌲 Muir Woods National Monument</strong>
+                <p>Una foresta di sequoie costiere millenarie (alcune oltre 1.000 anni, alte 76 m) a 20 km da SF. Prendi lo shuttle obbligatorio — l'accesso in auto privata è vietato. Il Cathedral Grove Trail (1.6 km) passa tra gli alberi più grandi: silenzio assoluto, luce filtrata, verde intenso.</p>
+                <div class="guide-meta">⏱️ 2–3h · 💰 $15 ingresso + $3.65 shuttle · 📍 1 Muir Woods Rd, Mill Valley</div>
+              </div>
+            </div>
+          </div>
+          <div class="guide-slot">
+            <div class="guide-time">☀️ Pomeriggio</div>
+            <div class="guide-content">
+              <div class="guide-item">
+                <strong>⛵ Sausalito &amp; case galleggianti</strong>
+                <p>Villaggio pittoresco affacciato sulla baia: case colorate a schiera, negozi di artigianato, gelaterie sul lungomare. Vale la passeggiata fino al porto delle case galleggianti — comunità bohémien unica al mondo.</p>
+                <div class="guide-meta">⏱️ 1.5–2h · 💰 Gratis · 📍 Bridgeway Ave, Sausalito</div>
+              </div>
+              <div class="guide-item">
+                <strong>🚢 Ferry Sausalito → SF (Golden Gate Vista)</strong>
+                <p>Il traghetto di ritorno offre il panorama più bello del Golden Gate Bridge — lo vedi frontalmente dall'acqua. Molto meglio che dall'auto. Arriva almeno 15 min prima al terminal.</p>
+                <div class="guide-meta">⏱️ 35 min · 💰 ~$15 · 📍 Sausalito Ferry Terminal → SF Ferry Building</div>
+              </div>
+              <div class="guide-item">
+                <strong>🌁 Golden Gate Bridge (opzionale)</strong>
+                <p>Se vuoi avvicinarti al ponte: da SF scendi a Crissy Field e fai la passeggiata a piedi fino al pilone sud (1.5 km). La vista è diversa e meno affollata del vista point ufficiale.</p>
+                <div class="guide-meta">⏱️ 1h · 💰 Gratis (pedoni) · 📍 Crissy Field, Marina District</div>
+              </div>
+            </div>
+          </div>
+          <div class="guide-slot">
+            <div class="guide-time">🌆 Sera</div>
+            <div class="guide-content">
+              <div class="guide-item">
+                <strong>🐟 Fisherman's Wharf al tramonto</strong>
+                <p>L'Embarcadero e il Fisherman's Wharf si colorano di luci al tramonto — buon momento per passeggiare senza la folla del pomeriggio. Clam chowder in una delle panetterie per cena casual.</p>
+                <div class="guide-meta">⏱️ 1h · 💰 Gratis (passeggiata) · 📍 Embarcadero, SF</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="day-tip">💡 <strong>Tip:</strong> Prenota lo shuttle Muir Woods su gomuirwoods.com — i posti si esauriscono settimane prima, soprattutto nei weekend. La prenotazione è obbligatoria anche per i pedoni.</div>
+        <div class="guide-eat">
+          <div class="guide-eat-title">🍽️ Dove mangiare</div>
+          <div class="guide-eat-items">
+            <span class="guide-eat-item">🐟 <strong>Fish</strong> (Sausalito) — pranzo, pesce freschissimo appena pescato, panchine sul molo $$ · 350 Harbor Dr, Sausalito</span>
+            <span class="guide-eat-item">🍞 <strong>Boudin at the Wharf</strong> — cena, clam chowder nel pane di pasta madre, iconico SF $$ · 160 Jefferson St</span>
+            <span class="guide-eat-item">🍔 <strong>In-N-Out Burger</strong> — pranzo veloce, primo assaggio del fast food californiano cult $ · Fisherman's Wharf (333 Jefferson St)</span>
+          </div>
+        </div>
         <div class="day-badges">
           <span class="badge badge-green">✅ Cornell Hotel</span>
           <span class="badge badge-red">⚠️ Shuttle Muir Woods DA PRENOTARE</span>
@@ -525,13 +661,62 @@ h3 { font-family:'Montserrat',sans-serif; font-weight:600; }
         <div class="day-chevron">›</div>
       </div>
       <div class="day-body">
-        <ul class="day-activities">
-          <li>Mission District — murales e tacos</li>
-          <li>Dolores Park — vista panoramica</li>
-          <li>Haight-Ashbury — storia hippy, vintage shops</li>
-          <li>Twin Peaks — tramonto panoramico sulla baia</li>
-          <li>Castro District — passeggiata serale</li>
-        </ul>
+        <div class="guide-schedule">
+          <div class="guide-slot">
+            <div class="guide-time">🌅 Mattina</div>
+            <div class="guide-content">
+              <div class="guide-item">
+                <strong>🎨 Clarion Alley &amp; Balmy Alley (Mission Murales)</strong>
+                <p>Il Mission District è il quartiere latinoamericano di SF, famoso per i murales di strada più vibranti della città. Clarion Alley (tra 17th e 18th St) ha decine di opere che cambiano ogni anno — arte politica, surreale, commovente.</p>
+                <div class="guide-meta">⏱️ 45 min · 💰 Gratis · 📍 Clarion Alley, tra Valencia St e Mission St</div>
+              </div>
+              <div class="guide-item">
+                <strong>🌿 Dolores Park</strong>
+                <p>Il parco preferito dai locali: prati verdi su una collina con vista sullo skyline di SF. Weekend mattina trovi SF autentica — picnic, musica, cani. Vista su Twin Peaks e Downtown spettacolare.</p>
+                <div class="guide-meta">⏱️ 45 min · 💰 Gratis · 📍 18th St &amp; Dolores St, Mission</div>
+              </div>
+            </div>
+          </div>
+          <div class="guide-slot">
+            <div class="guide-time">☀️ Pomeriggio</div>
+            <div class="guide-content">
+              <div class="guide-item">
+                <strong>☮️ Haight-Ashbury</strong>
+                <p>Il cuore della Summer of Love del 1967. Oggi è un misto di negozi vintage, fumetterie, café alternativi e turisti. L'angolo Haight &amp; Ashbury è la foto classica. Amoeba Music è una delle più grandi vinylerie del mondo.</p>
+                <div class="guide-meta">⏱️ 1–2h · 💰 Gratis · 📍 Haight St &amp; Ashbury St</div>
+              </div>
+              <div class="guide-item">
+                <strong>🌳 Golden Gate Park</strong>
+                <p>Il parco urbano di SF (più grande di Central Park). Vale una passeggiata veloce verso il Panhandle o fino allo Stow Lake. Il de Young Museum e il Japanese Tea Garden sono dentro al parco se hai voglia.</p>
+                <div class="guide-meta">⏱️ 1h passeggiata / più se musei · 💰 Parco gratis · 📍 Golden Gate Park</div>
+              </div>
+            </div>
+          </div>
+          <div class="guide-slot">
+            <div class="guide-time">🌆 Sera</div>
+            <div class="guide-content">
+              <div class="guide-item">
+                <strong>🌅 Twin Peaks al tramonto</strong>
+                <p>Le due colline gemelle a 280 m offrono il panorama 360° più completo di tutta SF: Downtown, Bay Bridge, Marin Headlands, Golden Gate. Porta una felpa — il vento è pungente anche d'estate.</p>
+                <div class="guide-meta">⏱️ 45 min · 💰 Gratis · 📍 Twin Peaks Blvd, SF</div>
+              </div>
+              <div class="guide-item">
+                <strong>🏳️‍🌈 Castro District (passeggiata serale)</strong>
+                <p>Il quartiere LGBTQ+ più famoso del mondo, pieno di vita di sera. Harvey Milk Plaza, Rainbow Crosswalk, Castro Theatre (cinema storico degli anni '20). Tanti ristoranti e bar vivaci.</p>
+                <div class="guide-meta">⏱️ 1h · 💰 Gratis · 📍 Castro St &amp; 18th St</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="day-tip">💡 <strong>Tip:</strong> Haight-Ashbury e Castro sono a piedi da Dolores Park (~20 min a piedi verso nord-ovest). Pianifica il percorso come un loop: Mission → Haight → Twin Peaks → Castro → cena.</div>
+        <div class="guide-eat">
+          <div class="guide-eat-title">🍽️ Dove mangiare</div>
+          <div class="guide-eat-items">
+            <span class="guide-eat-item">🌯 <strong>La Taqueria</strong> — pranzo, miglior burrito di SF secondo molti locali, senza riso (autentico) $ · 2889 Mission St</span>
+            <span class="guide-eat-item">🍞 <strong>Tartine Bakery</strong> — colazione/merenda, pane a lievitazione naturale leggendario, coda lunga ma vale $$ · 600 Guerrero St</span>
+            <span class="guide-eat-item">🍦 <strong>Bi-Rite Creamery</strong> — dessert, gelato artigianale (salted caramel è il best-seller) $ · 3692 18th St, Mission</span>
+          </div>
+        </div>
         <div class="day-badges">
           <span class="badge badge-green">✅ Cornell Hotel</span>
         </div>
@@ -549,13 +734,52 @@ h3 { font-family:'Montserrat',sans-serif; font-weight:600; }
         <div class="day-chevron">›</div>
       </div>
       <div class="day-body">
-        <ul class="day-activities">
-          <li>Mattino: last look Golden Gate Bridge</li>
-          <li>Ritiro auto a noleggio all'aeroporto SFO</li>
-          <li>Drive verso Yosemite ~190 mi (~3.5h)</li>
-          <li>Check-in Evergreen Lodge, Groveland</li>
-          <li>Serata al lodge — prime stelle del parco</li>
-        </ul>
+        <div class="guide-schedule">
+          <div class="guide-slot">
+            <div class="guide-time">🌅 Mattina</div>
+            <div class="guide-content">
+              <div class="guide-item">
+                <strong>🧳 Check-out Cornell Hotel &amp; BART a SFO</strong>
+                <p>Lascia l'hotel entro le 11:00, prendi la BART a Powell St per SFO (35 min). Ritira l'auto a noleggio al terminal car rental — Budget, Hertz, Enterprise sono tutti lì. Controlla la copertura assicurativa.</p>
+                <div class="guide-meta">⏱️ 1.5h · 💰 BART $10 · 📍 Powell St Station → SFO Car Rental Center</div>
+              </div>
+              <div class="guide-item">
+                <strong>🚗 Drive SFO → Groveland via CA-120 E</strong>
+                <p>Imbocca la I-580 E e poi la CA-120 verso est. Il paesaggio cambia rapidamente da urbano a colline dorate della Central Valley. A Buck Meadows (~3h) sei già in quota con prime vedute montane. Ingresso al parco con America the Beautiful Pass.</p>
+                <div class="guide-meta">⏱️ ~3h30 · 💰 America the Beautiful Pass $80 (tutti i parchi) · 📍 SFO → Big Oak Flat Entrance, Yosemite</div>
+              </div>
+            </div>
+          </div>
+          <div class="guide-slot">
+            <div class="guide-time">☀️ Pomeriggio</div>
+            <div class="guide-content">
+              <div class="guide-item">
+                <strong>🛒 Sosta Manteca o Turlock (spesa)</strong>
+                <p>Prima di entrare nel parco, fai spesa al supermercato per snack, acqua (almeno 2L a testa/giorno), colazioni veloci. Prezzi dentro Yosemite sono molto più alti. Target o Safeway a Manteca sono ottimi.</p>
+                <div class="guide-meta">⏱️ 45 min · 📍 Manteca, CA (lungo la CA-120)</div>
+              </div>
+            </div>
+          </div>
+          <div class="guide-slot">
+            <div class="guide-time">🌆 Sera</div>
+            <div class="guide-content">
+              <div class="guide-item">
+                <strong>🏡 Check-in Evergreen Lodge</strong>
+                <p>Cabine di legno nel bosco, atmosfera di campo avventura ma con tutti i comfort. Il Tavern on the Green è il ristorante del lodge — cena qui la sera dell'arrivo, è comodo e buono. Fuori trovi le stelle senza inquinamento luminoso.</p>
+                <div class="guide-meta">⏱️ Check-in dal pomeriggio · 📍 33160 Evergreen Rd, Groveland CA</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="day-tip">💡 <strong>Tip:</strong> Acquista l'America the Beautiful Annual Pass ($80) — vale per tutti i parchi nazionali dell'anno. Con Yosemite + Sequoia + Kings Canyon + Pinnacles, si ripaga in abbondanza.</div>
+        <div class="guide-eat">
+          <div class="guide-eat-title">🍽️ Dove mangiare</div>
+          <div class="guide-eat-items">
+            <span class="guide-eat-item">🍔 <strong>Iron Door Saloon</strong> (Groveland) — cena, saloon storico del 1852, burger e birra locale $$ · 18761 Main St, Groveland</span>
+            <span class="guide-eat-item">🌲 <strong>Evergreen Lodge Tavern</strong> — cena, cucina americana da lodge, conveniente e buona (prenota) $$ · Evergreen Lodge</span>
+            <span class="guide-eat-item">🥪 <strong>Diner a Manteca</strong> — pranzo in auto, svariati fast food e diner lungo la CA-120 per il pranzo di viaggio $</span>
+          </div>
+        </div>
         <div class="day-badges">
           <span class="badge badge-green">✅ Evergreen Lodge</span>
           <span class="badge badge-yellow">⚠️ Ritirare auto a noleggio SFO</span>
@@ -574,14 +798,62 @@ h3 { font-family:'Montserrat',sans-serif; font-weight:600; }
         <div class="day-chevron">›</div>
       </div>
       <div class="day-body">
-        <ul class="day-activities">
-          <li>Yosemite Valley — vista El Capitan e Half Dome</li>
-          <li>Yosemite Falls Trail (facile, 1.5 mi)</li>
-          <li>Valley View e Tunnel View — foto iconiche</li>
-          <li>Mirror Lake loop</li>
-          <li>Pranzo al Yosemite Valley Lodge</li>
-        </ul>
-        <div class="day-tip">💡 Consiglio: entrate nel parco presto mattina per evitare code. America the Beautiful Pass vale per tutti i parchi nazionali.</div>
+        <div class="guide-schedule">
+          <div class="guide-slot">
+            <div class="guide-time">🌅 Mattina presto</div>
+            <div class="guide-content">
+              <div class="guide-item">
+                <strong>🌁 Tunnel View — la foto più famosa di Yosemite</strong>
+                <p>Esci all'alba verso Tunnel View (all'uscita est del tunnel sulla CA-41): El Capitan a sinistra, Half Dome in fondo, Bridalveil Fall a destra. Luce mattutina dorata, minima folla. La foto di Ansel Adams è stata scattata qui.</p>
+                <div class="guide-meta">⏱️ 20 min sosta · 💰 Gratis (incluso nel pass) · 📍 CA-41, Yosemite Valley</div>
+              </div>
+              <div class="guide-item">
+                <strong>🧗 El Capitan (Valley Floor)</strong>
+                <p>La parete di granito monolitica più grande del mondo: 900 m verticali. Dal basso sembra impossibile da scalare, eppure ogni estate ci sono alpinisti — portare binocolo per scorgerli. La Valle agli sfiorni di nebbia è spettacolare.</p>
+                <div class="guide-meta">⏱️ 30 min · 💰 Gratis · 📍 El Capitan Meadow, Valley Floor</div>
+              </div>
+            </div>
+          </div>
+          <div class="guide-slot">
+            <div class="guide-time">☀️ Mattina</div>
+            <div class="guide-content">
+              <div class="guide-item">
+                <strong>💧 Bridalveil Fall</strong>
+                <p>Una delle cascate più iconiche di Yosemite (189 m). Il trail è brevissimo (500 m A/R) ma la nebbia fina ti avvolge — porta qualcosa di impermeabile. In settembre ha meno acqua che in primavera, ma rimane bellissima.</p>
+                <div class="guide-meta">⏱️ 30 min · 💰 Gratis · 📍 Bridalveil Fall Parking, Valley</div>
+              </div>
+              <div class="guide-item">
+                <strong>💧 Yosemite Falls (inferiori)</strong>
+                <p>Le cascate più alte del Nord America (739 m totali). Il trail alle cascate inferiori è facile (1 km A/R) e porta a una pozza alla base. In settembre alcune cascate superiori possono essere asciutte — quelle inferiori di solito no.</p>
+                <div class="guide-meta">⏱️ 45 min · 💰 Gratis · 📍 Camp 4 Trailhead, Valley</div>
+              </div>
+            </div>
+          </div>
+          <div class="guide-slot">
+            <div class="guide-time">🌆 Pomeriggio / Sera</div>
+            <div class="guide-content">
+              <div class="guide-item">
+                <strong>🪞 Mirror Lake / Mirror Meadow Loop</strong>
+                <p>Tranquillo sentiero di 8 km (o 5 km solo parte A/R) intorno al lago che riflette Half Dome. In settembre il lago può essere quasi asciutto diventando un prato — egualmente suggestivo con le pareti di granito intorno.</p>
+                <div class="guide-meta">⏱️ 2.5–3h · 💰 Gratis · 📍 Shuttle stop 17, Happy Isles</div>
+              </div>
+              <div class="guide-item">
+                <strong>🌅 Valley View al tramonto</strong>
+                <p>Uno dei punti più belli per il tramonto nella Valley: vista su El Capitan e Merced River. Parcheggio piccolo, vai presto. Il riflesso del tramonto sull'acqua è memorabile.</p>
+                <div class="guide-meta">⏱️ 30 min · 💰 Gratis · 📍 Valley View Pullout, CA-140</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="day-tip">💡 <strong>Tip:</strong> Usa lo shuttle gratuito della Valley (bus circolari) — non guidare dentro la Valley se non è necessario. I parcheggi si riempiono prestissimo anche in settembre. Scarica la app NPS Yosemite per le mappe offline.</div>
+        <div class="guide-eat">
+          <div class="guide-eat-title">🍽️ Dove mangiare</div>
+          <div class="guide-eat-items">
+            <span class="guide-eat-item">🍕 <strong>Degnan's Kitchen</strong> — pranzo/cena, pizza e panini nel Yosemite Village, il più conveniente dentro il parco $$ · Yosemite Village</span>
+            <span class="guide-eat-item">🛒 <strong>Valley Store (picnic)</strong> — colazione, spesa e picnic autorganizzato, più economico di qualsiasi ristorante del parco $ · Yosemite Village</span>
+            <span class="guide-eat-item">🍷 <strong>The Loft at Degnan's</strong> — cena, ambiente più tranquillo per una cena serale, prenotare $$ · Yosemite Village</span>
+          </div>
+        </div>
         <div class="day-badges">
           <span class="badge badge-green">✅ Evergreen Lodge</span>
           <span class="badge badge-orange">🎫 America the Beautiful Pass</span>
@@ -600,13 +872,52 @@ h3 { font-family:'Montserrat',sans-serif; font-weight:600; }
         <div class="day-chevron">›</div>
       </div>
       <div class="day-body">
-        <ul class="day-activities">
-          <li>Partenza mattina — drive ~140 mi via Mariposa</li>
-          <li>Ingresso Sequoia via Big Stump Entrance</li>
-          <li>General Sherman Tree (l'albero più grande del mondo)</li>
-          <li>Congress Trail — passeggiata tra sequoie giganti</li>
-          <li>Check-in Comfort Suites Tulare</li>
-        </ul>
+        <div class="guide-schedule">
+          <div class="guide-slot">
+            <div class="guide-time">🌅 Mattina</div>
+            <div class="guide-content">
+              <div class="guide-item">
+                <strong>🧳 Check-out Evergreen Lodge &amp; drive verso Sequoia</strong>
+                <p>Parti presto — la guida è di circa 2h30-3h via CA-41 S o Hwy 99 S. Sosta obbligatoria a Fresno per pranzo e spesa al supermercato (Target/Walmart/Safeway): è l'ultimo grande centro prima dei parchi. Riforni acqua, snack, colazioni.</p>
+                <div class="guide-meta">⏱️ 2h30–3h guida · 📍 Groveland → Fresno → Sequoia NP</div>
+              </div>
+            </div>
+          </div>
+          <div class="guide-slot">
+            <div class="guide-time">☀️ Pomeriggio</div>
+            <div class="guide-content">
+              <div class="guide-item">
+                <strong>🌲 General Sherman Tree</strong>
+                <p>L'albero più grande del mondo per volume: 1.487 m³, 84 m di altezza, 2.200 anni di età. Il trail dalla strada è facile (400 m in discesa) ma ricorda che il ritorno è in salita a 2.000 m di quota — prendila con calma.</p>
+                <div class="guide-meta">⏱️ 1h · 💰 Incluso nel pass · 📍 General Sherman Tree Parking, Giant Forest</div>
+              </div>
+              <div class="guide-item">
+                <strong>🌳 Congress Trail</strong>
+                <p>Loop di 2 km tra i sequoie giganti più impressionanti del parco: il Senate Group, il House Group, il President Tree (secondo più grande al mondo). Silenziosa e meno affollata rispetto al solo Sherman Tree.</p>
+                <div class="guide-meta">⏱️ 1–1.5h · 💰 Incluso nel pass · 📍 Parte dal General Sherman Trailhead</div>
+              </div>
+            </div>
+          </div>
+          <div class="guide-slot">
+            <div class="guide-time">🌆 Sera</div>
+            <div class="guide-content">
+              <div class="guide-item">
+                <strong>🏨 Check-in Comfort Suites Tulare</strong>
+                <p>Struttura moderna e confortevole a Tulare, ottima base per Sequoia e Kings Canyon. Piscina e colazione inclusa. Cena a Tulare o a Visalia (città più grande, 20 min).</p>
+                <div class="guide-meta">⏱️ Check-in dal tardo pomeriggio · 📍 Comfort Suites, Tulare CA</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="day-tip">💡 <strong>Tip:</strong> Sequoia è a ~1.900 m di quota — se vieni da SF sul livello del mare, potresti sentire un po' il fiato corto. Cammina lentamente, bevi tanta acqua e fai pause. Nessun problema serio, solo un po' di adattamento.</div>
+        <div class="guide-eat">
+          <div class="guide-eat-title">🍽️ Dove mangiare</div>
+          <div class="guide-eat-items">
+            <span class="guide-eat-item">🌮 <strong>Lemos Mexican Food</strong> (Tulare) — cena, messicano autentico e abbondante, molto amato dai locali $ · Tulare, CA</span>
+            <span class="guide-eat-item">🥗 <strong>The Vintage Press</strong> (Visalia) — cena speciale, ristorante elegante con cucina californiana, 20 min da Tulare $$$ · 216 N Willis St, Visalia</span>
+            <span class="guide-eat-item">🛒 <strong>Target / Safeway Fresno</strong> — pranzo/spesa viaggio, fermata obbligatoria lungo il percorso $</span>
+          </div>
+        </div>
         <div class="day-badges">
           <span class="badge badge-green">✅ Comfort Suites Tulare</span>
           <span class="badge badge-blue">📍 ~140 mi da Yosemite</span>
@@ -625,13 +936,57 @@ h3 { font-family:'Montserrat',sans-serif; font-weight:600; }
         <div class="day-chevron">›</div>
       </div>
       <div class="day-body">
-        <ul class="day-activities">
-          <li>Mattino: Giant Forest — Moro Rock (scalata panoramica)</li>
-          <li>Tunnel Log — il tronco che attraversi in auto</li>
-          <li>Kings Canyon Scenic Byway (SR-180) — viste canyon</li>
-          <li>Cedar Grove — Kings River overlook</li>
-          <li>Rientro Tulare in serata</li>
-        </ul>
+        <div class="guide-schedule">
+          <div class="guide-slot">
+            <div class="guide-time">🌅 Mattina</div>
+            <div class="guide-content">
+              <div class="guide-item">
+                <strong>🪨 Moro Rock</strong>
+                <p>Un plutone di granito solitario a 2.050 m con scalinata scolpita nella roccia (350 gradini). Dalla cima: panorama a 360° sulle Sierra Nevada e sulla Central Valley. Con cielo limpido si vedono più di 150 km. Vale ogni gradino.</p>
+                <div class="guide-meta">⏱️ 1h (andata e ritorno) · 💰 Incluso nel pass · 📍 Moro Rock Rd, Giant Forest</div>
+              </div>
+              <div class="guide-item">
+                <strong>🚗 Tunnel Log</strong>
+                <p>Un sequoia gigante caduto nel 1937 — invece di rimuoverlo, hanno tagliato un tunnel dentro: puoi passarci in auto. Icona del parco, diversa dal solito. Vicino a Moro Rock.</p>
+                <div class="guide-meta">⏱️ 15 min · 💰 Gratis · 📍 Crescent Meadow Rd, Sequoia</div>
+              </div>
+            </div>
+          </div>
+          <div class="guide-slot">
+            <div class="guide-time">☀️ Pomeriggio</div>
+            <div class="guide-content">
+              <div class="guide-item">
+                <strong>🏞️ Kings Canyon Scenic Byway (CA-180)</strong>
+                <p>Strada panoramica che scende nel Kings Canyon, uno dei canyon più profondi degli USA (2.500 m di pareti verticali, più profondo del Grand Canyon). Il paesaggio cambia drasticamente: sequoie → pini → rocce grigie nude.</p>
+                <div class="guide-meta">⏱️ 1.5h guida panoramica · 💰 Incluso nel pass · 📍 CA-180, Grant Grove → Cedar Grove</div>
+              </div>
+              <div class="guide-item">
+                <strong>💧 Roaring River Falls &amp; Zumwalt Meadow</strong>
+                <p>Roaring River Falls: 500 m a piedi per una cascata impressionante (facile, 10 min A/R). Zumwalt Meadow Loop: 2.5 km tra cervi, libellule e pareti di granito verticali — uno dei loop più belli della California.</p>
+                <div class="guide-meta">⏱️ 2h totali · 💰 Incluso nel pass · 📍 Cedar Grove, Kings Canyon</div>
+              </div>
+            </div>
+          </div>
+          <div class="guide-slot">
+            <div class="guide-time">🌆 Sera</div>
+            <div class="guide-content">
+              <div class="guide-item">
+                <strong>🏨 Rientro Tulare &amp; relax</strong>
+                <p>Rientro all'hotel Comfort Suites. Serata tranquilla dopo due giorni intensi tra sequoie e canyon. Buona occasione per rivedere le foto, ricaricare le batterie e pianificare l'ultimo tratto del viaggio.</p>
+                <div class="guide-meta">⏱️ ~1h drive dal parco · 📍 Comfort Suites, Tulare CA</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="day-tip">💡 <strong>Tip:</strong> Crystal Cave (grotta di marmo nel parco) merita una visita se prenoti in anticipo su recreation.gov ($20/persona). I tour si esauriscono velocemente. Controlla disponibilità con largo anticipo.</div>
+        <div class="guide-eat">
+          <div class="guide-eat-title">🍽️ Dove mangiare</div>
+          <div class="guide-eat-items">
+            <span class="guide-eat-item">🌮 <strong>Deleo Bros Pizza</strong> (Tulare) — cena, pizza e pasta casual, buon rapporto qualità/prezzo $$ · Tulare, CA</span>
+            <span class="guide-eat-item">🥩 <strong>Porterville Steakhouse</strong> — cena, ottima carne alla griglia, ~30 min da Tulare $$$ · Porterville, CA</span>
+            <span class="guide-eat-item">🏕️ <strong>Cedar Grove Lodge</strong> — pranzo nel canyon, limitato ma unico nel contesto $$· Cedar Grove, Kings Canyon</span>
+          </div>
+        </div>
         <div class="day-badges">
           <span class="badge badge-green">✅ Comfort Suites Tulare</span>
         </div>
@@ -649,13 +1004,52 @@ h3 { font-family:'Montserrat',sans-serif; font-weight:600; }
         <div class="day-chevron">›</div>
       </div>
       <div class="day-body">
-        <ul class="day-activities">
-          <li>Drive ~120 mi verso Pinnacles NP (via US-101 N)</li>
-          <li>Pinnacles National Park — formazioni vulcaniche</li>
-          <li>Bear Gulch Cave Trail (talvolta chiusa per pipistrelli — verificare)</li>
-          <li>Condor watching — California Condor in volo!</li>
-          <li>Serata check-in Best Western Firebaugh</li>
-        </ul>
+        <div class="guide-schedule">
+          <div class="guide-slot">
+            <div class="guide-time">🌅 Mattina</div>
+            <div class="guide-content">
+              <div class="guide-item">
+                <strong>🚗 Drive Tulare → Pinnacles NP via CA-198 W</strong>
+                <p>Circa 1h30 di guida attraverso la Central Valley verso l'ovest. Pinnacles si trova tra la costa e la valle — paesaggio completamente diverso da Sequoia: rocce vulcaniche, chaparral secco, rapaci in volo. Ingresso est (East Entrance) è quello con accesso al Bear Gulch.</p>
+                <div class="guide-meta">⏱️ ~1h30 guida · 📍 Tulare → Pinnacles East Entrance, Paicines CA</div>
+              </div>
+            </div>
+          </div>
+          <div class="guide-slot">
+            <div class="guide-time">☀️ Mattina / Pomeriggio</div>
+            <div class="guide-content">
+              <div class="guide-item">
+                <strong>🦇 Bear Gulch Cave Trail</strong>
+                <p>Una grotta di talus (formata da massi caduti, non calcarea) dove i pipistrelli nidificano. Portare una torcia! La grotta può essere parzialmente chiusa in primavera per la stagione riproduttiva, ma a settembre di solito è aperta. L'atmosfera è unica — buio, freddo, stretto in certi punti.</p>
+                <div class="guide-meta">⏱️ 1.5h · 💰 Incluso nel pass · 📍 Bear Gulch Trailhead, East Side</div>
+              </div>
+              <div class="guide-item">
+                <strong>🦅 High Peaks Trail &amp; Condor watching</strong>
+                <p>Trail panoramico (8 km loop completo, o puoi fare solo la parte alta) tra guglie vulcaniche con scale scolpite nella roccia. I condor californiani (specie quasi estinta, ~300 esemplari) si avvistano spesso planare sulle correnti termiche — apertura alare fino a 3 m!</p>
+                <div class="guide-meta">⏱️ 3–4h loop completo · 💰 Incluso nel pass · 📍 High Peaks Trailhead, Pinnacles</div>
+              </div>
+            </div>
+          </div>
+          <div class="guide-slot">
+            <div class="guide-time">🌆 Sera</div>
+            <div class="guide-content">
+              <div class="guide-item">
+                <strong>🚗 Drive Pinnacles → Firebaugh via CA-25 N + I-5 N</strong>
+                <p>Circa 1h30 di guida verso nord lungo la I-5 nella Central Valley. Firebaugh è una piccola città agricola — niente di speciale, ma è la posizione perfetta per essere a metà strada verso Monterey il giorno dopo.</p>
+                <div class="guide-meta">⏱️ ~1h30 · 📍 Pinnacles → Best Western Apricot Inn, Firebaugh</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="day-tip">💡 <strong>Tip:</strong> Porta almeno 2L d'acqua a testa — Pinnacles è arida e calda (anche in settembre può fare 30°C+). Scarpe con buona suola per la grotta. La torcia (anche quella del telefono) è indispensabile in Bear Gulch Cave.</div>
+        <div class="guide-eat">
+          <div class="guide-eat-title">🍽️ Dove mangiare</div>
+          <div class="guide-eat-items">
+            <span class="guide-eat-item">🌮 <strong>Rancho Grande</strong> (Los Banos) — cena/pranzo, messicano abbondante, 20 min da Firebaugh sulla I-5 $ · Los Banos, CA</span>
+            <span class="guide-eat-item">🍔 <strong>Fast food Los Banos</strong> — pranzo veloce, McDonald's/Subway/Taco Bell lungo la I-5 $</span>
+            <span class="guide-eat-item">🏨 <strong>Best Western Restaurant</strong> — cena, ristorante annesso all'hotel, comodo dopo la guida $$ · Firebaugh, CA</span>
+          </div>
+        </div>
         <div class="day-badges">
           <span class="badge badge-green">✅ Best Western Apricot Inn</span>
           <span class="badge badge-yellow">⚠️ Verificare stato cave trail</span>
@@ -674,14 +1068,57 @@ h3 { font-family:'Montserrat',sans-serif; font-weight:600; }
         <div class="day-chevron">›</div>
       </div>
       <div class="day-body">
-        <ul class="day-activities">
-          <li>Drive a Monterey ~160 mi via US-101</li>
-          <li>Cannery Row — atmosfera Steinbeck</li>
-          <li>Monterey Bay Aquarium</li>
-          <li>17-Mile Drive — paesaggi costieri iconici</li>
-          <li>Serata Santa Cruz, check-in Drift Inn</li>
-          <li>Santa Cruz Beach Boardwalk (storico luna park)</li>
-        </ul>
+        <div class="guide-schedule">
+          <div class="guide-slot">
+            <div class="guide-time">🌅 Mattina</div>
+            <div class="guide-content">
+              <div class="guide-item">
+                <strong>🚗 Drive Firebaugh → Monterey via CA-33 + US-101</strong>
+                <p>Circa 2h di guida verso la costa del Pacifico. Quando arrivi a Monterey e vedi il blu dell'oceano per la prima volta dopo giorni di entroterra, è un momento. Parcheggia vicino a Cannery Row.</p>
+                <div class="guide-meta">⏱️ ~2h guida · 📍 Firebaugh → Cannery Row, Monterey</div>
+              </div>
+              <div class="guide-item">
+                <strong>🏭 Cannery Row</strong>
+                <p>La strada immortalata da John Steinbeck nel romanzo omonimo (1945). Le ex-fabbriche del pesce sono diventate negozi, ristoranti e hotel. Atmosfera marinara, profumo di sale, leoni marini sugli scogli. Camminabile e piacevole.</p>
+                <div class="guide-meta">⏱️ 1h · 💰 Gratis · 📍 Cannery Row, Monterey CA</div>
+              </div>
+            </div>
+          </div>
+          <div class="guide-slot">
+            <div class="guide-time">☀️ Pomeriggio</div>
+            <div class="guide-content">
+              <div class="guide-item">
+                <strong>🐙 Monterey Bay Aquarium</strong>
+                <p>Uno dei migliori acquari del mondo, specializzato nell'ecosistema del Pacifico. La kelp forest (foresta di alghe a 8 m d'altezza con pesci che nuotano intorno) è spettacolare. L'exhibit sulle meduse è ipnotico. Arriva presto — si affolla.</p>
+                <div class="guide-meta">⏱️ 2–3h · 💰 ~$55/persona · 📍 886 Cannery Row, Monterey</div>
+              </div>
+              <div class="guide-item">
+                <strong>🌲 17-Mile Drive</strong>
+                <p>Strada privata panoramica ($12/auto) lungo la costa di Pebble Beach. Tappe imperdibili: Lone Cypress (l'albero più fotografato del mondo), Seal Rock (leoni marini), Bird Rock, Pebble Beach Golf Course (il più famoso degli USA).</p>
+                <div class="guide-meta">⏱️ 1.5–2h · 💰 $12/auto · 📍 Toll Gate, Pacific Grove (ingresso nord)</div>
+              </div>
+            </div>
+          </div>
+          <div class="guide-slot">
+            <div class="guide-time">🌆 Sera</div>
+            <div class="guide-content">
+              <div class="guide-item">
+                <strong>🎡 Santa Cruz &amp; Boardwalk</strong>
+                <p>45 minuti di guida verso nord lungo la costa. Santa Cruz Beach Boardwalk è un luna park storico del 1907 affacciato sull'oceano — giostre vintage, odore di popcorn, giovani californiani in spiaggia. Il Giant Dipper è un'ottantenne rollercoaster di legno ancora operativo.</p>
+                <div class="guide-meta">⏱️ 1–2h · 💰 Gratis entrata (giostre a pagamento) · 📍 400 Beach St, Santa Cruz</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="day-tip">💡 <strong>Tip:</strong> Prenota l'acquario online in anticipo per saltare la coda. La 17-Mile Drive può aspettare il pomeriggio dopo l'acquario — fa meno caldo e la luce è migliore per le foto di Lone Cypress.</div>
+        <div class="guide-eat">
+          <div class="guide-eat-title">🍽️ Dove mangiare</div>
+          <div class="guide-eat-items">
+            <span class="guide-eat-item">🐟 <strong>Old Fisherman's Grotto</strong> — pranzo/cena, pesce fresco con terrazza sul porto $$$  · 39 Fisherman's Wharf #1, Monterey</span>
+            <span class="guide-eat-item">🌊 <strong>Passion Fish</strong> — cena, cucina sostenibile e creativa, uno dei migliori di Monterey $$$ · 701 Lighthouse Ave, Pacific Grove</span>
+            <span class="guide-eat-item">🦞 <strong>Stagnaro Bros</strong> (Santa Cruz) — cena, seafood sul mare, atmosfera casual $$ · Municipal Wharf, Santa Cruz</span>
+          </div>
+        </div>
         <div class="day-badges">
           <span class="badge badge-green">✅ Drift Inn Santa Cruz</span>
           <span class="badge badge-blue">📍 ~160 mi da Firebaugh</span>
@@ -700,13 +1137,51 @@ h3 { font-family:'Montserrat',sans-serif; font-weight:600; }
         <div class="day-chevron">›</div>
       </div>
       <div class="day-body">
-        <ul class="day-activities">
-          <li>Mattina: last look sulla baia di Santa Cruz</li>
-          <li>Drive SFO ~80 mi — riconsegna auto a noleggio</li>
-          <li>Check-in aeroporto SFO (volo 15:15)</li>
-          <li>Volo SFO → FCO (AZ641, 15:15)</li>
-          <li>Arrivo Roma, coincidenza FCO → BRI il 20 sett (AZ1609, 15:15)</li>
-        </ul>
+        <div class="guide-schedule">
+          <div class="guide-slot">
+            <div class="guide-time">🌅 Mattina</div>
+            <div class="guide-content">
+              <div class="guide-item">
+                <strong>🦋 Natural Bridges State Beach</strong>
+                <p>Spiaggia con archi naturali di roccia arenaria erosa dal mare. A settembre si possono avvistare le farfalle monarca in migrazione che svernano negli eucalipti. Passeggiata lungo la spiaggia e sull'arco naturale (dipende dalla marea).</p>
+                <div class="guide-meta">⏱️ 1h · 💰 $10 parcheggio · 📍 Natural Bridges Dr, Santa Cruz</div>
+              </div>
+              <div class="guide-item">
+                <strong>☀️ Last look Boardwalk &amp; Spiaggia</strong>
+                <p>Un ultimo caffè sul lungomare di Santa Cruz, una passeggiata sul Boardwalk quando è ancora mattina e tranquillo. Scatta le ultime foto del Pacifico — poi si torna a casa.</p>
+                <div class="guide-meta">⏱️ 45 min · 💰 Gratis · 📍 Beach St, Santa Cruz</div>
+              </div>
+            </div>
+          </div>
+          <div class="guide-slot">
+            <div class="guide-time">☀️ Metà mattina</div>
+            <div class="guide-content">
+              <div class="guide-item">
+                <strong>🚗 Drive Santa Cruz → SFO via US-101 N</strong>
+                <p>Circa 1h15 di guida. Segui le indicazioni per il Car Rental Return all'aeroporto SFO — è ben segnalato. Ricorda di fare il pieno dell'auto prima (benzina più economica fuori dall'aeroporto). Consegna l'auto 2.5h prima del decollo.</p>
+                <div class="guide-meta">⏱️ ~1h15 guida + 30 min riconsegna · 📍 SFO Car Rental Center</div>
+              </div>
+            </div>
+          </div>
+          <div class="guide-slot">
+            <div class="guide-time">🌆 Pomeriggio / Sera</div>
+            <div class="guide-content">
+              <div class="guide-item">
+                <strong>✈️ Volo SFO → FCO (AZ641, 15:15)</strong>
+                <p>International Terminal G per voli ITA Airways. Check-in chiude ~2h prima. Ultimi souvenir nei negozi del terminal. Il volo è lungo (~11h) — siediti, rilassati e rivivi mentalmente 11 giorni di California straordinaria.</p>
+                <div class="guide-meta">⏱️ Decollo 15:15 · 📍 SFO International Terminal G</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="day-tip">💡 <strong>Tip:</strong> SFO è un aeroporto grande e lento — arriva al terminal con 2.5h di anticipo. L'International Terminal G è separato dagli altri: prendi la navetta AirTrain dalla Car Rental Center fino al terminal.</div>
+        <div class="guide-eat">
+          <div class="guide-eat-title">🍽️ Dove mangiare</div>
+          <div class="guide-eat-items">
+            <span class="guide-eat-item">☕ <strong>Verve Coffee Roasters</strong> (Santa Cruz) — colazione, uno dei migliori caffè specialty della California $  · 104 Bronson St, Santa Cruz</span>
+            <span class="guide-eat-item">✈️ <strong>Terminal SFO</strong> — pranzo, i terminal di SFO hanno ristoranti decenti (Napa Farms Market, Cat Cora's Kitchen) $$ · SFO International Terminal</span>
+          </div>
+        </div>
         <div class="day-badges">
           <span class="badge badge-orange">✈️ Volo SFO→FCO 15:15</span>
           <span class="badge badge-blue">📍 ~80 mi da Santa Cruz</span>
