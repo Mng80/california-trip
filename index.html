@@ -1557,6 +1557,7 @@ h3 { font-family:'Montserrat',sans-serif; font-weight:600; }
     <button class="subtab-btn" onclick="switchSubtab('docs')">📁 Docs</button>
     <button class="subtab-btn" onclick="switchSubtab('bags')">🧳 Bags</button>
     <button class="subtab-btn" onclick="switchSubtab('info')">ℹ️ Info</button>
+    <button class="subtab-btn" onclick="switchSubtab('cambio')">💱 Cambio</button>
   </div>
 
   <!-- CLIMA -->
@@ -2048,7 +2049,114 @@ h3 { font-family:'Montserrat',sans-serif; font-weight:600; }
       <div class="info-item"><strong>🌊 Costa (Monterey/Santa Cruz)</strong><span>18-24°C, oceano freddo, vento. Giacca utile la sera.</span></div>
     </div>
   </div>
+
+  <!-- ═══ TAB CAMBIO VALUTA ═══ -->
+  <div class="subtab-content" id="subtab-cambio">
+
+    <div class="info-section">
+      <h3>💱 Calcolatore EUR → USD</h3>
+      <div style="display:flex;align-items:center;gap:10px;margin:8px 0 4px;">
+        <span style="font-size:24px;">🇪🇺</span>
+        <div style="position:relative;flex:1;">
+          <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-weight:700;color:#e8650a;">€</span>
+          <input id="eur-input" type="number" inputmode="decimal" placeholder="0.00"
+            style="width:100%;padding:12px 12px 12px 28px;border-radius:10px;border:1.5px solid rgba(232,101,10,.3);font-size:18px;font-weight:700;background:#fff8f0;color:#1a0a00;box-sizing:border-box;"
+            oninput="convertEurUsd()">
+        </div>
+        <span style="font-size:22px;color:#e8650a;">→</span>
+        <div style="position:relative;flex:1;">
+          <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-weight:700;color:#2563eb;">$</span>
+          <input id="usd-output" type="number" inputmode="decimal" placeholder="0.00"
+            style="width:100%;padding:12px 12px 12px 28px;border-radius:10px;border:1.5px solid rgba(37,99,235,.3);font-size:18px;font-weight:700;background:#eff6ff;color:#1a0a00;box-sizing:border-box;"
+            oninput="convertUsdEur()">
+        </div>
+        <span style="font-size:24px;">🇺🇸</span>
+      </div>
+      <div id="rate-display" style="text-align:center;font-size:12px;color:#888;margin-top:6px;">
+        Caricamento tasso in tempo reale…
+      </div>
+    </div>
+
+    <div class="info-section">
+      <h3>💡 Riferimenti rapidi</h3>
+      <div id="quick-refs" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;">
+        <div style="background:#fff8f0;border-radius:10px;padding:10px;text-align:center;">
+          <div style="font-size:12px;color:#888;">€ 10</div>
+          <div style="font-size:18px;font-weight:800;color:#e8650a;" id="ref-10">—</div>
+        </div>
+        <div style="background:#fff8f0;border-radius:10px;padding:10px;text-align:center;">
+          <div style="font-size:12px;color:#888;">€ 50</div>
+          <div style="font-size:18px;font-weight:800;color:#e8650a;" id="ref-50">—</div>
+        </div>
+        <div style="background:#fff8f0;border-radius:10px;padding:10px;text-align:center;">
+          <div style="font-size:12px;color:#888;">€ 100</div>
+          <div style="font-size:18px;font-weight:800;color:#e8650a;" id="ref-100">—</div>
+        </div>
+        <div style="background:#fff8f0;border-radius:10px;padding:10px;text-align:center;">
+          <div style="font-size:12px;color:#888;">€ 500</div>
+          <div style="font-size:18px;font-weight:800;color:#e8650a;" id="ref-500">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <h3>🏦 Dove cambiare / prelevare</h3>
+      <div class="info-item"><strong>💳 Revolut / Wise</strong><span>Tasso interbancario, commissioni minime — la scelta migliore per pagare direttamente</span></div>
+      <div class="info-item"><strong>🏧 ATM in banca</strong><span>Meglio Chase, Bank of America, Wells Fargo. Evitare ATM indipendenti (commissioni alte)</span></div>
+      <div class="info-item"><strong>✈️ Aeroporto</strong><span>Tassi penalizzanti — da evitare. Porta qualche dollaro dall'Italia se puoi</span></div>
+      <div class="info-item"><strong>🪙 Mance</strong><span>Ristorante 18–20% · Taxi 10–15% · Hotel $2–5/notte · Bar $1–2/drink</span></div>
+    </div>
+
+  </div>
 </div>
+
+<script>
+// ═══════════════════════════════════════
+// CAMBIO VALUTA — tasso live via Frankfurter API
+// ═══════════════════════════════════════
+let eurUsdRate = null;
+
+async function loadExchangeRate() {
+  try {
+    const res = await fetch('https://api.frankfurter.app/latest?from=EUR&to=USD');
+    const data = await res.json();
+    eurUsdRate = data.rates.USD;
+    const rateEl = document.getElementById('rate-display');
+    if (rateEl) {
+      const d = new Date(data.date);
+      rateEl.textContent = `1 € = $ ${eurUsdRate.toFixed(4)} · aggiornato ${d.toLocaleDateString('it-IT')}`;
+    }
+    ['10','50','100','500'].forEach(v => {
+      const el = document.getElementById('ref-' + v);
+      if (el) el.textContent = '$ ' + (parseFloat(v) * eurUsdRate).toFixed(2);
+    });
+  } catch(e) {
+    eurUsdRate = 1.08;
+    const rateEl = document.getElementById('rate-display');
+    if (rateEl) rateEl.textContent = '1 € ≈ $ 1.08 (stima — dati offline)';
+    ['10','50','100','500'].forEach(v => {
+      const el = document.getElementById('ref-' + v);
+      if (el) el.textContent = '$ ' + (parseFloat(v) * eurUsdRate).toFixed(2);
+    });
+  }
+}
+
+function convertEurUsd() {
+  const rate = eurUsdRate || 1.08;
+  const val = parseFloat(document.getElementById('eur-input').value);
+  const out = document.getElementById('usd-output');
+  out.value = isNaN(val) ? '' : (val * rate).toFixed(2);
+}
+
+function convertUsdEur() {
+  const rate = eurUsdRate || 1.08;
+  const val = parseFloat(document.getElementById('usd-output').value);
+  const inp = document.getElementById('eur-input');
+  inp.value = isNaN(val) ? '' : (val / rate).toFixed(2);
+}
+
+loadExchangeRate();
+</script>
 
 
 <!-- ═══════════════════════════════════════
