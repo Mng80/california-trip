@@ -1548,6 +1548,95 @@ h3 { font-family:'Montserrat',sans-serif; font-weight:600; }
 <!-- ═══════════════════════════════════════
      TAB ALTRO
 ═══════════════════════════════════════ -->
+<div class="tab-content" id="tab-spese">
+  <div style="padding:16px;">
+<div class="info-section" style="padding-bottom:0;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <h3 style="margin:0;">💰 Spese viaggio</h3>
+        <button onclick="fetchSpese()" style="background:rgba(232,101,10,.12);border:none;border-radius:20px;padding:6px 12px;font-size:12px;font-weight:600;color:#e8650a;cursor:pointer;">🔄 Aggiorna</button>
+      </div>
+      <div id="sp-sync-status" style="font-size:12px;color:#888;margin-bottom:10px;">Tocca Aggiorna per caricare</div>
+
+      <!-- Form aggiunta spesa -->
+      <div style="background:#fff8f0;border-radius:12px;padding:14px;margin-bottom:14px;border:1.5px solid rgba(232,101,10,.2);">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+          <div>
+            <label style="font-size:11px;color:#888;font-weight:600;">DESCRIZIONE</label>
+            <input id="sp-desc" type="text" placeholder="es. Cena, Hotel…"
+              style="width:100%;margin-top:3px;padding:9px 10px;border-radius:8px;border:1.5px solid rgba(232,101,10,.25);font-size:14px;background:#fff;box-sizing:border-box;">
+          </div>
+          <div>
+            <label style="font-size:11px;color:#888;font-weight:600;">IMPORTO ($)</label>
+            <input id="sp-amount" type="number" inputmode="decimal" placeholder="0.00"
+              style="width:100%;margin-top:3px;padding:9px 10px;border-radius:8px;border:1.5px solid rgba(232,101,10,.25);font-size:14px;background:#fff;box-sizing:border-box;">
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+          <div>
+            <label style="font-size:11px;color:#888;font-weight:600;">CATEGORIA</label>
+            <select id="sp-cat" style="width:100%;margin-top:3px;padding:9px 10px;border-radius:8px;border:1.5px solid rgba(232,101,10,.25);font-size:14px;background:#fff;box-sizing:border-box;">
+              <option value="🍔 Cibo">🍔 Cibo</option>
+              <option value="🚗 Trasporto">🚗 Trasporto</option>
+              <option value="⛽ Benzina">⛽ Benzina</option>
+              <option value="🏨 Hotel">🏨 Hotel</option>
+              <option value="🎫 Attività">🎫 Attività</option>
+              <option value="🛍️ Shopping">🛍️ Shopping</option>
+              <option value="💊 Farmacia">💊 Farmacia</option>
+              <option value="📦 Altro">📦 Altro</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:11px;color:#888;font-weight:600;">GIORNO</label>
+            <select id="sp-day" style="width:100%;margin-top:3px;padding:9px 10px;border-radius:8px;border:1.5px solid rgba(232,101,10,.25);font-size:14px;background:#fff;box-sizing:border-box;">
+              <option value="G1 · 9/9">G1 · 9/9</option>
+              <option value="G2 · 10/9">G2 · 10/9</option>
+              <option value="G3 · 11/9">G3 · 11/9</option>
+              <option value="G4 · 12/9">G4 · 12/9</option>
+              <option value="G5 · 13/9">G5 · 13/9</option>
+              <option value="G6 · 14/9">G6 · 14/9</option>
+              <option value="G7 · 15/9">G7 · 15/9</option>
+              <option value="G8 · 16/9">G8 · 16/9</option>
+              <option value="G9 · 17/9">G9 · 17/9</option>
+              <option value="G10 · 18/9">G10 · 18/9</option>
+              <option value="G11 · 19/9">G11 · 19/9</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-bottom:10px;">
+          <label style="font-size:11px;color:#888;font-weight:600;">PAGATO DA</label>
+          <select id="sp-chi" style="width:100%;margin-top:3px;padding:9px 10px;border-radius:8px;border:1.5px solid rgba(232,101,10,.25);font-size:14px;background:#fff;box-sizing:border-box;">
+            <option value="Mina">🙋‍♀️ Mina</option>
+            <option value="Francesco">🙋‍♂️ Francesco</option>
+            <option value="Insieme">👫 Insieme</option>
+          </select>
+        </div>
+        <button id="sp-add-btn" onclick="addSpesa()"
+          style="width:100%;padding:11px;background:#e8650a;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;">
+          ➕ Aggiungi spesa
+        </button>
+      </div>
+
+      <!-- Totale -->
+      <div style="display:flex;justify-content:space-between;align-items:center;background:#1a0a00;color:#fff;border-radius:12px;padding:14px 16px;margin-bottom:14px;">
+        <div>
+          <div style="font-size:11px;opacity:.6;text-transform:uppercase;letter-spacing:.5px;">Totale spese</div>
+          <div style="font-size:26px;font-weight:800;" id="sp-total">$ 0.00</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:11px;opacity:.6;">In euro (≈)</div>
+          <div style="font-size:18px;font-weight:700;color:#e8650a;" id="sp-total-eur">€ 0.00</div>
+        </div>
+      </div>
+
+      <!-- Lista spese -->
+      <div id="sp-list" style="display:flex;flex-direction:column;gap:8px;"></div>
+      <div id="sp-empty" style="text-align:center;padding:24px;color:#aaa;font-size:14px;">Nessuna spesa ancora 🌴<br><span style="font-size:12px;">Le spese vengono salvate sul telefono</span></div>
+
+    </div>
+  </div>
+  </div>
+</div>
+
 <div class="tab-content" id="tab-altro">
   <div class="subtab-bar">
     <button class="subtab-btn active" onclick="switchSubtab('clima')">🌤️ Clima</button>
@@ -1557,7 +1646,6 @@ h3 { font-family:'Montserrat',sans-serif; font-weight:600; }
     <button class="subtab-btn" onclick="switchSubtab('bags')">🧳 Bags</button>
     <button class="subtab-btn" onclick="switchSubtab('info')">ℹ️ Info</button>
     <button class="subtab-btn" onclick="switchSubtab('cambio')">💱 Cambio</button>
-    <button class="subtab-btn" onclick="switchSubtab('spese')">💰 Spese</button>
   </div>
 
   <!-- CLIMA -->
@@ -2158,93 +2246,6 @@ function convertUsdEur() {
 loadExchangeRate();
 </script>
 
-  <!-- ═══ TAB SPESE ═══ -->
-  <div class="subtab-content" id="subtab-spese">
-
-    <div class="info-section" style="padding-bottom:0;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-        <h3 style="margin:0;">💰 Spese viaggio</h3>
-        <button onclick="fetchSpese()" style="background:rgba(232,101,10,.12);border:none;border-radius:20px;padding:6px 12px;font-size:12px;font-weight:600;color:#e8650a;cursor:pointer;">🔄 Aggiorna</button>
-      </div>
-      <div id="sp-sync-status" style="font-size:12px;color:#888;margin-bottom:10px;">Tocca Aggiorna per caricare</div>
-
-      <!-- Form aggiunta spesa -->
-      <div style="background:#fff8f0;border-radius:12px;padding:14px;margin-bottom:14px;border:1.5px solid rgba(232,101,10,.2);">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
-          <div>
-            <label style="font-size:11px;color:#888;font-weight:600;">DESCRIZIONE</label>
-            <input id="sp-desc" type="text" placeholder="es. Cena, Hotel…"
-              style="width:100%;margin-top:3px;padding:9px 10px;border-radius:8px;border:1.5px solid rgba(232,101,10,.25);font-size:14px;background:#fff;box-sizing:border-box;">
-          </div>
-          <div>
-            <label style="font-size:11px;color:#888;font-weight:600;">IMPORTO ($)</label>
-            <input id="sp-amount" type="number" inputmode="decimal" placeholder="0.00"
-              style="width:100%;margin-top:3px;padding:9px 10px;border-radius:8px;border:1.5px solid rgba(232,101,10,.25);font-size:14px;background:#fff;box-sizing:border-box;">
-          </div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
-          <div>
-            <label style="font-size:11px;color:#888;font-weight:600;">CATEGORIA</label>
-            <select id="sp-cat" style="width:100%;margin-top:3px;padding:9px 10px;border-radius:8px;border:1.5px solid rgba(232,101,10,.25);font-size:14px;background:#fff;box-sizing:border-box;">
-              <option value="🍔 Cibo">🍔 Cibo</option>
-              <option value="🚗 Trasporto">🚗 Trasporto</option>
-              <option value="⛽ Benzina">⛽ Benzina</option>
-              <option value="🏨 Hotel">🏨 Hotel</option>
-              <option value="🎫 Attività">🎫 Attività</option>
-              <option value="🛍️ Shopping">🛍️ Shopping</option>
-              <option value="💊 Farmacia">💊 Farmacia</option>
-              <option value="📦 Altro">📦 Altro</option>
-            </select>
-          </div>
-          <div>
-            <label style="font-size:11px;color:#888;font-weight:600;">GIORNO</label>
-            <select id="sp-day" style="width:100%;margin-top:3px;padding:9px 10px;border-radius:8px;border:1.5px solid rgba(232,101,10,.25);font-size:14px;background:#fff;box-sizing:border-box;">
-              <option value="G1 · 9/9">G1 · 9/9</option>
-              <option value="G2 · 10/9">G2 · 10/9</option>
-              <option value="G3 · 11/9">G3 · 11/9</option>
-              <option value="G4 · 12/9">G4 · 12/9</option>
-              <option value="G5 · 13/9">G5 · 13/9</option>
-              <option value="G6 · 14/9">G6 · 14/9</option>
-              <option value="G7 · 15/9">G7 · 15/9</option>
-              <option value="G8 · 16/9">G8 · 16/9</option>
-              <option value="G9 · 17/9">G9 · 17/9</option>
-              <option value="G10 · 18/9">G10 · 18/9</option>
-              <option value="G11 · 19/9">G11 · 19/9</option>
-            </select>
-          </div>
-        </div>
-        <div style="margin-bottom:10px;">
-          <label style="font-size:11px;color:#888;font-weight:600;">PAGATO DA</label>
-          <select id="sp-chi" style="width:100%;margin-top:3px;padding:9px 10px;border-radius:8px;border:1.5px solid rgba(232,101,10,.25);font-size:14px;background:#fff;box-sizing:border-box;">
-            <option value="Mina">🙋‍♀️ Mina</option>
-            <option value="Francesco">🙋‍♂️ Francesco</option>
-            <option value="Insieme">👫 Insieme</option>
-          </select>
-        </div>
-        <button id="sp-add-btn" onclick="addSpesa()"
-          style="width:100%;padding:11px;background:#e8650a;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;">
-          ➕ Aggiungi spesa
-        </button>
-      </div>
-
-      <!-- Totale -->
-      <div style="display:flex;justify-content:space-between;align-items:center;background:#1a0a00;color:#fff;border-radius:12px;padding:14px 16px;margin-bottom:14px;">
-        <div>
-          <div style="font-size:11px;opacity:.6;text-transform:uppercase;letter-spacing:.5px;">Totale spese</div>
-          <div style="font-size:26px;font-weight:800;" id="sp-total">$ 0.00</div>
-        </div>
-        <div style="text-align:right;">
-          <div style="font-size:11px;opacity:.6;">In euro (≈)</div>
-          <div style="font-size:18px;font-weight:700;color:#e8650a;" id="sp-total-eur">€ 0.00</div>
-        </div>
-      </div>
-
-      <!-- Lista spese -->
-      <div id="sp-list" style="display:flex;flex-direction:column;gap:8px;"></div>
-      <div id="sp-empty" style="text-align:center;padding:24px;color:#aaa;font-size:14px;">Nessuna spesa ancora 🌴<br><span style="font-size:12px;">Le spese vengono salvate sul telefono</span></div>
-
-    </div>
-  </div>
 </div>
 
 <script>
@@ -2365,8 +2366,12 @@ async function deleteSpesa(i) {
 document.addEventListener('DOMContentLoaded', function() {
   // intercetta click sul tab spese per caricare al primo accesso
 });
+let speseLoaded = false;
 function onSpeseTabOpen() {
-  if (!speseSha) fetchSpese();
+  if (!speseLoaded) {
+    speseLoaded = true;
+    fetchSpese();
+  }
 }
 renderSpese();
 </script>
@@ -2382,6 +2387,9 @@ renderSpese();
   </button>
   <button class="nav-btn" id="nav-tab-map" onclick="switchTab('tab-map')">
     <span class="nav-icon">🗺️</span>Mappa
+  </button>
+  <button class="nav-btn" id="nav-tab-spese" onclick="switchTab('tab-spese')">
+    <span class="nav-icon">💰</span>Spese
   </button>
   <button class="nav-btn" id="nav-tab-altro" onclick="switchTab('tab-altro')">
     <span class="nav-icon">ℹ️</span>Altro
@@ -2407,6 +2415,7 @@ function switchTab(tabId) {
   document.getElementById(tabId).classList.add('active');
   document.getElementById('nav-' + tabId).classList.add('active');
   currentTab = tabId;
+  if (tabId === 'tab-spese') { onSpeseTabOpen(); }
   if (tabId === 'tab-map' && !mapInitialized) {
     setTimeout(initMap, 100);
   }
