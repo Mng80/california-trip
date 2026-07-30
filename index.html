@@ -382,17 +382,33 @@ h3 { font-family:'Montserrat',sans-serif; font-weight:600; }
 .home-fixed {
   position:sticky; top:0; z-index:50;
   background:var(--bg);
-  padding:16px 16px 0;
+  padding:14px 16px 0;
   border-bottom:1px solid rgba(44,24,16,0.10);
 }
-.home-title-block { text-align:center; padding:10px 0 8px; }
-.home-title-block h1 { font-family:'Montserrat',sans-serif; font-size:21px; font-weight:800; color:var(--text); line-height:1.2; }
-.home-title-block p { font-size:12px; color:var(--text-muted); margin-top:3px; }
-.countdown-bar { display:flex; justify-content:center; gap:10px; padding:10px 0 14px; }
+.home-title-block { text-align:center; padding:6px 0 8px; }
+.home-title-block h1 { font-family:'Montserrat',sans-serif; font-size:20px; font-weight:800; color:var(--text); line-height:1.2; }
+.home-title-block p { font-size:11px; color:var(--text-muted); margin-top:2px; }
+
+/* dual clock */
+.dual-clock-wrap {
+  display:flex; align-items:center; justify-content:space-between;
+  background:var(--card); border-radius:14px; padding:10px 16px;
+  margin:8px 0 0; border:1px solid rgba(44,24,16,0.09);
+  box-shadow:0 2px 6px rgba(44,24,16,0.05);
+}
+.dc-side { flex:1; }
+.dc-side-right { text-align:right; }
+.dc-flag { font-size:18px; line-height:1; }
+.dc-city { font-size:9px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:.6px; margin:2px 0 1px; }
+.dc-time { font-family:'Montserrat',sans-serif; font-size:24px; font-weight:800; color:var(--text); line-height:1; }
+.dc-tz { font-size:9px; color:var(--text-muted); margin-top:2px; }
+.dc-mid { font-size:22px; flex-shrink:0; margin:0 8px; }
+
+.countdown-bar { display:flex; justify-content:center; gap:10px; padding:10px 0 12px; }
 .cd-unit { text-align:center; }
-.cd-num { font-family:'Montserrat',sans-serif; font-size:26px; font-weight:800; color:var(--accent); line-height:1; }
+.cd-num { font-family:'Montserrat',sans-serif; font-size:24px; font-weight:800; color:var(--accent); line-height:1; }
 .cd-lbl { font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.5px; margin-top:2px; }
-.cd-sep { font-size:22px; font-weight:800; color:var(--accent); align-self:flex-start; padding-top:2px; }
+.cd-sep { font-size:20px; font-weight:800; color:var(--accent); align-self:flex-start; padding-top:2px; }
 .home-scroll { overflow-y:auto; padding-bottom:16px; }
 
 /* ── TAPPE LIST ── */
@@ -533,10 +549,27 @@ h3 { font-family:'Montserrat',sans-serif; font-weight:600; }
   <!-- HEADER FISSO -->
   <div class="home-fixed">
     <div class="home-title-block">
-      <span style="font-size:34px;display:block;margin-bottom:6px;">🇺🇸</span>
+      <span style="font-size:30px;display:block;margin-bottom:4px;">🇺🇸</span>
       <h1>Road Trip California 2026</h1>
       <p>9 – 19 settembre 2026 &nbsp;·&nbsp; Mina &amp; Francesco</p>
     </div>
+    <!-- DUAL CLOCK -->
+    <div class="dual-clock-wrap">
+      <div class="dc-side">
+        <div class="dc-flag">🇮🇹</div>
+        <div class="dc-city">BARI</div>
+        <div class="dc-time" id="dc-time-it">--:--</div>
+        <div class="dc-tz">Europe/Rome</div>
+      </div>
+      <div class="dc-mid">✈️</div>
+      <div class="dc-side dc-side-right">
+        <div class="dc-flag">🌉</div>
+        <div class="dc-city">SAN FRANCISCO</div>
+        <div class="dc-time" id="dc-time-sf">--:--</div>
+        <div class="dc-tz">America/Los_Angeles</div>
+      </div>
+    </div>
+    <!-- COUNTDOWN -->
     <div class="countdown-bar" id="countdown">
       <div class="cd-unit"><div class="cd-num">--</div><div class="cd-lbl">giorni</div></div>
     </div>
@@ -2333,6 +2366,21 @@ function openMaps(lat, lon, name) {
   link.rel = 'manifest'; link.href = url;
   document.head.appendChild(link);
 })();
+
+// ═══════════════════════════════════════
+// DUAL CLOCK
+// ═══════════════════════════════════════
+function updateDualClock() {
+  const now = new Date();
+  const fmtIt = new Intl.DateTimeFormat('it-IT', {hour:'2-digit', minute:'2-digit', second:'2-digit', timeZone:'Europe/Rome', hour12:false});
+  const fmtSF = new Intl.DateTimeFormat('it-IT', {hour:'2-digit', minute:'2-digit', second:'2-digit', timeZone:'America/Los_Angeles', hour12:false});
+  const elIt = document.getElementById('dc-time-it');
+  const elSF = document.getElementById('dc-time-sf');
+  if (elIt) elIt.textContent = fmtIt.format(now);
+  if (elSF) elSF.textContent = fmtSF.format(now);
+}
+setInterval(updateDualClock, 1000);
+updateDualClock();
 
 // ═══════════════════════════════════════
 // COUNTDOWN
