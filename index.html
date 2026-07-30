@@ -550,7 +550,7 @@ h3 { font-family:'Montserrat',sans-serif; font-weight:600; }
   <div class="home-fixed">
     <div class="home-title-block">
       <span style="font-size:30px;display:block;margin-bottom:4px;">🇺🇸</span>
-      <h1>Road Trip California 2026</h1>
+      <h1>Road Trip - California 2026</h1>
       <p>9 – 19 settembre 2026 &nbsp;·&nbsp; Mina &amp; Francesco</p>
     </div>
     <!-- DUAL CLOCK -->
@@ -2373,10 +2373,8 @@ function updateDualClock() {
   if (elIt) elIt.textContent = fmtIt.format(now);
   if (elSF) elSF.textContent = fmtSF.format(now);
 }
-document.addEventListener('DOMContentLoaded', function() {
-  updateDualClock();
-  setInterval(updateDualClock, 1000);
-});
+updateDualClock();
+setInterval(updateDualClock, 1000);
 
 // ═══════════════════════════════════════
 // COUNTDOWN
@@ -2404,10 +2402,8 @@ function updateCountdown() {
     <div class="cd-sep">:</div>
     <div class="cd-unit"><div class="cd-num">${String(s).padStart(2,'0')}</div><div class="cd-lbl">sec</div></div>`;
 }
-document.addEventListener('DOMContentLoaded', function() {
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
-});
+updateCountdown();
+setInterval(updateCountdown, 1000);
 
 // ═══════════════════════════════════════
 // PAGINE GIORNO
