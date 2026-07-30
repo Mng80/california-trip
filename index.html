@@ -2162,7 +2162,11 @@ loadExchangeRate();
   <div class="subtab-content" id="subtab-spese">
 
     <div class="info-section" style="padding-bottom:0;">
-      <h3>💰 Spese viaggio</h3>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <h3 style="margin:0;">💰 Spese viaggio</h3>
+        <button onclick="fetchSpese()" style="background:rgba(232,101,10,.12);border:none;border-radius:20px;padding:6px 12px;font-size:12px;font-weight:600;color:#e8650a;cursor:pointer;">🔄 Aggiorna</button>
+      </div>
+      <div id="sp-sync-status" style="font-size:12px;color:#888;margin-bottom:10px;">Tocca Aggiorna per caricare</div>
 
       <!-- Form aggiunta spesa -->
       <div style="background:#fff8f0;border-radius:12px;padding:14px;margin-bottom:14px;border:1.5px solid rgba(232,101,10,.2);">
@@ -2209,7 +2213,15 @@ loadExchangeRate();
             </select>
           </div>
         </div>
-        <button onclick="addSpesa()"
+        <div style="margin-bottom:10px;">
+          <label style="font-size:11px;color:#888;font-weight:600;">PAGATO DA</label>
+          <select id="sp-chi" style="width:100%;margin-top:3px;padding:9px 10px;border-radius:8px;border:1.5px solid rgba(232,101,10,.25);font-size:14px;background:#fff;box-sizing:border-box;">
+            <option value="Mina">🙋‍♀️ Mina</option>
+            <option value="Francesco">🙋‍♂️ Francesco</option>
+            <option value="Insieme">👫 Insieme</option>
+          </select>
+        </div>
+        <button id="sp-add-btn" onclick="addSpesa()"
           style="width:100%;padding:11px;background:#e8650a;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;">
           ➕ Aggiungi spesa
         </button>
@@ -2237,16 +2249,44 @@ loadExchangeRate();
 
 <script>
 // ═══════════════════════════════════════
-// SPESE — localStorage
+// SPESE — sincronizzazione JSONBlob (condivisa tra dispositivi)
 // ═══════════════════════════════════════
-function loadSpese() {
-  try { return JSON.parse(localStorage.getItem('ca_spese') || '[]'); } catch(e) { return []; }
+const JB_ID  = '019fb2f5-5481-7a1b-bed9-d7a2f8651043';
+const JB_URL = `https://jsonblob.com/api/jsonBlob/${JB_ID}`;
+const JB_HEADS = { 'Content-Type': 'application/json', 'Accept': 'application/json' };
+
+let speseArr = [];
+
+async function fetchSpese() {
+  setSpStatus('⏳ Sincronizzazione…', '#888');
+  try {
+    const r = await fetch(JB_URL, { headers: JB_HEADS, cache: 'no-store' });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const d = await r.json();
+    speseArr = d.spese || [];
+    renderSpese();
+    setSpStatus('✅ Sincronizzato', '#22c55e');
+  } catch(e) {
+    setSpStatus('❌ Errore connessione — riprova', '#ef4444');
+  }
 }
-function saveSpese(arr) {
-  localStorage.setItem('ca_spese', JSON.stringify(arr));
+
+async function pushSpese(arr) {
+  const r = await fetch(JB_URL, {
+    method: 'PUT',
+    headers: JB_HEADS,
+    body: JSON.stringify({ spese: arr, v: 1 })
+  });
+  if (!r.ok) throw new Error('HTTP ' + r.status);
 }
+
+function setSpStatus(msg, color) {
+  const el = document.getElementById('sp-sync-status');
+  if (el) { el.textContent = msg; el.style.color = color; }
+}
+
 function renderSpese() {
-  const arr = loadSpese();
+  const arr = speseArr;
   const list = document.getElementById('sp-list');
   const empty = document.getElementById('sp-empty');
   const totalEl = document.getElementById('sp-total');
@@ -2266,38 +2306,67 @@ function renderSpese() {
     tot += parseFloat(s.amount);
     const div = document.createElement('div');
     div.style.cssText = 'background:#fff;border-radius:10px;padding:11px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 1px 4px rgba(0,0,0,.07);';
-    div.innerHTML = `
-      <div style="flex:1;">
-        <div style="font-weight:700;font-size:14px;">${s.cat} <span style="font-weight:400;color:#666;">· ${s.desc}</span></div>
-        <div style="font-size:12px;color:#aaa;margin-top:2px;">${s.day}</div>
-      </div>
-      <div style="font-size:17px;font-weight:800;color:#e8650a;">$ ${parseFloat(s.amount).toFixed(2)}</div>
-      <button onclick="deleteSpesa(${i})" style="background:none;border:none;cursor:pointer;font-size:18px;color:#ccc;padding:0 0 0 4px;">🗑️</button>
-    `;
+    div.innerHTML =
+      '<div style="flex:1;">' +
+        '<div style="font-weight:700;font-size:14px;">' + s.cat + ' <span style="font-weight:400;color:#666;">· ' + s.desc + '</span></div>' +
+        '<div style="font-size:12px;color:#aaa;margin-top:2px;">' + s.day + ' · ' + (s.chi || 'tutti') + '</div>' +
+      '</div>' +
+      '<div style="font-size:17px;font-weight:800;color:#e8650a;">$ ' + parseFloat(s.amount).toFixed(2) + '</div>' +
+      '<button onclick="deleteSpesa(' + i + ')" style="background:none;border:none;cursor:pointer;font-size:18px;color:#ccc;padding:0 0 0 4px;">🗑️</button>';
     list.appendChild(div);
   });
   totalEl.textContent = '$ ' + tot.toFixed(2);
   const rate = (typeof eurUsdRate !== 'undefined' && eurUsdRate) ? eurUsdRate : 1.08;
   totalEurEl.textContent = '€ ' + (tot / rate).toFixed(2);
 }
-function addSpesa() {
-  const desc = document.getElementById('sp-desc').value.trim();
+
+async function addSpesa() {
+  const desc   = document.getElementById('sp-desc').value.trim();
   const amount = parseFloat(document.getElementById('sp-amount').value);
-  const cat = document.getElementById('sp-cat').value;
-  const day = document.getElementById('sp-day').value;
+  const cat    = document.getElementById('sp-cat').value;
+  const day    = document.getElementById('sp-day').value;
+  const chi    = document.getElementById('sp-chi').value;
   if (!desc || isNaN(amount) || amount <= 0) { alert('Inserisci descrizione e importo valido'); return; }
-  const arr = loadSpese();
-  arr.push({ desc, amount: amount.toFixed(2), cat, day });
-  saveSpese(arr);
-  document.getElementById('sp-desc').value = '';
-  document.getElementById('sp-amount').value = '';
-  renderSpese();
+  if (!speseArr.length && speseArr !== undefined) { alert('Lista non ancora caricata. Tocca 🔄 Aggiorna prima.'); return; }
+  const btnEl = document.getElementById('sp-add-btn');
+  btnEl.disabled = true;
+  setSpStatus('⏳ Salvataggio…', '#888');
+  try {
+    const newArr = [...speseArr, { desc, amount: amount.toFixed(2), cat, day, chi, ts: Date.now() }];
+    await pushSpese(newArr);
+    speseArr = newArr;
+    document.getElementById('sp-desc').value = '';
+    document.getElementById('sp-amount').value = '';
+    renderSpese();
+    setSpStatus('✅ Salvato e sincronizzato', '#22c55e');
+  } catch(e) {
+    setSpStatus('❌ Errore salvataggio — riprova', '#ef4444');
+  }
+  btnEl.disabled = false;
 }
-function deleteSpesa(i) {
-  const arr = loadSpese();
-  arr.splice(i, 1);
-  saveSpese(arr);
-  renderSpese();
+
+async function deleteSpesa(i) {
+  const btnEl = document.getElementById('sp-add-btn');
+  btnEl.disabled = true;
+  setSpStatus('⏳ Eliminazione…', '#888');
+  try {
+    const newArr = speseArr.filter((_,idx) => idx !== i);
+    await pushSpese(newArr);
+    speseArr = newArr;
+    renderSpese();
+    setSpStatus('✅ Eliminato', '#22c55e');
+  } catch(e) {
+    setSpStatus('❌ Errore — riprova', '#ef4444');
+  }
+  btnEl.disabled = false;
+}
+
+// Carica all'apertura del tab spese
+document.addEventListener('DOMContentLoaded', function() {
+  // intercetta click sul tab spese per caricare al primo accesso
+});
+function onSpeseTabOpen() {
+  if (!speseSha) fetchSpese();
 }
 renderSpese();
 </script>
@@ -2548,6 +2617,7 @@ function switchSubtab(id) {
   document.querySelectorAll('.subtab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('subtab-' + id).classList.add('active');
   event.target.classList.add('active');
+  if (id === 'spese') onSpeseTabOpen();
 }
 
 function switchMallTab(id) {
