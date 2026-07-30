@@ -591,7 +591,7 @@ h3 { font-family:'Montserrat',sans-serif; font-weight:600; }
       var el = document.getElementById('countdown');
       if (el && diff > 0) {
         var dd=Math.floor(diff/86400000), hh=Math.floor((diff%86400000)/3600000), mm=Math.floor((diff%3600000)/60000), ss=Math.floor((diff%60000)/1000);
-        el.innerHTML='<div class="cd-unit"><div class="cd-num">'+dd+'</div><div class="cd-lbl">giorni</div></div><div class="cd-sep">:</div><div class="cd-unit"><div class="cd-num">'+('0'+hh).slice(-2)+'</div><div class="cd-lbl">ore</div></div><div class="cd-sep">:</div><div class="cd-unit"><div class="cd-num">'+('0'+mm).slice(-2)+'</div><div class="cd-lbl">min</div></div><div class="cd-sep">:</div><div class="cd-unit"><div class="cd-num">'+('0'+ss).slice(-2)+'</div><div class="cd-lbl">sec</div></div>';
+        el.innerHTML='<div class="cd-unit"><div class="cd-num">'+dd+'</div><div class="cd-lbl">giorni</div></div><div class="cd-sep">:</div><div class="cd-unit"><div class="cd-num">'+('0'+hh).slice(-2)+'</div><div class="cd-lbl">ore</div></div><div class="cd-sep">:</div><div class="cd-unit"><div class="cd-num">'+('0'+mm).slice(-2)+'</div><div class="cd-lbl">min</div></div>';
       }
     }
     tick(); setInterval(tick,1000);
