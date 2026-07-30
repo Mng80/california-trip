@@ -574,29 +574,7 @@ h3 { font-family:'Montserrat',sans-serif; font-weight:600; }
       <div class="cd-unit"><div class="cd-num">--</div><div class="cd-lbl">giorni</div></div>
     </div>
   </div>
-  <!-- clock + countdown inline: gira subito, indipendente dal resto dello script -->
-  <script>
-  (function() {
-    function tick() {
-      var now = Date.now();
-      function fmtTime(utcMs, offsetH) {
-        var d = new Date(utcMs + offsetH * 3600000);
-        return ('0'+d.getUTCHours()).slice(-2)+':'+('0'+d.getUTCMinutes()).slice(-2);
-      }
-      var elIt = document.getElementById('dc-time-it');
-      var elSF = document.getElementById('dc-time-sf');
-      if (elIt) elIt.textContent = fmtTime(now, 2);
-      if (elSF) elSF.textContent = fmtTime(now, -7);
-      var diff = 1788928200000 - now;
-      var el = document.getElementById('countdown');
-      if (el && diff > 0) {
-        var dd=Math.floor(diff/86400000), hh=Math.floor((diff%86400000)/3600000), mm=Math.floor((diff%3600000)/60000), ss=Math.floor((diff%60000)/1000);
-        el.innerHTML='<div class="cd-unit"><div class="cd-num">'+dd+'</div><div class="cd-lbl">giorni</div></div><div class="cd-sep">:</div><div class="cd-unit"><div class="cd-num">'+('0'+hh).slice(-2)+'</div><div class="cd-lbl">ore</div></div><div class="cd-sep">:</div><div class="cd-unit"><div class="cd-num">'+('0'+mm).slice(-2)+'</div><div class="cd-lbl">min</div></div>';
-      }
-    }
-    tick(); setInterval(tick,1000);
-  })();
-  </script>
+
   <!-- SCROLL CONTENT -->
   <div class="home-scroll">
     <div class="tappe-list">
@@ -2498,55 +2476,36 @@ function openMaps(lat, lon, name) {
 })();
 
 // ═══════════════════════════════════════
-// DUAL CLOCK
+// DUAL CLOCK + COUNTDOWN
 // ═══════════════════════════════════════
-function updateDualClock() {
-  const now = new Date();
-  // Europe/Rome = UTC+2 (CEST in estate)
-  const itOffset = 2;
-  // America/Los_Angeles = UTC-7 (PDT in estate)
-  const sfOffset = -7;
-  function fmtClock(utcMs, offsetH) {
-    const local = new Date(utcMs + offsetH * 3600000);
-    const h = String(local.getUTCHours()).padStart(2,'0');
-    const m = String(local.getUTCMinutes()).padStart(2,'0');
-    const s = String(local.getUTCSeconds()).padStart(2,'0');
-    return h + ':' + m + ':' + s;
+function tickAll() {
+  var now = Date.now();
+  function fmtClock(ms, offsetH) {
+    var d = new Date(ms + offsetH * 3600000);
+    return ('0'+d.getUTCHours()).slice(-2)+':'+('0'+d.getUTCMinutes()).slice(-2);
   }
-  const elIt = document.getElementById('dc-time-it');
-  const elSF = document.getElementById('dc-time-sf');
-  if (elIt) elIt.textContent = fmtClock(now.getTime(), itOffset);
-  if (elSF) elSF.textContent = fmtClock(now.getTime(), sfOffset);
-}
-setInterval(updateDualClock, 1000);
-updateDualClock();
-// COUNTDOWN
-// ═══════════════════════════════════════
-function updateCountdown() {
-  const target = new Date('2026-09-09T06:30:00+02:00');
-  const now = new Date();
-  const diff = target - now;
-  const el = document.getElementById('countdown');
-  if (!el) return;
-  if (diff <= 0) {
-    el.innerHTML = '<span style="color:var(--accent);font-size:16px;font-weight:700;">🎉 Buon viaggio!</span>';
-    return;
+  var elIt = document.getElementById('dc-time-it');
+  var elSF = document.getElementById('dc-time-sf');
+  if (elIt) elIt.textContent = fmtClock(now, 2);
+  if (elSF) elSF.textContent = fmtClock(now, -7);
+  var diff = 1788928200000 - now;
+  var el = document.getElementById('countdown');
+  if (el) {
+    if (diff <= 0) {
+      el.innerHTML = '<span style="color:var(--accent);font-size:16px;font-weight:700;">🎉 Buon viaggio!</span>';
+    } else {
+      var dd=Math.floor(diff/86400000), hh=Math.floor((diff%86400000)/3600000), mm=Math.floor((diff%3600000)/60000);
+      el.innerHTML =
+        '<div class="cd-unit"><div class="cd-num">'+dd+'</div><div class="cd-lbl">giorni</div></div>'+
+        '<div class="cd-sep">:</div>'+
+        '<div class="cd-unit"><div class="cd-num">'+('0'+hh).slice(-2)+'</div><div class="cd-lbl">ore</div></div>'+
+        '<div class="cd-sep">:</div>'+
+        '<div class="cd-unit"><div class="cd-num">'+('0'+mm).slice(-2)+'</div><div class="cd-lbl">min</div></div>';
+    }
   }
-  const d = Math.floor(diff / 86400000);
-  const h = Math.floor((diff % 86400000) / 3600000);
-  const m = Math.floor((diff % 3600000) / 60000);
-  const s = Math.floor((diff % 60000) / 1000);
-  el.innerHTML = `
-    <div class="cd-unit"><div class="cd-num">${d}</div><div class="cd-lbl">giorni</div></div>
-    <div class="cd-sep">:</div>
-    <div class="cd-unit"><div class="cd-num">${String(h).padStart(2,'0')}</div><div class="cd-lbl">ore</div></div>
-    <div class="cd-sep">:</div>
-    <div class="cd-unit"><div class="cd-num">${String(m).padStart(2,'0')}</div><div class="cd-lbl">min</div></div>
-    <div class="cd-sep">:</div>
-    <div class="cd-unit"><div class="cd-num">${String(s).padStart(2,'0')}</div><div class="cd-lbl">sec</div></div>`;
 }
-updateCountdown();
-setInterval(updateCountdown, 1000);
+tickAll();
+setInterval(tickAll, 1000);
 
 // ═══════════════════════════════════════
 // PAGINE GIORNO
