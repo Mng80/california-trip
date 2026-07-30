@@ -25,10 +25,10 @@
   --red: #dc2626;
   --blue: #2563eb;
   --nav-h: 60px;
-  --safe-bottom: max(env(safe-area-inset-bottom, 0px), 20px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-html, body { height:100%; background:var(--bg); color:var(--text); font-family: system-ui, -apple-system, sans-serif; }
+html, body { height:100%; background:var(--bg); color:var(--text); font-family: system-ui, -apple-system, sans-serif; overflow:hidden; }
 
 
 /* ── BOTTOM NAV ── */
@@ -37,8 +37,8 @@ html, body { height:100%; background:var(--bg); color:var(--text); font-family: 
   background:rgba(253,246,227,0.97); backdrop-filter:blur(12px);
   border-top:1px solid rgba(232,101,10,0.25);
   display:flex; justify-content:space-around; align-items:center;
-  height:60px;
-  padding-bottom:env(safe-area-inset-bottom, 0px);
+  height:calc(var(--nav-h) + var(--safe-bottom));
+  padding-bottom:var(--safe-bottom);
 }
 .nav-btn {
   flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
@@ -53,7 +53,7 @@ html, body { height:100%; background:var(--bg); color:var(--text); font-family: 
 /* ── TAB CONTENTS ── */
 .tab-content {
   display:none;
-  height:calc(100vh - 60px);
+  height:calc(100dvh - var(--nav-h) - var(--safe-bottom));
   overflow-y:auto; overflow-x:hidden;
   -webkit-overflow-scrolling:touch;
 }
@@ -574,7 +574,29 @@ h3 { font-family:'Montserrat',sans-serif; font-weight:600; }
       <div class="cd-unit"><div class="cd-num">--</div><div class="cd-lbl">giorni</div></div>
     </div>
   </div>
-
+  <!-- clock + countdown inline: gira subito, indipendente dal resto dello script -->
+  <script>
+  (function() {
+    function tick() {
+      var now = Date.now();
+      function fmtTime(utcMs, offsetH) {
+        var d = new Date(utcMs + offsetH * 3600000);
+        return ('0'+d.getUTCHours()).slice(-2)+':'+('0'+d.getUTCMinutes()).slice(-2);
+      }
+      var elIt = document.getElementById('dc-time-it');
+      var elSF = document.getElementById('dc-time-sf');
+      if (elIt) elIt.textContent = fmtTime(now, 2);
+      if (elSF) elSF.textContent = fmtTime(now, -7);
+      var diff = 1788928200000 - now;
+      var el = document.getElementById('countdown');
+      if (el && diff > 0) {
+        var dd=Math.floor(diff/86400000), hh=Math.floor((diff%86400000)/3600000), mm=Math.floor((diff%3600000)/60000), ss=Math.floor((diff%60000)/1000);
+        el.innerHTML='<div class="cd-unit"><div class="cd-num">'+dd+'</div><div class="cd-lbl">giorni</div></div><div class="cd-sep">:</div><div class="cd-unit"><div class="cd-num">'+('0'+hh).slice(-2)+'</div><div class="cd-lbl">ore</div></div><div class="cd-sep">:</div><div class="cd-unit"><div class="cd-num">'+('0'+mm).slice(-2)+'</div><div class="cd-lbl">min</div></div><div class="cd-sep">:</div><div class="cd-unit"><div class="cd-num">'+('0'+ss).slice(-2)+'</div><div class="cd-lbl">sec</div></div>';
+      }
+    }
+    tick(); setInterval(tick,1000);
+  })();
+  </script>
   <!-- SCROLL CONTENT -->
   <div class="home-scroll">
     <div class="tappe-list">
@@ -1688,7 +1710,6 @@ h3 { font-family:'Montserrat',sans-serif; font-weight:600; }
     <div class="mall-subtab-bar">
       <button class="mall-subtab-btn active" onclick="switchMallTab('mall')">🛍️ Mall</button>
       <button class="mall-subtab-btn" onclick="switchMallTab('gas')">⛽ Gas</button>
-      <button class="mall-subtab-btn" onclick="switchMallTab('supermarket')">🛒 Supermarket</button>
     </div>
 
     <div class="mall-content active" id="mc-mall">
@@ -1724,137 +1745,25 @@ h3 { font-family:'Montserrat',sans-serif; font-weight:600; }
         <strong>⛽ App GasBuddy — Trova il carburante più economico</strong>
         <span>gasbuddy.com · disponibile su App Store</span>
       </div>
-      <!-- G1-G4: San Francisco -->
       <div class="poi-card">
-        <div class="poi-name">⛽ Costco Gas — San Jose (vicino SFO, G1)</div>
+        <div class="poi-name">Costco Gas — San Jose (vicino SFO)</div>
         <div class="poi-addr">2201 Senter Rd, San Jose CA · Prezzi tipicamente più bassi</div>
         <button class="btn btn-outline btn-sm" onclick="openMaps(37.3064,-121.8388,'Costco Gas San Jose')">📍 Maps</button>
       </div>
       <div class="poi-card">
-        <div class="poi-name">⛽ Chevron — San Francisco (G1-G4)</div>
-        <div class="poi-addr">1500 Van Ness Ave, San Francisco CA</div>
-        <button class="btn btn-outline btn-sm" onclick="openMaps(37.7909,-122.4224,'Chevron Van Ness San Francisco')">📍 Maps</button>
-      </div>
-      <div class="poi-card">
-        <div class="poi-name">⛽ Shell — San Francisco centro (G1-G4)</div>
-        <div class="poi-addr">2000 Market St, San Francisco CA</div>
-        <button class="btn btn-outline btn-sm" onclick="openMaps(37.7693,-122.4330,'Shell Market St San Francisco')">📍 Maps</button>
-      </div>
-      <!-- G5: prima di Yosemite -->
-      <div class="poi-card">
-        <div class="poi-name">⛽ Arco — Groveland (ultima pompa prima Yosemite, G5)</div>
-        <div class="poi-addr">18990 CA-120, Groveland CA · Fare il pieno qui!</div>
-        <button class="btn btn-outline btn-sm" onclick="openMaps(37.8320,-120.2284,'Arco Groveland California')">📍 Maps</button>
-      </div>
-      <div class="poi-card">
-        <div class="poi-name">⛽ Chevron — Manteca (lungo I-205/CA-120, G5)</div>
-        <div class="poi-addr">1150 N Main St, Manteca CA</div>
-        <button class="btn btn-outline btn-sm" onclick="openMaps(37.7994,-121.2162,'Chevron Manteca California')">📍 Maps</button>
-      </div>
-      <!-- G6: dentro Yosemite -->
-      <div class="poi-card">
-        <div class="poi-name">⛽ Yosemite Valley Station (G6 — dentro il parco)</div>
-        <div class="poi-addr">Yosemite Valley, CA · Prezzi più alti ma unica opzione in valley</div>
-        <button class="btn btn-outline btn-sm" onclick="openMaps(37.7456,-119.5936,'Yosemite Valley Gas Station')">📍 Maps</button>
-      </div>
-      <!-- G7-G8: verso Sequoia e Tulare -->
-      <div class="poi-card">
-        <div class="poi-name">⛽ Shell — Visalia (G7, vicino Tulare)</div>
-        <div class="poi-addr">3636 S Mooney Blvd, Visalia CA</div>
-        <button class="btn btn-outline btn-sm" onclick="openMaps(36.3042,-119.3158,'Shell Visalia California')">📍 Maps</button>
-      </div>
-      <div class="poi-card">
-        <div class="poi-name">⛽ Costco Gas — Visalia (G7-G8, prezzi bassi)</div>
-        <div class="poi-addr">1819 E Prosperity Ave, Tulare CA</div>
-        <button class="btn btn-outline btn-sm" onclick="openMaps(36.2054,-119.3243,'Costco Gas Tulare California')">📍 Maps</button>
-      </div>
-      <!-- G9: Pinnacles -->
-      <div class="poi-card">
-        <div class="poi-name">⛽ Chevron — Hollister (vicino Pinnacles East, G9)</div>
-        <div class="poi-addr">600 San Felipe Rd, Hollister CA · Fare il pieno prima del parco</div>
-        <button class="btn btn-outline btn-sm" onclick="openMaps(36.8555,-121.3801,'Chevron Hollister California')">📍 Maps</button>
-      </div>
-      <!-- G10: Monterey / Santa Cruz -->
-      <div class="poi-card">
-        <div class="poi-name">⛽ Shell — Monterey (G10)</div>
-        <div class="poi-addr">2 Casa Verde Way, Monterey CA</div>
-        <button class="btn btn-outline btn-sm" onclick="openMaps(36.5986,-121.8824,'Shell Monterey California')">📍 Maps</button>
-      </div>
-      <div class="poi-card">
-        <div class="poi-name">⛽ Arco — Santa Cruz (G10-G11)</div>
-        <div class="poi-addr">1205 Ocean St, Santa Cruz CA</div>
-        <button class="btn btn-outline btn-sm" onclick="openMaps(36.9788,-122.0209,'Arco Santa Cruz California')">📍 Maps</button>
+        <div class="poi-name">Arco / AM-PM — lungo I-5 e US-101</div>
+        <div class="poi-addr">Catena economica diffusa in tutta la California</div>
       </div>
       <div class="info-item">
         <strong>💡 Consigli rifornimento</strong>
-        <span>Fare il pieno prima di entrare nei parchi (Yosemite, Sequoia, Pinnacles) — prezzi interni molto più alti. Lungo I-5 e CA-99 carburante spesso meno caro. Costco è sempre la scelta più economica. Tutte le pompe accettano carte di credito estere.</span>
+        <span>Fare il pieno prima di entrare nei parchi nazionali (prezzi più alti). Lungo I-5 carburante spesso meno caro. Accettano tutte le carte di credito.</span>
       </div>
       <div class="info-item">
         <strong>🚗 Tipo di carburante</strong>
-        <span>Regular Unleaded (87 octane) per la maggior parte delle auto a noleggio. Verificare con il noleggiatore al ritiro.</span>
+        <span>Regular Unleaded (87 octane) per la maggior parte delle auto a noleggio. Verificare con il noleggiatore.</span>
       </div>
     </div>
-
-    <div class="mall-content" id="mc-supermarket">
-      <!-- G1-G4: San Francisco -->
-      <div class="poi-card">
-        <div class="poi-name">🥑 Trader Joe's — San Francisco (G1-G4)</div>
-        <div class="poi-addr">401 Bay St, San Francisco CA · vicino Fisherman's Wharf</div>
-        <button class="btn btn-outline btn-sm" onclick="openMaps(37.8062,-122.4160,'Trader Joes Bay Street San Francisco')">📍 Maps</button>
-      </div>
-      <div class="poi-card">
-        <div class="poi-name">🛒 Whole Foods Market — San Francisco (G1-G4)</div>
-        <div class="poi-addr">399 4th St, San Francisco CA · vicino Moscone Center</div>
-        <button class="btn btn-outline btn-sm" onclick="openMaps(37.7793,-122.3972,'Whole Foods 4th Street San Francisco')">📍 Maps</button>
-      </div>
-      <div class="poi-card">
-        <div class="poi-name">🛒 Safeway — San Francisco (G1-G4)</div>
-        <div class="poi-addr">1335 Webster St, San Francisco CA</div>
-        <button class="btn btn-outline btn-sm" onclick="openMaps(37.7840,-122.4336,'Safeway Webster San Francisco')">📍 Maps</button>
-      </div>
-      <!-- G5: verso Yosemite -->
-      <div class="poi-card">
-        <div class="poi-name">🛒 Safeway — Manteca (G5, ultima grande spesa prima Yosemite)</div>
-        <div class="poi-addr">1340 N Main St, Manteca CA</div>
-        <button class="btn btn-outline btn-sm" onclick="openMaps(37.8028,-121.2167,'Safeway Manteca California')">📍 Maps</button>
-      </div>
-      <!-- G7-G8: Tulare / Sequoia -->
-      <div class="poi-card">
-        <div class="poi-name">🥑 Trader Joe's — Visalia (G7-G8)</div>
-        <div class="poi-addr">3553 S Mooney Blvd, Visalia CA</div>
-        <button class="btn btn-outline btn-sm" onclick="openMaps(36.3018,-119.3156,'Trader Joes Visalia California')">📍 Maps</button>
-      </div>
-      <div class="poi-card">
-        <div class="poi-name">🛒 Walmart Supercenter — Tulare (G7-G8)</div>
-        <div class="poi-addr">1425 E Prosperity Ave, Tulare CA</div>
-        <button class="btn btn-outline btn-sm" onclick="openMaps(36.2073,-119.3244,'Walmart Tulare California')">📍 Maps</button>
-      </div>
-      <div class="poi-card">
-        <div class="poi-name">🛒 Vons — Visalia (G7-G8)</div>
-        <div class="poi-addr">2600 W Caldwell Ave, Visalia CA</div>
-        <button class="btn btn-outline btn-sm" onclick="openMaps(36.3346,-119.3536,'Vons Visalia California')">📍 Maps</button>
-      </div>
-      <!-- G10: Monterey / Santa Cruz -->
-      <div class="poi-card">
-        <div class="poi-name">🥑 Trader Joe's — Monterey (G10)</div>
-        <div class="poi-addr">570 Munras Ave, Monterey CA</div>
-        <button class="btn btn-outline btn-sm" onclick="openMaps(36.5937,-121.9033,'Trader Joes Monterey California')">📍 Maps</button>
-      </div>
-      <div class="poi-card">
-        <div class="poi-name">🛒 New Leaf Community Markets — Santa Cruz (G10-G11)</div>
-        <div class="poi-addr">1101 Fair Ave, Santa Cruz CA · biologico locale</div>
-        <button class="btn btn-outline btn-sm" onclick="openMaps(36.9757,-122.0449,'New Leaf Community Markets Santa Cruz')">📍 Maps</button>
-      </div>
-      <div class="poi-card">
-        <div class="poi-name">🛒 Safeway — Santa Cruz (G10-G11)</div>
-        <div class="poi-addr">3900 Portola Dr, Santa Cruz CA</div>
-        <button class="btn btn-outline btn-sm" onclick="openMaps(36.9810,-122.0580,'Safeway Santa Cruz California')">📍 Maps</button>
-      </div>
-      <div class="info-item">
-        <strong>💡 Consiglio</strong>
-        <span>Trader Joe's è ottimo per snack da viaggio, frutta, sandwich. Safeway e Vons sono le catene più diffuse in California. Portate una borsa frigo per conservare cibo e bevande in auto durante i trasferimenti lunghi.</span>
-      </div>
-    </div>
+  </div>
 
   <!-- DOCS -->
   <div class="subtab-content" id="subtab-docs">
@@ -2476,37 +2385,55 @@ function openMaps(lat, lon, name) {
 })();
 
 // ═══════════════════════════════════════
-// DUAL CLOCK + COUNTDOWN
+// DUAL CLOCK
 // ═══════════════════════════════════════
-function tickAll() {
-  var now = Date.now();
-  function fmtClock(ms, offsetH) {
-    var d = new Date(ms + offsetH * 3600000);
-    return ('0'+d.getUTCHours()).slice(-2)+':'+('0'+d.getUTCMinutes()).slice(-2);
+function updateDualClock() {
+  const now = new Date();
+  // Europe/Rome = UTC+2 (CEST in estate)
+  const itOffset = 2;
+  // America/Los_Angeles = UTC-7 (PDT in estate)
+  const sfOffset = -7;
+  function fmtClock(utcMs, offsetH) {
+    const local = new Date(utcMs + offsetH * 3600000);
+    const h = String(local.getUTCHours()).padStart(2,'0');
+    const m = String(local.getUTCMinutes()).padStart(2,'0');
+    const s = String(local.getUTCSeconds()).padStart(2,'0');
+    return h + ':' + m + ':' + s;
   }
-  var elIt = document.getElementById('dc-time-it');
-  var elSF = document.getElementById('dc-time-sf');
-  if (elIt) elIt.textContent = fmtClock(now, 2);
-  if (elSF) elSF.textContent = fmtClock(now, -7);
-  var diff = 1788928200000 - now;
-  var el = document.getElementById('countdown');
-  if (el) {
-    if (diff <= 0) {
-      el.innerHTML = '<span style="color:var(--accent);font-size:16px;font-weight:700;">🎉 Buon viaggio!</span>';
-    } else {
-      var dd=Math.floor(diff/86400000), hh=Math.floor((diff%86400000)/3600000), mm=Math.floor((diff%3600000)/60000);
-      el.innerHTML =
-        '<div class="cd-unit"><div class="cd-num">'+dd+'</div><div class="cd-lbl">giorni</div></div>'+
-        '<div class="cd-sep">:</div>'+
-        '<div class="cd-unit"><div class="cd-num">'+('0'+hh).slice(-2)+'</div><div class="cd-lbl">ore</div></div>'+
-        '<div class="cd-sep">:</div>'+
-        '<div class="cd-unit"><div class="cd-num">'+('0'+mm).slice(-2)+'</div><div class="cd-lbl">min</div></div>';
-    }
-  }
+  const elIt = document.getElementById('dc-time-it');
+  const elSF = document.getElementById('dc-time-sf');
+  if (elIt) elIt.textContent = fmtClock(now.getTime(), itOffset);
+  if (elSF) elSF.textContent = fmtClock(now.getTime(), sfOffset);
 }
-tickAll();
-setInterval(tickAll, 1000);
-window.addEventListener('pageshow', tickAll);
+setInterval(updateDualClock, 1000);
+updateDualClock();
+// COUNTDOWN
+// ═══════════════════════════════════════
+function updateCountdown() {
+  const target = new Date('2026-09-09T06:30:00+02:00');
+  const now = new Date();
+  const diff = target - now;
+  const el = document.getElementById('countdown');
+  if (!el) return;
+  if (diff <= 0) {
+    el.innerHTML = '<span style="color:var(--accent);font-size:16px;font-weight:700;">🎉 Buon viaggio!</span>';
+    return;
+  }
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  el.innerHTML = `
+    <div class="cd-unit"><div class="cd-num">${d}</div><div class="cd-lbl">giorni</div></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-unit"><div class="cd-num">${String(h).padStart(2,'0')}</div><div class="cd-lbl">ore</div></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-unit"><div class="cd-num">${String(m).padStart(2,'0')}</div><div class="cd-lbl">min</div></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-unit"><div class="cd-num">${String(s).padStart(2,'0')}</div><div class="cd-lbl">sec</div></div>`;
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
 
 // ═══════════════════════════════════════
 // PAGINE GIORNO
