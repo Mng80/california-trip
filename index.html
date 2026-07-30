@@ -1745,22 +1745,74 @@ h3 { font-family:'Montserrat',sans-serif; font-weight:600; }
         <strong>⛽ App GasBuddy — Trova il carburante più economico</strong>
         <span>gasbuddy.com · disponibile su App Store</span>
       </div>
+
+      <!-- TAPPA 1: SFO → Gilroy (US-101) -->
+      <div style="font-size:11px;font-weight:700;color:#e8650a;text-transform:uppercase;letter-spacing:.5px;margin:12px 0 6px;padding-left:4px;">📍 SFO → Gilroy (US-101 Sud)</div>
       <div class="poi-card">
         <div class="poi-name">Costco Gas — San Jose (vicino SFO)</div>
-        <div class="poi-addr">2201 Senter Rd, San Jose CA · Prezzi tipicamente più bassi</div>
+        <div class="poi-addr">2201 Senter Rd, San Jose CA · Prezzi più bassi, ideale prima di partire</div>
         <button class="btn btn-outline btn-sm" onclick="openMaps(37.3064,-121.8388,'Costco Gas San Jose')">📍 Maps</button>
       </div>
       <div class="poi-card">
-        <div class="poi-name">Arco / AM-PM — lungo I-5 e US-101</div>
-        <div class="poi-addr">Catena economica diffusa in tutta la California</div>
+        <div class="poi-name">ARCO — Gilroy (US-101 / Leavesley Rd)</div>
+        <div class="poi-addr">400 Leavesley Rd, Gilroy CA 95020 · Economica, ideale prima di prendere I-5</div>
+        <button class="btn btn-outline btn-sm" onclick="openMaps(36.9855,-121.5636,'ARCO Gilroy Leavesley Rd')">📍 Maps</button>
       </div>
-      <div class="info-item">
+
+      <!-- TAPPA 2: I-5 Central Valley -->
+      <div style="font-size:11px;font-weight:700;color:#e8650a;text-transform:uppercase;letter-spacing:.5px;margin:12px 0 6px;padding-left:4px;">📍 I-5 — Central Valley (Coalinga)</div>
+      <div class="poi-card">
+        <div class="poi-name">Shell — Coalinga (I-5, uscita Dorris Ave)</div>
+        <div class="poi-addr">41027 S Glen Ave, Coalinga CA 93210 · Stazione di servizio sull'autostrada</div>
+        <button class="btn btn-outline btn-sm" onclick="openMaps(36.1467,-120.3605,'Shell Coalinga I-5')">📍 Maps</button>
+      </div>
+      <div class="poi-card">
+        <div class="poi-name">Valero / Chevron — Coalinga (stazioni varie)</div>
+        <div class="poi-addr">Zona uscita Coalinga · Diversi distributori vicino all'autostrada</div>
+        <button class="btn btn-outline btn-sm" onclick="openMaps(36.1399,-120.3559,'Gas Station Coalinga CA')">📍 Maps</button>
+      </div>
+
+      <!-- TAPPA 3: Visalia/Tulare (vicino Sequoia) -->
+      <div style="font-size:11px;font-weight:700;color:#e8650a;text-transform:uppercase;letter-spacing:.5px;margin:12px 0 6px;padding-left:4px;">📍 Visalia / Tulare (vicino Sequoia)</div>
+      <div class="poi-card">
+        <div class="poi-name">Costco Gas — Visalia ⭐ Più conveniente</div>
+        <div class="poi-addr">1405 W Cameron Ave, Visalia CA 93277 · Prezzi tipicamente i più bassi della zona</div>
+        <button class="btn btn-outline btn-sm" onclick="openMaps(36.3312,-119.3447,'Costco Gas Visalia Cameron Ave')">📍 Maps</button>
+      </div>
+      <div class="poi-card">
+        <div class="poi-name">Quick Fill — Tulare</div>
+        <div class="poi-addr">610 W Inyo Ave, Tulare CA 93274 · Spesso il prezzo più basso della contea</div>
+        <button class="btn btn-outline btn-sm" onclick="openMaps(36.2085,-119.3543,'Quick Fill Tulare Inyo Ave')">📍 Maps</button>
+      </div>
+      <div class="poi-card">
+        <div class="poi-name">Costco Gas — Fresno</div>
+        <div class="poi-addr">4500 W Shaw Ave, Fresno CA 93722 · Alternativa economica se di passaggio</div>
+        <button class="btn btn-outline btn-sm" onclick="openMaps(36.8120,-119.8553,'Costco Gas Fresno Shaw Ave')">📍 Maps</button>
+      </div>
+
+      <!-- TAPPA 4: Firebaugh / Pinnacles -->
+      <div style="font-size:11px;font-weight:700;color:#e8650a;text-transform:uppercase;letter-spacing:.5px;margin:12px 0 6px;padding-left:4px;">📍 Firebaugh → Pinnacles (CA-33 / US-101)</div>
+      <div class="poi-card">
+        <div class="poi-name">Valero / Shell — Firebaugh (I-5)</div>
+        <div class="poi-addr">Zona uscita Firebaugh, I-5 · Fare il pieno prima di Pinnacles (nessuna stazione nel parco)</div>
+        <button class="btn btn-outline btn-sm" onclick="openMaps(36.8549,-120.4571,'Gas Station Firebaugh CA')">📍 Maps</button>
+      </div>
+
+      <!-- TAPPA 5: Santa Cruz -->
+      <div style="font-size:11px;font-weight:700;color:#e8650a;text-transform:uppercase;letter-spacing:.5px;margin:12px 0 6px;padding-left:4px;">📍 Santa Cruz → SFO (CA-1 / US-101)</div>
+      <div class="poi-card">
+        <div class="poi-name">ARCO / Shell — Santa Cruz (varie)</div>
+        <div class="poi-addr">Zona downtown Santa Cruz · Fare il pieno prima del rientro a SFO</div>
+        <button class="btn btn-outline btn-sm" onclick="openMaps(36.9741,-122.0308,'Gas Station Santa Cruz CA')">📍 Maps</button>
+      </div>
+
+      <div class="info-item" style="margin-top:14px;">
         <strong>💡 Consigli rifornimento</strong>
-        <span>Fare il pieno prima di entrare nei parchi nazionali (prezzi più alti). Lungo I-5 carburante spesso meno caro. Accettano tutte le carte di credito.</span>
+        <span>Fare il pieno PRIMA di entrare nei parchi nazionali (Sequoia, Pinnacles): prezzi molto più alti o stazioni assenti. Lungo I-5 carburante generalmente meno caro. Accettano tutte le carte di credito.</span>
       </div>
       <div class="info-item">
         <strong>🚗 Tipo di carburante</strong>
-        <span>Regular Unleaded (87 octane) per la maggior parte delle auto a noleggio. Verificare con il noleggiatore.</span>
+        <span>Regular Unleaded (87 octane) per la maggior parte delle auto a noleggio. Verificare con il noleggiatore alla consegna.</span>
       </div>
     </div>
   </div>
