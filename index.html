@@ -2366,17 +2366,24 @@ function openMaps(lat, lon, name) {
 // ═══════════════════════════════════════
 function updateDualClock() {
   const now = new Date();
-  const fmtIt = new Intl.DateTimeFormat('it-IT', {hour:'2-digit', minute:'2-digit', second:'2-digit', timeZone:'Europe/Rome', hour12:false});
-  const fmtSF = new Intl.DateTimeFormat('it-IT', {hour:'2-digit', minute:'2-digit', second:'2-digit', timeZone:'America/Los_Angeles', hour12:false});
+  // Europe/Rome = UTC+2 (CEST in estate)
+  const itOffset = 2;
+  // America/Los_Angeles = UTC-7 (PDT in estate)
+  const sfOffset = -7;
+  function fmtClock(utcMs, offsetH) {
+    const local = new Date(utcMs + offsetH * 3600000);
+    const h = String(local.getUTCHours()).padStart(2,'0');
+    const m = String(local.getUTCMinutes()).padStart(2,'0');
+    const s = String(local.getUTCSeconds()).padStart(2,'0');
+    return h + ':' + m + ':' + s;
+  }
   const elIt = document.getElementById('dc-time-it');
   const elSF = document.getElementById('dc-time-sf');
-  if (elIt) elIt.textContent = fmtIt.format(now);
-  if (elSF) elSF.textContent = fmtSF.format(now);
+  if (elIt) elIt.textContent = fmtClock(now.getTime(), itOffset);
+  if (elSF) elSF.textContent = fmtClock(now.getTime(), sfOffset);
 }
-updateDualClock();
 setInterval(updateDualClock, 1000);
-
-// ═══════════════════════════════════════
+updateDualClock();
 // COUNTDOWN
 // ═══════════════════════════════════════
 function updateCountdown() {
