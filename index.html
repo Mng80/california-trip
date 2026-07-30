@@ -576,12 +576,6 @@ h3 { font-family:'Montserrat',sans-serif; font-weight:600; }
   </div>
   <!-- SCROLL CONTENT -->
   <div class="home-scroll">
-    <div class="stats-grid" style="padding:16px 16px 0;">
-      <div class="stat-card"><div class="stat-icon">🗺️</div><div class="stat-val">~720</div><div class="stat-lbl">Miglia totali</div></div>
-      <div class="stat-card"><div class="stat-icon">📍</div><div class="stat-val">7</div><div class="stat-lbl">Tappe</div></div>
-      <div class="stat-card"><div class="stat-icon">📅</div><div class="stat-val">11</div><div class="stat-lbl">Giorni</div></div>
-      <div class="stat-card"><div class="stat-icon">✈️</div><div class="stat-val">ITA</div><div class="stat-lbl">Airways</div></div>
-    </div>
     <div class="tappe-list">
       <div class="tappe-label">🗓️ Le tappe del viaggio</div>
       <div class="tappa-card" onclick="openDayPage('dp-1')">
@@ -2379,8 +2373,10 @@ function updateDualClock() {
   if (elIt) elIt.textContent = fmtIt.format(now);
   if (elSF) elSF.textContent = fmtSF.format(now);
 }
-setInterval(updateDualClock, 1000);
-updateDualClock();
+document.addEventListener('DOMContentLoaded', function() {
+  updateDualClock();
+  setInterval(updateDualClock, 1000);
+});
 
 // ═══════════════════════════════════════
 // COUNTDOWN
@@ -2408,8 +2404,10 @@ function updateCountdown() {
     <div class="cd-sep">:</div>
     <div class="cd-unit"><div class="cd-num">${String(s).padStart(2,'0')}</div><div class="cd-lbl">sec</div></div>`;
 }
-setInterval(updateCountdown, 1000);
-updateCountdown();
+document.addEventListener('DOMContentLoaded', function() {
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+});
 
 // ═══════════════════════════════════════
 // PAGINE GIORNO
