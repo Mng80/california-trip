@@ -377,6 +377,150 @@ h3 { font-family:'Montserrat',sans-serif; font-weight:600; }
 .map-legend-item { display:flex; align-items:center; gap:6px; margin-bottom:4px; color:#5a3e30; }
 .map-legend-item:last-child { margin-bottom:0; }
 .leg-line { width:20px; height:3px; border-radius:2px; }
+
+/* ── HOME FIXED + COUNTDOWN ── */
+.home-fixed {
+  position:sticky; top:0; z-index:50;
+  background:var(--bg);
+  padding:16px 16px 0;
+  border-bottom:1px solid rgba(44,24,16,0.10);
+}
+.home-title-block { text-align:center; padding:10px 0 8px; }
+.home-title-block h1 { font-family:'Montserrat',sans-serif; font-size:21px; font-weight:800; color:var(--text); line-height:1.2; }
+.home-title-block p { font-size:12px; color:var(--text-muted); margin-top:3px; }
+.countdown-bar { display:flex; justify-content:center; gap:10px; padding:10px 0 14px; }
+.cd-unit { text-align:center; }
+.cd-num { font-family:'Montserrat',sans-serif; font-size:26px; font-weight:800; color:var(--accent); line-height:1; }
+.cd-lbl { font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.5px; margin-top:2px; }
+.cd-sep { font-size:22px; font-weight:800; color:var(--accent); align-self:flex-start; padding-top:2px; }
+.home-scroll { overflow-y:auto; padding-bottom:16px; }
+
+/* ── TAPPE LIST ── */
+.tappe-list { padding:12px 16px 20px; display:flex; flex-direction:column; gap:10px; }
+.tappe-label { font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:.6px; margin-bottom:2px; }
+.tappa-card {
+  background:var(--card); border-radius:14px; padding:13px 14px;
+  border:1px solid rgba(44,24,16,0.09);
+  box-shadow:0 2px 6px rgba(44,24,16,0.05);
+  display:flex; align-items:center; gap:12px; cursor:pointer;
+  transition:transform .15s; -webkit-tap-highlight-color:transparent;
+}
+.tappa-card:active { transform:scale(.98); }
+.tappa-day-badge {
+  background:var(--accent); color:white; border-radius:10px;
+  padding:7px 10px; text-align:center; flex-shrink:0; min-width:48px;
+}
+.tappa-day-badge .td-num { font-family:'Montserrat',sans-serif; font-size:15px; font-weight:800; line-height:1; }
+.tappa-day-badge .td-date { font-size:8px; font-weight:600; margin-top:2px; opacity:.9; letter-spacing:.3px; }
+.tappa-info { flex:1; min-width:0; }
+.tappa-transport { font-size:11px; color:var(--text-muted); margin-bottom:1px; }
+.tappa-title { font-size:14px; font-weight:700; color:var(--text); line-height:1.3; }
+.tappa-city { font-size:11px; color:var(--text-muted); margin-top:1px; }
+.tappa-arrow { color:var(--accent); font-size:20px; font-weight:700; flex-shrink:0; }
+
+/* ── DAY PAGE OVERLAY ── */
+.day-page {
+  display:none; position:fixed; inset:0; z-index:200;
+  background:var(--bg); overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+}
+.day-page.open { display:block; }
+
+/* day page header */
+.dp-header {
+  background:var(--card);
+  border-bottom:1px solid rgba(44,24,16,0.10);
+  padding-top:max(14px, calc(env(safe-area-inset-top) + 10px));
+}
+.dp-header-top {
+  display:flex; align-items:center; gap:10px; padding:0 14px 10px;
+}
+.dp-back-btn {
+  width:34px; height:34px; border-radius:50%;
+  background:rgba(44,24,16,0.08); border:none; cursor:pointer;
+  font-size:17px; flex-shrink:0; display:flex; align-items:center; justify-content:center;
+}
+.dp-day-badge {
+  background:var(--accent); color:white;
+  border-radius:20px; padding:5px 14px;
+  font-family:'Montserrat',sans-serif; font-size:12px; font-weight:700;
+}
+.dp-stats {
+  padding:8px 14px 12px; font-size:12px; color:var(--text-muted);
+  border-top:1px solid rgba(44,24,16,0.06);
+}
+.dp-title-row {
+  padding:0 14px 16px; display:flex; align-items:center; gap:8px;
+}
+.dp-title-icon { font-size:24px; flex-shrink:0; }
+.dp-title-text { font-family:'Montserrat',sans-serif; font-size:19px; font-weight:800; color:var(--text); line-height:1.2; }
+
+/* meteo orizzontale 5 giorni */
+.dp-meteo-strip {
+  background:var(--card); margin:0 14px 14px;
+  border-radius:14px; border:1px solid rgba(44,24,16,0.09);
+  overflow:hidden;
+}
+.dp-meteo-days {
+  display:flex; overflow-x:auto; -webkit-overflow-scrolling:touch;
+  scrollbar-width:none; padding:12px 6px;
+  gap:4px;
+}
+.dp-meteo-days::-webkit-scrollbar { display:none; }
+.dp-meteo-day {
+  flex-shrink:0; width:58px; text-align:center; padding:6px 4px;
+  border-radius:10px;
+}
+.dp-meteo-day.today { background:rgba(232,101,10,0.12); }
+.dp-meteo-day .md-name { font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:.3px; }
+.dp-meteo-day .md-icon { font-size:20px; margin:4px 0; }
+.dp-meteo-day .md-max { font-size:14px; font-weight:800; color:var(--text); }
+.dp-meteo-day .md-min { font-size:11px; color:var(--text-muted); }
+.dp-meteo-footer { padding:6px 14px 10px; font-size:10px; color:var(--text-muted); border-top:1px solid rgba(44,24,16,0.06); }
+.dp-meteo-load-btn { width:calc(100% - 28px); margin:12px 14px; padding:10px; border-radius:10px; border:none; cursor:pointer; background:var(--accent); color:white; font-size:13px; font-weight:700; display:block; }
+.dp-meteo-loading { text-align:center; padding:16px; font-size:13px; color:var(--text-muted); }
+
+/* sezioni accordion pagina giorno */
+.dp-body { padding:0 14px 32px; padding-bottom:calc(32px + env(safe-area-inset-bottom)); }
+.dp-section { margin-bottom:10px; }
+.dp-section-hdr {
+  background:var(--card); border-radius:14px; padding:14px 16px;
+  display:flex; align-items:center; gap:12px; cursor:pointer;
+  border:1px solid rgba(44,24,16,0.09);
+  -webkit-tap-highlight-color:transparent;
+  transition:background .15s;
+}
+.dp-section-hdr:active { background:var(--card2); }
+.dp-section.open .dp-section-hdr { border-radius:14px 14px 0 0; border-bottom:none; }
+.dp-section-icon { font-size:20px; flex-shrink:0; }
+.dp-section-label { flex:1; font-size:15px; font-weight:700; color:var(--text); }
+.dp-section-arrow { font-size:14px; color:var(--accent); font-weight:700; transition:transform .3s; }
+.dp-section.open .dp-section-arrow { transform:rotate(90deg); }
+.dp-section-body {
+  display:none; background:var(--card2);
+  border-radius:0 0 14px 14px; padding:14px 16px;
+  border:1px solid rgba(44,24,16,0.09); border-top:none;
+}
+.dp-section.open .dp-section-body { display:block; }
+
+/* bullet list dentro accordion */
+.dp-bullet-list { list-style:none; display:flex; flex-direction:column; gap:8px; }
+.dp-bullet-list li { font-size:13px; color:var(--text-muted); padding-left:14px; position:relative; line-height:1.5; }
+.dp-bullet-list li::before { content:'•'; position:absolute; left:0; color:var(--accent); font-weight:700; }
+.dp-bullet-list li strong { color:var(--text); }
+.dp-maps-btn { display:inline-flex; align-items:center; gap:6px; margin-top:12px; padding:9px 16px; border-radius:10px; background:var(--accent); color:white; font-size:13px; font-weight:700; border:none; cursor:pointer; text-decoration:none; }
+
+/* hotel card inside day page */
+.dp-hotel-card { background:var(--card2); border-radius:10px; padding:12px 14px; }
+.dp-hotel-name { font-size:15px; font-weight:700; margin-bottom:3px; color:var(--text); }
+.dp-hotel-addr { font-size:12px; color:var(--text-muted); margin-bottom:10px; }
+
+/* sun row */
+.dp-sun-row { display:flex; gap:10px; }
+.dp-sun-item { flex:1; text-align:center; background:var(--card2); border-radius:10px; padding:12px 8px; }
+.dp-sun-icon { font-size:26px; margin-bottom:4px; }
+.dp-sun-time { font-family:'Montserrat',sans-serif; font-size:18px; font-weight:800; color:var(--accent); }
+.dp-sun-lbl { font-size:10px; color:var(--text-muted); margin-top:2px; }
 </style>
 </head>
 <body>
@@ -386,58 +530,81 @@ h3 { font-family:'Montserrat',sans-serif; font-weight:600; }
 ═══════════════════════════════════════ -->
 <div class="tab-content active" id="tab-home">
   <div class="stars-bg" id="starsBg"></div>
-  <div class="home-content">
-    <div class="home-header">
-      <span class="flag">🇺🇸</span>
-      <h1>California Road Trip</h1>
-      <p>Mina &amp; Francesco &nbsp;·&nbsp; 9–19 Settembre 2026</p>
+  <!-- HEADER FISSO -->
+  <div class="home-fixed">
+    <div class="home-title-block">
+      <span style="font-size:34px;display:block;margin-bottom:6px;">🇺🇸</span>
+      <h1>Road Trip California 2026</h1>
+      <p>9 – 19 settembre 2026 &nbsp;·&nbsp; Mina &amp; Francesco</p>
     </div>
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-icon">🗺️</div>
-        <div class="stat-val">~720</div>
-        <div class="stat-lbl">Miglia totali</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon">📍</div>
-        <div class="stat-val">7</div>
-        <div class="stat-lbl">Tappe</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon">📅</div>
-        <div class="stat-val">11</div>
-        <div class="stat-lbl">Giorni</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon">✈️</div>
-        <div class="stat-val">ITA</div>
-        <div class="stat-lbl">Airways</div>
-      </div>
+    <div class="countdown-bar" id="countdown">
+      <div class="cd-unit"><div class="cd-num">--</div><div class="cd-lbl">giorni</div></div>
     </div>
-
-    <div class="next-card" id="nextTappaCard">
-      <h3>⏭ Prossima tappa</h3>
-      <div id="nextTappaContent">
-        <div class="loading-pulse" style="color:var(--text-muted);font-size:13px;">Calcolo in corso...</div>
-      </div>
+  </div>
+  <!-- SCROLL CONTENT -->
+  <div class="home-scroll">
+    <div class="stats-grid" style="padding:16px 16px 0;">
+      <div class="stat-card"><div class="stat-icon">🗺️</div><div class="stat-val">~720</div><div class="stat-lbl">Miglia totali</div></div>
+      <div class="stat-card"><div class="stat-icon">📍</div><div class="stat-val">7</div><div class="stat-lbl">Tappe</div></div>
+      <div class="stat-card"><div class="stat-icon">📅</div><div class="stat-val">11</div><div class="stat-lbl">Giorni</div></div>
+      <div class="stat-card"><div class="stat-icon">✈️</div><div class="stat-val">ITA</div><div class="stat-lbl">Airways</div></div>
     </div>
-
-    <div class="quick-links">
-      <div class="quick-link" onclick="switchTab('tab-itinerario')">
-        <div class="ql-icon">🗓️</div>
-        <div class="ql-text">Itinerario</div>
+    <div class="tappe-list">
+      <div class="tappe-label">🗓️ Le tappe del viaggio</div>
+      <div class="tappa-card" onclick="openDayPage('dp-1')">
+        <div class="tappa-day-badge"><div class="td-num">G1</div><div class="td-date">MER 9/9</div></div>
+        <div class="tappa-info"><div class="tappa-transport">✈️ Volo internazionale</div><div class="tappa-title">Arrivo SFO → San Francisco</div><div class="tappa-city">San Francisco, CA</div></div>
+        <div class="tappa-arrow">›</div>
       </div>
-      <div class="quick-link" onclick="switchTab('tab-hotel')">
-        <div class="ql-icon">🏨</div>
-        <div class="ql-text">Hotel</div>
+      <div class="tappa-card" onclick="openDayPage('dp-2')">
+        <div class="tappa-day-badge"><div class="td-num">G2</div><div class="td-date">GIO 10/9</div></div>
+        <div class="tappa-info"><div class="tappa-transport">🦶 A piedi · 🚢 Ferry</div><div class="tappa-title">Alcatraz · North Beach · Chinatown</div><div class="tappa-city">San Francisco, CA</div></div>
+        <div class="tappa-arrow">›</div>
       </div>
-      <div class="quick-link" onclick="switchTab('tab-map')">
-        <div class="ql-icon">🗺️</div>
-        <div class="ql-text">Mappa</div>
+      <div class="tappa-card" onclick="openDayPage('dp-3')">
+        <div class="tappa-day-badge"><div class="td-num">G3</div><div class="td-date">VEN 11/9</div></div>
+        <div class="tappa-info"><div class="tappa-transport">🚌 Shuttle · 🚢 Ferry</div><div class="tappa-title">Muir Woods → Sausalito → SF</div><div class="tappa-city">Marin County + San Francisco</div></div>
+        <div class="tappa-arrow">›</div>
       </div>
-      <div class="quick-link" onclick="switchTab('tab-altro')">
-        <div class="ql-icon">ℹ️</div>
-        <div class="ql-text">Altro</div>
+      <div class="tappa-card" onclick="openDayPage('dp-4')">
+        <div class="tappa-day-badge"><div class="td-num">G4</div><div class="td-date">SAB 12/9</div></div>
+        <div class="tappa-info"><div class="tappa-transport">🦶 A piedi · 🚌 Bus locale</div><div class="tappa-title">Mission · Haight-Ashbury · Twin Peaks</div><div class="tappa-city">San Francisco, CA</div></div>
+        <div class="tappa-arrow">›</div>
+      </div>
+      <div class="tappa-card" onclick="openDayPage('dp-5')">
+        <div class="tappa-day-badge"><div class="td-num">G5</div><div class="td-date">DOM 13/9</div></div>
+        <div class="tappa-info"><div class="tappa-transport">🚗 Auto · ~190 mi · ~3h30</div><div class="tappa-title">SF → Yosemite National Park</div><div class="tappa-city">Groveland / Yosemite, CA</div></div>
+        <div class="tappa-arrow">›</div>
+      </div>
+      <div class="tappa-card" onclick="openDayPage('dp-6')">
+        <div class="tappa-day-badge"><div class="td-num">G6</div><div class="td-date">LUN 14/9</div></div>
+        <div class="tappa-info"><div class="tappa-transport">🚌 Shuttle interno · Gratis</div><div class="tappa-title">Yosemite Valley — El Capitan · Half Dome</div><div class="tappa-city">Yosemite National Park, CA</div></div>
+        <div class="tappa-arrow">›</div>
+      </div>
+      <div class="tappa-card" onclick="openDayPage('dp-7')">
+        <div class="tappa-day-badge"><div class="td-num">G7</div><div class="td-date">MAR 15/9</div></div>
+        <div class="tappa-info"><div class="tappa-transport">🚗 Auto · ~140 mi · ~2h30</div><div class="tappa-title">Yosemite → Sequoia National Park</div><div class="tappa-city">Tulare / Sequoia, CA</div></div>
+        <div class="tappa-arrow">›</div>
+      </div>
+      <div class="tappa-card" onclick="openDayPage('dp-8')">
+        <div class="tappa-day-badge"><div class="td-num">G8</div><div class="td-date">MER 16/9</div></div>
+        <div class="tappa-info"><div class="tappa-transport">🚗 Auto — Sequoia + Kings Canyon</div><div class="tappa-title">Sequoia · Moro Rock · Kings Canyon</div><div class="tappa-city">Sequoia/Kings Canyon NP, CA</div></div>
+        <div class="tappa-arrow">›</div>
+      </div>
+      <div class="tappa-card" onclick="openDayPage('dp-9')">
+        <div class="tappa-day-badge"><div class="td-num">G9</div><div class="td-date">GIO 17/9</div></div>
+        <div class="tappa-info"><div class="tappa-transport">🚗 Auto · ~120 mi · ~2h30</div><div class="tappa-title">Tulare → Pinnacles NP → Firebaugh</div><div class="tappa-city">Pinnacles NP / Firebaugh, CA</div></div>
+        <div class="tappa-arrow">›</div>
+      </div>
+      <div class="tappa-card" onclick="openDayPage('dp-10')">
+        <div class="tappa-day-badge"><div class="td-num">G10</div><div class="td-date">VEN 18/9</div></div>
+        <div class="tappa-info"><div class="tappa-transport">🚗 Auto · ~160 mi · ~3h</div><div class="tappa-title">Firebaugh → Monterey → Santa Cruz</div><div class="tappa-city">Monterey + Santa Cruz, CA</div></div>
+        <div class="tappa-arrow">›</div>
+      </div>
+      <div class="tappa-card" onclick="openDayPage('dp-11')">
+        <div class="tappa-day-badge"><div class="td-num">G11</div><div class="td-date">SAB 19/9</div></div>
+        <div class="tappa-info"><div class="tappa-transport">🚗 Auto · ✈️ Volo rientro</div><div class="tappa-title">Santa Cruz → SFO → Roma FCO</div><div class="tappa-city">Santa Cruz → SFO, CA</div></div>
+        <div class="tappa-arrow">›</div>
       </div>
     </div>
   </div>
@@ -2166,6 +2333,1014 @@ function openMaps(lat, lon, name) {
   link.rel = 'manifest'; link.href = url;
   document.head.appendChild(link);
 })();
+
+// ═══════════════════════════════════════
+// COUNTDOWN
+// ═══════════════════════════════════════
+function updateCountdown() {
+  const target = new Date('2026-09-09T06:30:00+02:00');
+  const now = new Date();
+  const diff = target - now;
+  const el = document.getElementById('countdown');
+  if (!el) return;
+  if (diff <= 0) {
+    el.innerHTML = '<span style="color:var(--accent);font-size:16px;font-weight:700;">🎉 Buon viaggio!</span>';
+    return;
+  }
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  el.innerHTML = `
+    <div class="cd-unit"><div class="cd-num">${d}</div><div class="cd-lbl">giorni</div></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-unit"><div class="cd-num">${String(h).padStart(2,'0')}</div><div class="cd-lbl">ore</div></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-unit"><div class="cd-num">${String(m).padStart(2,'0')}</div><div class="cd-lbl">min</div></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-unit"><div class="cd-num">${String(s).padStart(2,'0')}</div><div class="cd-lbl">sec</div></div>`;
+}
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+// ═══════════════════════════════════════
+// PAGINE GIORNO
+// ═══════════════════════════════════════
+function openDayPage(id) {
+  const page = document.getElementById(id);
+  if (!page) return;
+  page.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  const lat = page.dataset.lat, lon = page.dataset.lon, date = page.dataset.date;
+  if (lat) loadSunData(id, lat, lon, date);
+}
+function closeDayPage(id) {
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow = '';
+}
+function toggleDpSection(sectionEl) {
+  sectionEl.classList.toggle('open');
+}
+
+async function loadSunData(pageId, lat, lon, date) {
+  const el = document.getElementById(pageId + '-sun');
+  if (!el || el.dataset.loaded) return;
+  try {
+    const r = await fetch(`https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lon}&date=${date}&formatted=0`);
+    const d = await r.json();
+    const fmt = t => new Date(t).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit',timeZone:'America/Los_Angeles'});
+    el.innerHTML = `<div class="dp-sun-row">
+      <div class="dp-sun-item"><div class="dp-sun-icon">🌅</div><div class="dp-sun-time">${fmt(d.results.sunrise)}</div><div class="dp-sun-lbl">Alba (ora CA)</div></div>
+      <div class="dp-sun-item"><div class="dp-sun-icon">🌇</div><div class="dp-sun-time">${fmt(d.results.sunset)}</div><div class="dp-sun-lbl">Tramonto (ora CA)</div></div>
+    </div>`;
+    el.dataset.loaded = '1';
+  } catch(e) {
+    el.innerHTML = '<p style="font-size:12px;color:var(--text-muted);">Dati non disponibili</p>';
+  }
+}
+
+const WMO = {0:'☀️ Sereno',1:'🌤️ Poco nuvoloso',2:'⛅ Nuvoloso',3:'☁️ Coperto',45:'🌫️ Nebbia',48:'🌫️ Nebbia',51:'🌦️ Pioggia debole',53:'🌧️ Pioggia',55:'🌧️ Pioggia forte',61:'🌧️ Pioggia',63:'🌧️ Pioggia moderata',65:'🌧️ Pioggia forte',71:'❄️ Neve',80:'🌦️ Rovesci',81:'🌦️ Rovesci',82:'⛈️ Rovesci forti',95:'⛈️ Temporale',99:'⛈️ Temporale'};
+const DAYS_IT = ['DOM','LUN','MAR','MER','GIO','VEN','SAB'];
+
+async function loadDayMeteo(pageId, lat, lon, startDate) {
+  const btn = document.getElementById(pageId + '-meteo-btn');
+  const strip = document.getElementById(pageId + '-meteo-strip');
+  if (!strip) return;
+  if (btn) btn.style.display = 'none';
+  strip.style.display = 'block';
+  strip.innerHTML = '<div class="dp-meteo-loading">⏳ Caricamento meteo...</div>';
+  try {
+    const end = new Date(startDate);
+    end.setDate(end.getDate() + 6);
+    const endDate = end.toISOString().split('T')[0];
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=America/Los_Angeles&start_date=${startDate}&end_date=${endDate}&forecast_days=16`;
+    const r = await fetch(url);
+    const d = await r.json();
+    const days = d.daily;
+    let cols = '';
+    for (let i = 0; i < Math.min(5, days.time.length); i++) {
+      const dt = new Date(days.time[i] + 'T12:00:00-07:00');
+      const dayName = DAYS_IT[dt.getDay()];
+      const wc = days.weathercode[i];
+      const icon = (WMO[wc] || '🌡️').split(' ')[0];
+      const tmax = Math.round(days.temperature_2m_max[i]);
+      const tmin = Math.round(days.temperature_2m_min[i]);
+      const isToday = i === 0 ? ' today' : '';
+      cols += `<div class="dp-meteo-day${isToday}"><div class="md-name">${dayName}</div><div class="md-icon">${icon}</div><div class="md-max">${tmax}°</div><div class="md-min">${tmin}°</div></div>`;
+    }
+    strip.innerHTML = `<div class="dp-meteo-days">${cols}</div><div class="dp-meteo-footer">📍 Fonte: Open-Meteo</div>`;
+  } catch(e) {
+    strip.innerHTML = '<div class="dp-meteo-loading" style="font-size:12px;">Meteo disponibile vicino alla data del viaggio</div>';
+  }
+}
 </script>
+
+<!-- ═══════════════════════ DAY PAGES ═══════════════════════ -->
+
+<!-- dp-1 -->
+<div class="day-page" id="dp-1" data-lat="37.7749" data-lon="-122.4194" data-date="2026-09-09">
+  <div class="dp-header">
+    <div class="dp-header-top">
+      <button class="dp-back-btn" onclick="closeDayPage('dp-1')">←</button>
+      <span class="dp-day-badge">Giorno 1 · Mer 9 Settembre</span>
+    </div>
+    <div class="dp-stats">✈️ Volo BRI→FCO→SFO · AZ1602+AZ640 · Arrivo ~14:30 PDT</div>
+    <div class="dp-title-row">
+      <div class="dp-title-icon">✈️</div>
+      <div class="dp-title-text">Arrivo SFO → San Francisco</div>
+    </div>
+  </div>
+  <div style="padding:14px 14px 0;">
+    <button class="dp-meteo-load-btn" id="dp-1-meteo-btn" onclick="loadDayMeteo('dp-1','37.7749','-122.4194','2026-09-09')">🌤️ Carica previsioni meteo</button>
+    <div class="dp-meteo-strip" id="dp-1-meteo-strip" style="display:none;margin:0 0 14px;border-radius:14px;border:1px solid rgba(44,24,16,0.09);overflow:hidden;background:var(--card);"></div>
+  </div>
+  <div class="dp-body">
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🚗</div><div class="dp-section-label">Il Percorso</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li><strong>BRI → FCO:</strong> AZ1602 partenza Bari 06:30, arrivo Roma Fiumicino</li>
+          <li><strong>FCO → SFO:</strong> AZ640 partenza 09:10, arrivo SFO ~14:30 PDT (ora locale)</li>
+          <li><strong>BART da SFO:</strong> stazione sotto il terminal → Powell St Station (~35 min, $10.55)</li>
+          <li>Terminal internazionale G per ITA Airways</li>
+        </ul>
+        <a class="dp-maps-btn" href="https://www.google.com/maps/dir/SFO+Airport/Cornell+Hotel+San+Francisco" target="_blank">🗺️ Apri in Google Maps</a>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🌟</div><div class="dp-section-label">Cosa Fare</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li><strong>BART a Union Square:</strong> il modo più economico per arrivare in centro, ~35 min</li>
+          <li><strong>Check-in Cornell Hotel de France:</strong> 715 Bush St, Union Square — quartier generale per 4 notti</li>
+          <li><strong>Prima passeggiata Union Square:</strong> respira l'aria di SF, negozi, street performers — niente tour impegnativi (rispetta il jet lag!)</li>
+          <li><strong>Attiva SIM/eSIM USA</strong> al terminal prima di uscire dall'aeroporto</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🍽️</div><div class="dp-section-label">Dove Mangiare</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li>🥖 <strong>Boudin Bakery</strong> — sourdough bread tipico di SF, zuppe in pane, casual $$ · 160 Jefferson St</li>
+          <li>🍝 <strong>Perbacco</strong> — cucina italiana-californiana sofisticata, vicino Union Square $$$ · 230 California St</li>
+          <li>☕ <strong>Blue Bottle Coffee</strong> — caffè specialty per ricaricarsi dopo l'atterraggio $ · più sedi in centro</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">⚠️</div><div class="dp-section-label">Consigli Pratici</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li>Resisti alla tentazione di dormire subito — stai sveglio fino alle 21:00 ora locale per regolare il fuso più in fretta</li>
+          <li>BART è più economica e veloce del taxi: $10.55 vs $45+ per un Uber da SFO</li>
+          <li>America the Beautiful Pass ($80) copre tutti i parchi del viaggio — conviene già dal G5</li>
+          <li>Attiva subito la SIM USA: copertura T-Mobile o AT&amp;T in tutto il percorso</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🌅</div><div class="dp-section-label">Alba &amp; Tramonto</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <div id="dp-1-sun"><p style="font-size:12px;color:var(--text-muted);" class="loading-pulse">Caricamento...</p></div>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🏨</div><div class="dp-section-label">Hotel della notte</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <div class="dp-hotel-card">
+          <div class="dp-hotel-name">Cornell Hotel de France</div>
+          <div class="dp-hotel-addr">715 Bush St, Union Square, San Francisco CA · €486 tot (4 notti) · colazione inclusa</div>
+          <button class="dp-maps-btn" onclick="openMaps(37.7892,-122.4089,'Cornell Hotel de France')">📍 Google Maps</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- dp-2 -->
+<div class="day-page" id="dp-2" data-lat="37.7749" data-lon="-122.4194" data-date="2026-09-10">
+  <div class="dp-header">
+    <div class="dp-header-top">
+      <button class="dp-back-btn" onclick="closeDayPage('dp-2')">←</button>
+      <span class="dp-day-badge">Giorno 2 · Gio 10 Settembre</span>
+    </div>
+    <div class="dp-stats">🚢 Ferry Pier 33 · 🦶 A piedi tutto il giorno · ~$45 Alcatraz</div>
+    <div class="dp-title-row">
+      <div class="dp-title-icon">🌉</div>
+      <div class="dp-title-text">Alcatraz · North Beach · Chinatown</div>
+    </div>
+  </div>
+  <div style="padding:14px 14px 0;">
+    <button class="dp-meteo-load-btn" id="dp-2-meteo-btn" onclick="loadDayMeteo('dp-2','37.7749','-122.4194','2026-09-10')">🌤️ Carica previsioni meteo</button>
+    <div class="dp-meteo-strip" id="dp-2-meteo-strip" style="display:none;margin:0 0 14px;border-radius:14px;border:1px solid rgba(44,24,16,0.09);overflow:hidden;background:var(--card);"></div>
+  </div>
+  <div class="dp-body">
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🚗</div><div class="dp-section-label">Il Percorso</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li><strong>Ferry da Pier 33</strong> per Alcatraz (~$45/persona, prenotare almeno 3-4 settimane prima!)</li>
+          <li>Fisherman's Wharf &amp; Pier 39 — a piedi dal ferry terminal</li>
+          <li>North Beach a piedi verso nord — Columbus Ave</li>
+          <li>Chinatown: entra dalla Dragon's Gate su Bush St, esplora Grant Ave</li>
+        </ul>
+        <a class="dp-maps-btn" href="https://www.google.com/maps/dir/Pier+33+Embarcadero/North+Beach+San+Francisco/Chinatown+San+Francisco" target="_blank">🗺️ Apri in Google Maps</a>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🌟</div><div class="dp-section-label">Cosa Fare</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li><strong>Alcatraz Island Tour:</strong> audioguida inclusa (narrata da ex-guardie e detenuti), ~3h ferry + visita · $45/pp · Pier 33</li>
+          <li><strong>Fisherman's Wharf &amp; Pier 39:</strong> leoni marini sul molo, sourdough clam chowder, mercato del pesce · Gratis</li>
+          <li><strong>North Beach &amp; City Lights Bookstore:</strong> quartiere italiano di SF, culla della Beat Generation · 261 Columbus Ave</li>
+          <li><strong>Coit Tower:</strong> torre art déco su Telegraph Hill, panorama sulla baia · $13 ascensore · 1 Telegraph Hill Blvd</li>
+          <li><strong>Chinatown:</strong> la più antica degli USA (1848), Dragon's Gate su Bush St, Grant Ave · Gratis</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🍽️</div><div class="dp-section-label">Dove Mangiare</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li>🦞 <strong>Sotto Mare</strong> — famoso per il cioppino (zuppa di pesce SF) $$$ · 552 Green St, North Beach</li>
+          <li>🍕 <strong>Golden Boy Pizza</strong> — fettone di pizza al taglio ~$4, coda rapida $ · 542 Green St</li>
+          <li>🥢 <strong>Z&amp;Y Restaurant</strong> — cucina cinese del Sichuan autentica $$ · 655 Jackson St, Chinatown</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">⚠️</div><div class="dp-section-label">Consigli Pratici</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li>Prenota Alcatraz 3-4 settimane prima: i tour si esauriscono rapidamente (sera = Alcatraz Night Tour, vale il prezzo extra)</li>
+          <li>Partire la mattina presto per Alcatraz — meno folla e luce migliore per le foto</li>
+          <li>City Lights Bookstore è aperta fino a mezzanotte — ottima sosta serale</li>
+          <li>Chinatown: i negozietti di souvenir più autentici sono nelle stradine laterali di Grant Ave</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🌅</div><div class="dp-section-label">Alba &amp; Tramonto</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <div id="dp-2-sun"><p style="font-size:12px;color:var(--text-muted);" class="loading-pulse">Caricamento...</p></div>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🏨</div><div class="dp-section-label">Hotel della notte</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <div class="dp-hotel-card">
+          <div class="dp-hotel-name">Cornell Hotel de France</div>
+          <div class="dp-hotel-addr">715 Bush St, Union Square, San Francisco CA</div>
+          <button class="dp-maps-btn" onclick="openMaps(37.7892,-122.4089,'Cornell Hotel de France')">📍 Google Maps</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- dp-3 -->
+<div class="day-page" id="dp-3" data-lat="37.8970" data-lon="-122.5811" data-date="2026-09-11">
+  <div class="dp-header">
+    <div class="dp-header-top">
+      <button class="dp-back-btn" onclick="closeDayPage('dp-3')">←</button>
+      <span class="dp-day-badge">Giorno 3 · Ven 11 Settembre</span>
+    </div>
+    <div class="dp-stats">🚌 Shuttle obbligatorio · 🚢 Ferry Sausalito→SF 35 min · ~$18.65 totale</div>
+    <div class="dp-title-row">
+      <div class="dp-title-icon">🌲</div>
+      <div class="dp-title-text">Muir Woods → Sausalito → SF</div>
+    </div>
+  </div>
+  <div style="padding:14px 14px 0;">
+    <button class="dp-meteo-load-btn" id="dp-3-meteo-btn" onclick="loadDayMeteo('dp-3','37.8970','-122.5811','2026-09-11')">🌤️ Carica previsioni meteo</button>
+    <div class="dp-meteo-strip" id="dp-3-meteo-strip" style="display:none;margin:0 0 14px;border-radius:14px;border:1px solid rgba(44,24,16,0.09);overflow:hidden;background:var(--card);"></div>
+  </div>
+  <div class="dp-body">
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🚗</div><div class="dp-section-label">Il Percorso</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li><strong>Shuttle da SF a Muir Woods</strong> (prenotare su gomuirwoods.com, $3.65 — obbligatorio!)</li>
+          <li><strong>Ingresso Muir Woods:</strong> $15/persona — Cathedral Grove Trail (1.6 km)</li>
+          <li>Da Muir Woods → Sausalito a piedi o in bus locale</li>
+          <li><strong>Ferry Sausalito→SF:</strong> panorama frontale del Golden Gate Bridge dall'acqua · ~$15 · 35 min</li>
+        </ul>
+        <a class="dp-maps-btn" href="https://www.google.com/maps/dir/San+Francisco/Muir+Woods+National+Monument/Sausalito+CA" target="_blank">🗺️ Apri in Google Maps</a>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🌟</div><div class="dp-section-label">Cosa Fare</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li><strong>Muir Woods:</strong> foresta di sequoie costiere millenarie (oltre 1.000 anni, alte 76 m) — silenzio assoluto, luce filtrata · $15 ingresso</li>
+          <li><strong>Sausalito:</strong> villaggio pittoresco sulla baia, case galleggianti bohémien, negozi di artigianato · Gratis</li>
+          <li><strong>Ferry Sausalito→SF:</strong> il panorama più bello del Golden Gate Bridge dall'acqua · ~$15</li>
+          <li><strong>Golden Gate Bridge (opzionale):</strong> da Crissy Field a piedi fino al pilone sud (1.5 km) · Gratis</li>
+          <li><strong>Fisherman's Wharf al tramonto:</strong> passeggiata sull'Embarcadero con luci serali · Gratis</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🍽️</div><div class="dp-section-label">Dove Mangiare</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li>🐟 <strong>Fish (Sausalito)</strong> — pesce freschissimo appena pescato, panchine sul molo $$ · 350 Harbor Dr</li>
+          <li>🍞 <strong>Boudin at the Wharf</strong> — clam chowder nel pane di pasta madre, iconico SF $$ · 160 Jefferson St</li>
+          <li>🍔 <strong>In-N-Out Burger</strong> — primo assaggio del fast food californiano cult $ · 333 Jefferson St, Fisherman's Wharf</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">⚠️</div><div class="dp-section-label">Consigli Pratici</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li>Prenota lo shuttle Muir Woods su gomuirwoods.com — i posti si esauriscono settimane prima</li>
+          <li>L'accesso in auto privata a Muir Woods è vietato nei weekend: shuttle obbligatorio</li>
+          <li>Partire presto (7:30-8:00) per godere della foresta prima della folla</li>
+          <li>Al ferry di Sausalito: arriva 15 min prima del terminal — vedi il Golden Gate frontalmente dall'acqua</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🌅</div><div class="dp-section-label">Alba &amp; Tramonto</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <div id="dp-3-sun"><p style="font-size:12px;color:var(--text-muted);" class="loading-pulse">Caricamento...</p></div>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🏨</div><div class="dp-section-label">Hotel della notte</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <div class="dp-hotel-card">
+          <div class="dp-hotel-name">Cornell Hotel de France</div>
+          <div class="dp-hotel-addr">715 Bush St, Union Square, San Francisco CA</div>
+          <button class="dp-maps-btn" onclick="openMaps(37.7892,-122.4089,'Cornell Hotel de France')">📍 Google Maps</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- dp-4 -->
+<div class="day-page" id="dp-4" data-lat="37.7749" data-lon="-122.4194" data-date="2026-09-12">
+  <div class="dp-header">
+    <div class="dp-header-top">
+      <button class="dp-back-btn" onclick="closeDayPage('dp-4')">←</button>
+      <span class="dp-day-badge">Giorno 4 · Sab 12 Settembre</span>
+    </div>
+    <div class="dp-stats">🦶 A piedi + Muni bus · Tutto San Francisco</div>
+    <div class="dp-title-row">
+      <div class="dp-title-icon">🏙️</div>
+      <div class="dp-title-text">Mission · Haight-Ashbury · Twin Peaks</div>
+    </div>
+  </div>
+  <div style="padding:14px 14px 0;">
+    <button class="dp-meteo-load-btn" id="dp-4-meteo-btn" onclick="loadDayMeteo('dp-4','37.7749','-122.4194','2026-09-12')">🌤️ Carica previsioni meteo</button>
+    <div class="dp-meteo-strip" id="dp-4-meteo-strip" style="display:none;margin:0 0 14px;border-radius:14px;border:1px solid rgba(44,24,16,0.09);overflow:hidden;background:var(--card);"></div>
+  </div>
+  <div class="dp-body">
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🚗</div><div class="dp-section-label">Il Percorso</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li>Bus Muni o a piedi: Mission District (murales, Dolores Park)</li>
+          <li>→ Haight-Ashbury (vintage, bohémien)</li>
+          <li>→ Golden Gate Park (passeggiata)</li>
+          <li>→ Twin Peaks (panorama 360° al tramonto)</li>
+          <li>→ Castro District (serata)</li>
+        </ul>
+        <a class="dp-maps-btn" href="https://www.google.com/maps/dir/Mission+District+SF/Haight+Ashbury+SF/Twin+Peaks+SF" target="_blank">🗺️ Apri in Google Maps</a>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🌟</div><div class="dp-section-label">Cosa Fare</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li><strong>Clarion &amp; Balmy Alley (murales Mission):</strong> murales latinoamericani più vibranti di SF · Gratis · tra Valencia e Mission St</li>
+          <li><strong>Dolores Park:</strong> parco preferito dai locali, skyline di SF dalla collina · Gratis · 18th St &amp; Dolores</li>
+          <li><strong>Haight-Ashbury:</strong> cuore della Summer of Love 1967 — vintage, fumetterie, café · Gratis</li>
+          <li><strong>Golden Gate Park:</strong> più grande di Central Park NY — Panhandle o Japanese Garden · parco gratis</li>
+          <li><strong>Twin Peaks al tramonto:</strong> panorama 360° su Downtown, Bay Bridge, Golden Gate · Gratis · 280m slm</li>
+          <li><strong>Castro District (serata):</strong> Harvey Milk Plaza, Rainbow Crosswalk — vita notturna · Gratis</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🍽️</div><div class="dp-section-label">Dove Mangiare</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li>🌯 <strong>La Taqueria</strong> — miglior burrito di SF (senza riso, autentico) $ · 2889 Mission St</li>
+          <li>🍞 <strong>Tartine Bakery</strong> — pane a lievitazione naturale leggendario, coda lunga ma vale $$ · 600 Guerrero St</li>
+          <li>🍦 <strong>Bi-Rite Creamery</strong> — gelato artigianale (salted caramel best-seller) $ · 3692 18th St, Mission</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">⚠️</div><div class="dp-section-label">Consigli Pratici</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li>Haight-Ashbury e Castro sono a 20 min a piedi da Dolores Park — pianifica come loop</li>
+          <li>Percorso consigliato: Mission → Haight → Twin Peaks → Castro → cena</li>
+          <li>Twin Peaks: arriva 30-40 min prima del tramonto per godersi il cambio di luce</li>
+          <li>Tartine Bakery apre nel pomeriggio: controlla gli orari sul sito prima di andarci</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🌅</div><div class="dp-section-label">Alba &amp; Tramonto</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <div id="dp-4-sun"><p style="font-size:12px;color:var(--text-muted);" class="loading-pulse">Caricamento...</p></div>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🏨</div><div class="dp-section-label">Hotel della notte</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <div class="dp-hotel-card">
+          <div class="dp-hotel-name">Cornell Hotel de France</div>
+          <div class="dp-hotel-addr">715 Bush St, Union Square, San Francisco CA — ultima notte a SF</div>
+          <button class="dp-maps-btn" onclick="openMaps(37.7892,-122.4089,'Cornell Hotel de France')">📍 Google Maps</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- dp-5 -->
+<div class="day-page" id="dp-5" data-lat="37.7459" data-lon="-119.5332" data-date="2026-09-13">
+  <div class="dp-header">
+    <div class="dp-header-top">
+      <button class="dp-back-btn" onclick="closeDayPage('dp-5')">←</button>
+      <span class="dp-day-badge">Giorno 5 · Dom 13 Settembre</span>
+    </div>
+    <div class="dp-stats">🚗 ~190 mi · ~3h30 via CA-120 E · Ritiro auto SFO</div>
+    <div class="dp-title-row">
+      <div class="dp-title-icon">🚗</div>
+      <div class="dp-title-text">San Francisco → Yosemite National Park</div>
+    </div>
+  </div>
+  <div style="padding:14px 14px 0;">
+    <button class="dp-meteo-load-btn" id="dp-5-meteo-btn" onclick="loadDayMeteo('dp-5','37.7459','-119.5332','2026-09-13')">🌤️ Carica previsioni meteo</button>
+    <div class="dp-meteo-strip" id="dp-5-meteo-strip" style="display:none;margin:0 0 14px;border-radius:14px;border:1px solid rgba(44,24,16,0.09);overflow:hidden;background:var(--card);"></div>
+  </div>
+  <div class="dp-body">
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🚗</div><div class="dp-section-label">Il Percorso</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li><strong>Ritiro auto SFO:</strong> BART a Powell St → SFO Car Rental Center (~35 min, $10)</li>
+          <li>US-101 S → I-380 E → I-880 N → I-205 E → CA-120 E</li>
+          <li>Sosta spesa a Manteca o Turlock (supermercato: acqua, snack, pranzo al sacco)</li>
+          <li><strong>Big Oak Flat Entrance</strong> — usa America the Beautiful Pass ($80, vale per tutti i parchi)</li>
+          <li>Check-in Evergreen Lodge, Groveland — cabine nel bosco</li>
+        </ul>
+        <a class="dp-maps-btn" href="https://www.google.com/maps/dir/SFO+Airport/Big+Oak+Flat+Entrance+Yosemite/Evergreen+Lodge+Groveland" target="_blank">🗺️ Apri in Google Maps</a>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🌟</div><div class="dp-section-label">Cosa Fare</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li><strong>Check-out Cornell Hotel</strong> entro le 11:00 · lascia i bagagli se necessario</li>
+          <li><strong>Drive verso Yosemite:</strong> paesaggio che cambia rapidamente da urbano a colline dorate — molto scenico</li>
+          <li><strong>Sosta Big Oak Flat Entrance:</strong> prima impressione del parco con cartelloni informativi</li>
+          <li><strong>Evergreen Lodge Tavern:</strong> atmosfera di campo avventura con tutti i comfort — cena e relax dopo il viaggio</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🍽️</div><div class="dp-section-label">Dove Mangiare</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li>🥪 <strong>Diner a Manteca</strong> — pranzo in auto, svariati fast food e diner lungo la CA-120 $</li>
+          <li>🍔 <strong>Iron Door Saloon (Groveland)</strong> — saloon storico del 1852, burger e birra locale $$ · 18761 Main St</li>
+          <li>🌲 <strong>Evergreen Lodge Tavern</strong> — cucina americana da lodge (prenota) $$ · Evergreen Lodge</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">⚠️</div><div class="dp-section-label">Consigli Pratici</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li>America the Beautiful Pass ($80) copre l'ingresso a tutti i parchi del viaggio — acquistalo qui</li>
+          <li>Fai spesa prima di entrare nel parco: dentro Yosemite i prezzi sono molto più alti</li>
+          <li>Porta almeno 2L d'acqua a testa al giorno — fontanelle disponibili nel parco</li>
+          <li>La CA-120 attraverso il Tioga Pass chiude con le prime nevicate (ottobre) — non è un problema a settembre</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🌅</div><div class="dp-section-label">Alba &amp; Tramonto</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <div id="dp-5-sun"><p style="font-size:12px;color:var(--text-muted);" class="loading-pulse">Caricamento...</p></div>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🏨</div><div class="dp-section-label">Hotel della notte</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <div class="dp-hotel-card">
+          <div class="dp-hotel-name">Evergreen Lodge</div>
+          <div class="dp-hotel-addr">33160 Evergreen Rd, Groveland, CA — cabine nel bosco vicino Yosemite</div>
+          <button class="dp-maps-btn" onclick="openMaps(37.8610,-119.9063,'Evergreen Lodge Groveland')">📍 Google Maps</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- dp-6 -->
+<div class="day-page" id="dp-6" data-lat="37.7459" data-lon="-119.5332" data-date="2026-09-14">
+  <div class="dp-header">
+    <div class="dp-header-top">
+      <button class="dp-back-btn" onclick="closeDayPage('dp-6')">←</button>
+      <span class="dp-day-badge">Giorno 6 · Lun 14 Settembre</span>
+    </div>
+    <div class="dp-stats">🚌 Shuttle interno gratuito · Yosemite Valley tutto il giorno</div>
+    <div class="dp-title-row">
+      <div class="dp-title-icon">🏔️</div>
+      <div class="dp-title-text">Yosemite Valley — El Capitan · Half Dome · Yosemite Falls</div>
+    </div>
+  </div>
+  <div style="padding:14px 14px 0;">
+    <button class="dp-meteo-load-btn" id="dp-6-meteo-btn" onclick="loadDayMeteo('dp-6','37.7459','-119.5332','2026-09-14')">🌤️ Carica previsioni meteo</button>
+    <div class="dp-meteo-strip" id="dp-6-meteo-strip" style="display:none;margin:0 0 14px;border-radius:14px;border:1px solid rgba(44,24,16,0.09);overflow:hidden;background:var(--card);"></div>
+  </div>
+  <div class="dp-body">
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🚗</div><div class="dp-section-label">Il Percorso</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li><strong>Shuttle gratuito Yosemite Valley</strong> — fermata ogni 10-20 min, collega tutti i punti principali</li>
+          <li>Parcheggio consigliato: Day Use Parking area 7 (vicino al Visitor Center)</li>
+          <li>Tunnel View → El Capitan → Valley Floor → Half Dome View → Yosemite Falls</li>
+        </ul>
+        <a class="dp-maps-btn" href="https://www.google.com/maps/dir/El+Capitan+Yosemite/Half+Dome+Yosemite/Yosemite+Falls" target="_blank">🗺️ Apri in Google Maps</a>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🌟</div><div class="dp-section-label">Cosa Fare</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li><strong>Tunnel View all'alba:</strong> El Capitan a sinistra, Half Dome in fondo, Bridalveil Fall a destra — la foto di Ansel Adams · Gratis</li>
+          <li><strong>El Capitan (Valley Floor):</strong> parete di granito 900m verticali — portare binocolo per vedere gli scalatori · Gratis</li>
+          <li><strong>Mirror Lake Trail:</strong> lago a specchio con riflesso di Half Dome (stagionale: meglio primavera/autunno) · Gratis</li>
+          <li><strong>Yosemite Falls Trail:</strong> cascata più alta del Nord America (739m totali) — base del trail 20 min A/R · Gratis</li>
+          <li><strong>Valley Floor Trail:</strong> loop 13 km attorno alla valley, adatto a tutti i livelli · Gratis</li>
+          <li><strong>Glacier Point (opzionale):</strong> panorama a 360° dall'alto sulla valley (solo se hai auto) · Incluso nel pass</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🍽️</div><div class="dp-section-label">Dove Mangiare</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li>🏕️ <strong>Yosemite Valley Lodge (Bar &amp; Restaurant)</strong> — colazione/pranzo nel cuore della valley $$ · Northside Drive</li>
+          <li>🍕 <strong>Pizza Patio (Curry Village)</strong> — pizze all'aperto, ottimo per cena dopo un'intera giornata di trekking $ · Half Dome Village</li>
+          <li>🥗 <strong>Village Store Yosemite</strong> — deli, panini, snack per il pranzo al sacco $ · Yosemite Village</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">⚠️</div><div class="dp-section-label">Consigli Pratici</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li>Entrare nella valley la mattina presto (entro le 9) per evitare traffico e parcheggi pieni</li>
+          <li>Lo shuttle gratuito è il modo migliore per muoversi — evita di spostarti in auto dentro la valley</li>
+          <li>Half Dome Cables (summit): richiede permit separato — non disponibile last minute</li>
+          <li>Porta snack e acqua: i prezzi dentro il parco sono 2-3x quelli fuori</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🌅</div><div class="dp-section-label">Alba &amp; Tramonto</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <div id="dp-6-sun"><p style="font-size:12px;color:var(--text-muted);" class="loading-pulse">Caricamento...</p></div>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🏨</div><div class="dp-section-label">Hotel della notte</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <div class="dp-hotel-card">
+          <div class="dp-hotel-name">Evergreen Lodge</div>
+          <div class="dp-hotel-addr">33160 Evergreen Rd, Groveland, CA</div>
+          <button class="dp-maps-btn" onclick="openMaps(37.8610,-119.9063,'Evergreen Lodge Groveland')">📍 Google Maps</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- dp-7 -->
+<div class="day-page" id="dp-7" data-lat="36.4864" data-lon="-118.5658" data-date="2026-09-15">
+  <div class="dp-header">
+    <div class="dp-header-top">
+      <button class="dp-back-btn" onclick="closeDayPage('dp-7')">←</button>
+      <span class="dp-day-badge">Giorno 7 · Mar 15 Settembre</span>
+    </div>
+    <div class="dp-stats">🚗 ~140 mi · ~2h30 via CA-41 S · General Sherman Tree in arrivo</div>
+    <div class="dp-title-row">
+      <div class="dp-title-icon">🚗</div>
+      <div class="dp-title-text">Yosemite → Sequoia National Park</div>
+    </div>
+  </div>
+  <div style="padding:14px 14px 0;">
+    <button class="dp-meteo-load-btn" id="dp-7-meteo-btn" onclick="loadDayMeteo('dp-7','36.4864','-118.5658','2026-09-15')">🌤️ Carica previsioni meteo</button>
+    <div class="dp-meteo-strip" id="dp-7-meteo-strip" style="display:none;margin:0 0 14px;border-radius:14px;border:1px solid rgba(44,24,16,0.09);overflow:hidden;background:var(--card);"></div>
+  </div>
+  <div class="dp-body">
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🚗</div><div class="dp-section-label">Il Percorso</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li>Groveland → CA-120 W → CA-41 S → CA-99 S → Visalia</li>
+          <li>Da Visalia → CA-198 E verso Sequoia NP (Ash Mountain Entrance)</li>
+          <li><strong>General Sherman Tree</strong> subito all'arrivo — albero più grande del mondo per volume</li>
+          <li>Check-in Comfort Suites Tulare a sera</li>
+        </ul>
+        <a class="dp-maps-btn" href="https://www.google.com/maps/dir/Evergreen+Lodge+Groveland/General+Sherman+Tree+Sequoia/Tulare+CA" target="_blank">🗺️ Apri in Google Maps</a>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🌟</div><div class="dp-section-label">Cosa Fare</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li><strong>Check-out Evergreen Lodge</strong> e partenza mattutina verso Sequoia</li>
+          <li><strong>General Sherman Tree:</strong> albero più grande del mondo per volume (1.487 m³), alto 84 m · Incluso nel pass</li>
+          <li><strong>Congress Trail:</strong> loop 3.2 km tra le sequoie giganti — il più bello del parco · Incluso nel pass</li>
+          <li><strong>Sherman Tree Visitor Center:</strong> pannelli informativi sulle sequoie giganti e storia del parco</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🍽️</div><div class="dp-section-label">Dove Mangiare</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li>🥪 <strong>Diner sulla CA-41</strong> — pranzo veloce lungo il percorso, molte opzioni fast food $</li>
+          <li>🍕 <strong>Round Table Pizza (Tulare)</strong> — cena, pizza e pasta casual $$ · Tulare, CA</li>
+          <li>🥩 <strong>Porterville Steakhouse</strong> — cena, ottima carne alla griglia, ~30 min da Tulare $$$ · Porterville</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">⚠️</div><div class="dp-section-label">Consigli Pratici</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li>La strada verso Sequoia è molto tortuosa nella parte finale (CA-198): guida lenta e con attenzione</li>
+          <li>America the Beautiful Pass valido anche a Sequoia/Kings Canyon — stesso biglietto di Yosemite</li>
+          <li>Parcheggi vicino al General Sherman si riempiono presto: usa la navetta interna quando disponibile</li>
+          <li>Prenotare Crystal Cave già ora su recreation.gov ($20) per il G8</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🌅</div><div class="dp-section-label">Alba &amp; Tramonto</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <div id="dp-7-sun"><p style="font-size:12px;color:var(--text-muted);" class="loading-pulse">Caricamento...</p></div>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🏨</div><div class="dp-section-label">Hotel della notte</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <div class="dp-hotel-card">
+          <div class="dp-hotel-name">Comfort Suites Tulare Sequoia Gateway</div>
+          <div class="dp-hotel-addr">1010 N Blackstone St, Tulare, CA · €205 totali (2 notti)</div>
+          <button class="dp-maps-btn" onclick="openMaps(36.2138,-119.3473,'Comfort Suites Tulare')">📍 Google Maps</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- dp-8 -->
+<div class="day-page" id="dp-8" data-lat="36.4864" data-lon="-118.5658" data-date="2026-09-16">
+  <div class="dp-header">
+    <div class="dp-header-top">
+      <button class="dp-back-btn" onclick="closeDayPage('dp-8')">←</button>
+      <span class="dp-day-badge">Giorno 8 · Mer 16 Settembre</span>
+    </div>
+    <div class="dp-stats">🚗 Giro Sequoia + Kings Canyon · ~60 mi dentro i parchi</div>
+    <div class="dp-title-row">
+      <div class="dp-title-icon">🌲</div>
+      <div class="dp-title-text">Sequoia · Moro Rock · Kings Canyon Scenic Byway</div>
+    </div>
+  </div>
+  <div style="padding:14px 14px 0;">
+    <button class="dp-meteo-load-btn" id="dp-8-meteo-btn" onclick="loadDayMeteo('dp-8','36.4864','-118.5658','2026-09-16')">🌤️ Carica previsioni meteo</button>
+    <div class="dp-meteo-strip" id="dp-8-meteo-strip" style="display:none;margin:0 0 14px;border-radius:14px;border:1px solid rgba(44,24,16,0.09);overflow:hidden;background:var(--card);"></div>
+  </div>
+  <div class="dp-body">
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🚗</div><div class="dp-section-label">Il Percorso</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li><strong>Moro Rock</strong> — 350 gradini scolpiti nella roccia fino a 2.050m slm</li>
+          <li><strong>Crystal Cave</strong> (prenotare recreation.gov $20) — grotta di marmo</li>
+          <li>CA-180 W verso Kings Canyon → Cedar Grove Village → Zumwalt Meadow</li>
+          <li>Kings Canyon Scenic Byway: canyon più profondo del Nord America</li>
+        </ul>
+        <a class="dp-maps-btn" href="https://www.google.com/maps/dir/Moro+Rock+Sequoia/Crystal+Cave+Sequoia/Cedar+Grove+Kings+Canyon" target="_blank">🗺️ Apri in Google Maps</a>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🌟</div><div class="dp-section-label">Cosa Fare</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li><strong>Moro Rock:</strong> 350 gradini fino a 2.050m — panorama su Sierra Nevada e la Great Western Divide · Incluso nel pass</li>
+          <li><strong>Crystal Cave:</strong> grotta di marmo con stalattiti e stalagmiti (prenotare $20) · 45 min tour guidato</li>
+          <li><strong>Kings Canyon Scenic Byway (CA-180):</strong> uno dei canyon più profondi del Nord America (2.400m)</li>
+          <li><strong>Zumwalt Meadow Trail:</strong> loop 2.4 km nel fondo del canyon tra pareti verticali · Incluso nel pass</li>
+          <li><strong>Roaring River Falls:</strong> cascata nascosta raggiungibile in 15 min a piedi · Incluso nel pass</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🍽️</div><div class="dp-section-label">Dove Mangiare</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li>🏕️ <strong>Cedar Grove Lodge</strong> — pranzo nel canyon, limitato ma unico nel contesto $$ · Cedar Grove, Kings Canyon</li>
+          <li>🍕 <strong>Round Table Pizza (Tulare)</strong> — cena di rientro, pizza e pasta casual $$ · Tulare, CA</li>
+          <li>🥗 <strong>Snack al sacco</strong> — porta pranzo da Tulare, dentro il parco opzioni limitate</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">⚠️</div><div class="dp-section-label">Consigli Pratici</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li>Crystal Cave: prenota su recreation.gov con anticipo — i tour si esauriscono velocemente</li>
+          <li>La CA-180 per Kings Canyon è una strada panoramica stretta — guida attenta, camper vietati</li>
+          <li>Moro Rock all'alba o al tramonto: luce spettacolare sulla Sierra Nevada</li>
+          <li>Porta giacca: a 2.000+ m slm anche a settembre può fare fresco</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🌅</div><div class="dp-section-label">Alba &amp; Tramonto</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <div id="dp-8-sun"><p style="font-size:12px;color:var(--text-muted);" class="loading-pulse">Caricamento...</p></div>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🏨</div><div class="dp-section-label">Hotel della notte</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <div class="dp-hotel-card">
+          <div class="dp-hotel-name">Comfort Suites Tulare Sequoia Gateway</div>
+          <div class="dp-hotel-addr">1010 N Blackstone St, Tulare, CA — seconda notte</div>
+          <button class="dp-maps-btn" onclick="openMaps(36.2138,-119.3473,'Comfort Suites Tulare')">📍 Google Maps</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- dp-9 -->
+<div class="day-page" id="dp-9" data-lat="36.4907" data-lon="-121.1825" data-date="2026-09-17">
+  <div class="dp-header">
+    <div class="dp-header-top">
+      <button class="dp-back-btn" onclick="closeDayPage('dp-9')">←</button>
+      <span class="dp-day-badge">Giorno 9 · Gio 17 Settembre</span>
+    </div>
+    <div class="dp-stats">🚗 ~120 mi · ~2h30 · Pinnacles East Entrance</div>
+    <div class="dp-title-row">
+      <div class="dp-title-icon">🚗</div>
+      <div class="dp-title-text">Tulare → Pinnacles NP → Firebaugh</div>
+    </div>
+  </div>
+  <div style="padding:14px 14px 0;">
+    <button class="dp-meteo-load-btn" id="dp-9-meteo-btn" onclick="loadDayMeteo('dp-9','36.4907','-121.1825','2026-09-17')">🌤️ Carica previsioni meteo</button>
+    <div class="dp-meteo-strip" id="dp-9-meteo-strip" style="display:none;margin:0 0 14px;border-radius:14px;border:1px solid rgba(44,24,16,0.09);overflow:hidden;background:var(--card);"></div>
+  </div>
+  <div class="dp-body">
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🚗</div><div class="dp-section-label">Il Percorso</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li>Tulare → CA-198 W attraverso la Central Valley</li>
+          <li><strong>Pinnacles East Entrance</strong> (Paicines, CA) — usa America the Beautiful Pass</li>
+          <li>Bear Gulch Cave Trail → High Peaks Trail</li>
+          <li>CA-25 N → I-5 N → Firebaugh (check-in Best Western)</li>
+        </ul>
+        <a class="dp-maps-btn" href="https://www.google.com/maps/dir/Tulare+CA/Pinnacles+National+Park+East+Entrance/Firebaugh+CA" target="_blank">🗺️ Apri in Google Maps</a>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🌟</div><div class="dp-section-label">Cosa Fare</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li><strong>Bear Gulch Cave Trail:</strong> grotta di talus dove nidificano i pipistrelli — portare una torcia! · ~1.5h · Incluso nel pass</li>
+          <li><strong>High Peaks Trail:</strong> guglie vulcaniche con scale scolpite nella roccia, habitat dei condor californiani (specie a rischio) · ~3-4h loop · Incluso nel pass</li>
+          <li><strong>Condor watching:</strong> possibilità di avvistare il condor californiano in volo sopra le guglie</li>
+          <li><strong>Balconies Cave (West side):</strong> alternativa alla Bear Gulch Cave (lato ovest del parco)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🍽️</div><div class="dp-section-label">Dove Mangiare</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li>🌮 <strong>Rancho Grande (Los Banos)</strong> — cena/pranzo, messicano abbondante, 20 min da Firebaugh $ · Los Banos</li>
+          <li>🍔 <strong>Fast food Los Banos</strong> — pranzo veloce, McDonald's/Subway/Taco Bell lungo la I-5 $</li>
+          <li>🏨 <strong>Best Western Restaurant</strong> — cena annessa all'hotel, comodo dopo la guida $$ · Firebaugh</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">⚠️</div><div class="dp-section-label">Consigli Pratici</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li>Verificare lo stato del Bear Gulch Cave Trail prima di andare: potrebbe essere chiuso per la nidificazione dei pipistrelli (apr-lug di solito aperto a settembre)</li>
+          <li>Portare torcia frontale per la grotta — obbligatoria</li>
+          <li>Pinnacles è il parco meno conosciuto del viaggio: poca folla, ottimo per settembre</li>
+          <li>La I-5 a nord di Firebaugh è dritta e veloce — guidabile anche di sera</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🌅</div><div class="dp-section-label">Alba &amp; Tramonto</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <div id="dp-9-sun"><p style="font-size:12px;color:var(--text-muted);" class="loading-pulse">Caricamento...</p></div>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🏨</div><div class="dp-section-label">Hotel della notte</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <div class="dp-hotel-card">
+          <div class="dp-hotel-name">Best Western Apricot Inn</div>
+          <div class="dp-hotel-addr">46290 W Panoche Rd, Firebaugh, CA · €113 (1 notte) · colazione inclusa</div>
+          <button class="dp-maps-btn" onclick="openMaps(36.8629,-120.4567,'Best Western Apricot Inn Firebaugh')">📍 Google Maps</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- dp-10 -->
+<div class="day-page" id="dp-10" data-lat="36.6002" data-lon="-121.8947" data-date="2026-09-18">
+  <div class="dp-header">
+    <div class="dp-header-top">
+      <button class="dp-back-btn" onclick="closeDayPage('dp-10')">←</button>
+      <span class="dp-day-badge">Giorno 10 · Ven 18 Settembre</span>
+    </div>
+    <div class="dp-stats">🚗 ~160 mi · ~3h via CA-33 S + US-101 · Pacifico in vista!</div>
+    <div class="dp-title-row">
+      <div class="dp-title-icon">🌊</div>
+      <div class="dp-title-text">Firebaugh → Monterey → Santa Cruz</div>
+    </div>
+  </div>
+  <div style="padding:14px 14px 0;">
+    <button class="dp-meteo-load-btn" id="dp-10-meteo-btn" onclick="loadDayMeteo('dp-10','36.6002','-121.8947','2026-09-18')">🌤️ Carica previsioni meteo</button>
+    <div class="dp-meteo-strip" id="dp-10-meteo-strip" style="display:none;margin:0 0 14px;border-radius:14px;border:1px solid rgba(44,24,16,0.09);overflow:hidden;background:var(--card);"></div>
+  </div>
+  <div class="dp-body">
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🚗</div><div class="dp-section-label">Il Percorso</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li>Firebaugh → CA-33 S → US-101 S → Monterey (~2h)</li>
+          <li>Cannery Row → Monterey Bay Aquarium → Fisherman's Wharf</li>
+          <li><strong>17-Mile Drive</strong> (Pebble Beach, $12) → Carmel-by-the-Sea</li>
+          <li>CA-1 N (Pacific Coast Highway) → Santa Cruz</li>
+        </ul>
+        <a class="dp-maps-btn" href="https://www.google.com/maps/dir/Firebaugh+CA/Monterey+CA/17+Mile+Drive+Pebble+Beach/Santa+Cruz+CA" target="_blank">🗺️ Apri in Google Maps</a>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🌟</div><div class="dp-section-label">Cosa Fare</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li><strong>Cannery Row:</strong> strada immortalata da Steinbeck, ex-fabbriche del pesce oggi ristoranti e negozi · Gratis</li>
+          <li><strong>Monterey Bay Aquarium:</strong> uno dei migliori del mondo (kelp forest, lontre marine) · $60/pp</li>
+          <li><strong>17-Mile Drive:</strong> percorso panoramico costiero a Pebble Beach con Lone Cypress · $12 ingresso auto</li>
+          <li><strong>Carmel-by-the-Sea:</strong> villaggio da fiaba con gallerie d'arte e spiagge bianche · Gratis</li>
+          <li><strong>Santa Cruz Boardwalk:</strong> il luna park storico sul Pacifico (dal 1907) · ingresso gratis (giostre a pagamento)</li>
+          <li><strong>Steamer Lane:</strong> punto di surf iconico di Santa Cruz — ottimo per guardare i surfisti</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🍽️</div><div class="dp-section-label">Dove Mangiare</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li>🦞 <strong>Monterey Fish House</strong> — pranzo, pesce freschissimo locale $$ · 2114 Del Monte Ave, Monterey</li>
+          <li>🍝 <strong>Stagnaro Bros (Santa Cruz)</strong> — cena sul molo, pesce e pasta in vista oceano $$ · Municipal Wharf</li>
+          <li>🌮 <strong>El Palomar (Santa Cruz)</strong> — cena, cucina messicana californiana $$ · 1336 Pacific Ave</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">⚠️</div><div class="dp-section-label">Consigli Pratici</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li>Monterey Bay Aquarium: prenotare online per evitare code · ideale mattina presto</li>
+          <li>La CA-1 da Carmel a Santa Cruz è panoramica ma lenta — calcola 1h+ di guida</li>
+          <li>17-Mile Drive: entra dal Pebble Beach Gate 1 (Hwy 1 vicino Carmel)</li>
+          <li>Santa Cruz Boardwalk: gratuito entrare, le giostre si pagano singolarmente</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🌅</div><div class="dp-section-label">Alba &amp; Tramonto</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <div id="dp-10-sun"><p style="font-size:12px;color:var(--text-muted);" class="loading-pulse">Caricamento...</p></div>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🏨</div><div class="dp-section-label">Hotel della notte</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <div class="dp-hotel-card">
+          <div class="dp-hotel-name">Drift Inn</div>
+          <div class="dp-hotel-addr">110 San Lorenzo Blvd, Santa Cruz, CA — ultima notte in California</div>
+          <button class="dp-maps-btn" onclick="openMaps(36.9711,-122.0208,'Drift Inn Santa Cruz')">📍 Google Maps</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- dp-11 -->
+<div class="day-page" id="dp-11" data-lat="36.9741" data-lon="-122.0308" data-date="2026-09-19">
+  <div class="dp-header">
+    <div class="dp-header-top">
+      <button class="dp-back-btn" onclick="closeDayPage('dp-11')">←</button>
+      <span class="dp-day-badge">Giorno 11 · Sab 19 Settembre</span>
+    </div>
+    <div class="dp-stats">🚗 ~80 mi · ~1h15 + ✈️ AZ641 SFO→FCO 15:15</div>
+    <div class="dp-title-row">
+      <div class="dp-title-icon">✈️</div>
+      <div class="dp-title-text">Santa Cruz → SFO → Roma FCO</div>
+    </div>
+  </div>
+  <div style="padding:14px 14px 0;">
+    <button class="dp-meteo-load-btn" id="dp-11-meteo-btn" onclick="loadDayMeteo('dp-11','36.9741','-122.0308','2026-09-19')">🌤️ Carica previsioni meteo</button>
+    <div class="dp-meteo-strip" id="dp-11-meteo-strip" style="display:none;margin:0 0 14px;border-radius:14px;border:1px solid rgba(44,24,16,0.09);overflow:hidden;background:var(--card);"></div>
+  </div>
+  <div class="dp-body">
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🚗</div><div class="dp-section-label">Il Percorso</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li>Santa Cruz → US-1 N → US-101 N → SFO (~1h15)</li>
+          <li>Fare il pieno dell'auto fuori dall'aeroporto (benzina più economica)</li>
+          <li><strong>Car Rental Return:</strong> ben segnalato a SFO — consegna auto 2.5h prima del decollo</li>
+          <li>AirTrain da Car Rental Center all'International Terminal G</li>
+          <li><strong>AZ641 SFO→FCO: decollo 15:15</strong> · arrivo FCO 11:00+1 (domenica 20 settembre)</li>
+        </ul>
+        <a class="dp-maps-btn" href="https://www.google.com/maps/dir/Santa+Cruz+CA/SFO+Airport" target="_blank">🗺️ Apri in Google Maps</a>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🌟</div><div class="dp-section-label">Cosa Fare</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li><strong>Natural Bridges State Beach:</strong> arcata naturale di pietra sul Pacifico — mattina tranquilla · Gratis · West Cliff Drive</li>
+          <li><strong>Last look Boardwalk:</strong> un ultimo caffè sul lungomare di Santa Cruz, ultime foto del Pacifico</li>
+          <li><strong>Check-out Drift Inn</strong> entro le 11:00 e partenza verso SFO</li>
+          <li>SFO International Terminal G — ultimi souvenir nei negozi del terminal</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🍽️</div><div class="dp-section-label">Dove Mangiare</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li>☕ <strong>Verve Coffee Roasters (Santa Cruz)</strong> — colazione, uno dei migliori caffè specialty della California $ · 104 Bronson St</li>
+          <li>✈️ <strong>Terminal SFO</strong> — pranzo prima del volo, ristoranti decenti (Napa Farms Market, Cat Cora's Kitchen) $$ · SFO International Terminal</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">⚠️</div><div class="dp-section-label">Consigli Pratici</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li>SFO è un aeroporto grande e lento — arriva al terminal con 2.5h di anticipo</li>
+          <li>L'International Terminal G è separato: prendi la navetta AirTrain dalla Car Rental Center</li>
+          <li>Fai il pieno dell'auto fuori dall'aeroporto (benzina molto più cara dentro)</li>
+          <li>Verifica peso bagagli prima del check-in: limite ITA Airways 23kg per bagaglio stiva</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">🌅</div><div class="dp-section-label">Alba &amp; Tramonto</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <div id="dp-11-sun"><p style="font-size:12px;color:var(--text-muted);" class="loading-pulse">Caricamento...</p></div>
+      </div>
+    </div>
+    <div class="dp-section" onclick="toggleDpSection(this)">
+      <div class="dp-section-hdr"><div class="dp-section-icon">✈️</div><div class="dp-section-label">Info Volo di Rientro</div><div class="dp-section-arrow">›</div></div>
+      <div class="dp-section-body">
+        <ul class="dp-bullet-list">
+          <li><strong>AZ641</strong> — SFO → FCO (Roma Fiumicino)</li>
+          <li>Decollo: <strong>15:15</strong> ora California (PDT)</li>
+          <li>Arrivo FCO: domenica 20 settembre ~11:00 (CEST)</li>
+          <li>Terminal: SFO International Terminal G</li>
+          <li>Check-in chiude ~2h prima: presentarsi entro le 13:00</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
