@@ -581,7 +581,7 @@ h3 { font-family:'Montserrat',sans-serif; font-weight:600; }
       var now = Date.now();
       function fmtTime(utcMs, offsetH) {
         var d = new Date(utcMs + offsetH * 3600000);
-        return ('0'+d.getUTCHours()).slice(-2)+':'+('0'+d.getUTCMinutes()).slice(-2)+':'+('0'+d.getUTCSeconds()).slice(-2);
+        return ('0'+d.getUTCHours()).slice(-2)+':'+('0'+d.getUTCMinutes()).slice(-2);
       }
       var elIt = document.getElementById('dc-time-it');
       var elSF = document.getElementById('dc-time-sf');
