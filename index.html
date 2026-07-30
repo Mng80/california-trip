@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CA Road Trip">
+<meta name="theme-color" content="#f5a623">
+<title>🇺🇸 California Road Trip 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+:root {
+  --bg: #fdf6e3;
+  --card: #ffffff;
+  --card2: #fef9f0;
+  --accent: #e8650a;
+  --accent2: #f07830;
+  --text: #2c1810;
+  --text-muted: #8a7060;
+  --green: #16a34a;
+  --yellow: #d97706;
+  --red: #dc2626;
+  --blue: #2563eb;
+  --nav-h: 60px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html, body { height:100%; background:var(--bg); color:var(--text); font-family: system-ui, -apple-system, sans-serif; overflow:hidden; }
+
+
+/* ── BOTTOM NAV ── */
+.bottom-nav {
+  position:fixed; bottom:0; left:0; right:0; z-index:100;
+  background:rgba(253,246,227,0.97); backdrop-filter:blur(12px);
+  border-top:1px solid rgba(232,101,10,0.25);
+  display:flex; justify-content:space-around; align-items:center;
+  height:calc(var(--nav-h) + var(--safe-bottom));
+  padding-bottom:var(--safe-bottom);
+}
+.nav-btn {
+  flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:3px; cursor:pointer; padding:6px 0; border:none; background:none;
+  color:#b09070; transition:color .2s;
+  font-size:9px; font-weight:600; letter-spacing:.3px; text-transform:uppercase;
+}
+.nav-btn .nav-icon { font-size:22px; line-height:1; }
+.nav-btn.active { color:var(--accent); }
+.nav-btn.active .nav-icon { transform:scale(1.15); }
+
+/* ── TAB CONTENTS ── */
+.tab-content {
+  display:none;
+  height:calc(100dvh - var(--nav-h) - var(--safe-bottom));
+  overflow-y:auto; overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+}
+.tab-content.active { display:block; }
+#tab-map.active { display:flex; flex-direction:column; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width:3px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:rgba(255,102,0,.3); border-radius:2px; }
+
+/* ── TYPOGRAPHY ── */
+h1 { font-family:'Montserrat',sans-serif; font-weight:800; }
+h2 { font-family:'Montserrat',sans-serif; font-weight:700; }
+h3 { font-family:'Montserrat',sans-serif; font-weight:600; }
+
+/* ── CARDS ── */
+.card {
+  background:var(--card); border-radius:14px;
+  border:1px solid rgba(44,24,16,0.10);
+  box-shadow:0 2px 12px rgba(44,24,16,0.07);
+  overflow:hidden;
+}
+.card-inner { padding:16px; }
+
+/* ── BADGES ── */
+.badge {
+  display:inline-block; padding:3px 10px; border-radius:20px;
+  font-size:11px; font-weight:700; letter-spacing:.3px;
+}
+.badge-green { background:rgba(34,197,94,.2); color:#22c55e; border:1px solid rgba(34,197,94,.3); }
+.badge-yellow { background:rgba(245,158,11,.2); color:#f59e0b; border:1px solid rgba(245,158,11,.3); }
+.badge-red { background:rgba(239,68,68,.2); color:#ef4444; border:1px solid rgba(239,68,68,.3); }
+.badge-blue { background:rgba(59,130,246,.2); color:#60a5fa; border:1px solid rgba(59,130,246,.3); }
+.badge-gray { background:rgba(148,163,184,.15); color:#94a3b8; border:1px solid rgba(148,163,184,.2); }
+.badge-orange { background:rgba(255,102,0,.2); color:var(--accent); border:1px solid rgba(255,102,0,.3); }
+
+/* ── BUTTONS ── */
+.btn {
+  display:inline-flex; align-items:center; gap:6px;
+  padding:10px 16px; border-radius:10px; border:none; cursor:pointer;
+  font-size:14px; font-weight:600; transition:all .2s;
+}
+.btn-orange { background:var(--accent); color:white; }
+.btn-orange:active { background:var(--accent2); transform:scale(.97); }
+.btn-outline { background:rgba(255,102,0,.1); color:var(--accent); border:1px solid rgba(255,102,0,.3); }
+.btn-outline:active { background:rgba(255,102,0,.2); transform:scale(.97); }
+.btn-sm { padding:7px 12px; font-size:12px; border-radius:8px; }
+
+/* ── HOME ── */
+#tab-home { position:relative; }
+.stars-bg {
+  position:fixed; top:0; left:0; right:0;
+  height:40vh; pointer-events:none; z-index:0;
+  overflow:hidden; opacity:0.35;
+}
+.star { position:absolute; background:#c0622a; border-radius:50%; animation:twinkle var(--d,3s) ease-in-out infinite; opacity:0; }
+@keyframes twinkle {
+  0%,100%{opacity:0} 50%{opacity:var(--op,.8)}
+}
+.home-content { position:relative; z-index:1; padding:16px; }
+.home-header {
+  background:linear-gradient(135deg, #fff3e0 0%, #ffe0b2 50%, #fff3e0 100%);
+  border-radius:20px; padding:28px 20px; text-align:center; margin-bottom:16px;
+  border:1px solid rgba(232,101,10,.25);
+  position:relative; overflow:hidden;
+}
+.home-header::before {
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(circle at 70% 30%, rgba(232,101,10,.10) 0%, transparent 60%);
+}
+.home-header h1 { font-size:26px; margin-bottom:6px; position:relative; color:#2c1810; }
+.home-header p { color:var(--text-muted); font-size:13px; position:relative; }
+.home-header .flag { font-size:36px; display:block; margin-bottom:10px; }
+.stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
+.stat-card {
+  background:var(--card); border-radius:12px; padding:14px;
+  border:1px solid rgba(44,24,16,0.10); text-align:center;
+  box-shadow:0 2px 8px rgba(44,24,16,0.06);
+}
+.stat-card .stat-icon { font-size:22px; margin-bottom:4px; }
+.stat-card .stat-val { font-family:'Montserrat',sans-serif; font-size:18px; font-weight:800; color:var(--accent); }
+.stat-card .stat-lbl { font-size:10px; color:var(--text-muted); margin-top:2px; text-transform:uppercase; letter-spacing:.5px; }
+.next-card {
+  background:linear-gradient(135deg, #fff8ee 0%, #ffecd2 100%);
+  border-radius:14px; padding:16px; margin-bottom:16px;
+  border:1px solid rgba(232,101,10,.25);
+}
+.next-card h3 { font-size:11px; text-transform:uppercase; letter-spacing:.8px; color:var(--accent); margin-bottom:10px; }
+.next-day-num { font-family:'Montserrat',sans-serif; font-size:36px; font-weight:800; color:var(--accent); line-height:1; }
+.next-day-date { font-size:12px; color:var(--text-muted); margin-top:2px; }
+.next-day-title { font-size:18px; font-weight:700; margin:8px 0 4px; }
+.quick-links { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.quick-link {
+  background:var(--card); border-radius:12px; padding:14px;
+  border:1px solid rgba(44,24,16,0.09); text-align:center;
+  cursor:pointer; transition:all .2s;
+}
+.quick-link:active { transform:scale(.96); background:var(--card2); }
+.quick-link .ql-icon { font-size:24px; margin-bottom:4px; }
+.quick-link .ql-text { font-size:12px; color:var(--text-muted); }
+
+/* ── ITINERARIO ── */
+.section-header { padding:20px 16px 12px; }
+.section-header h2 { font-size:22px; }
+.section-header p { font-size:13px; color:var(--text-muted); margin-top:4px; }
+.timeline { padding:0 16px 20px; position:relative; }
+.timeline::before {
+  content:''; position:absolute; left:28px; top:0; bottom:0;
+  width:2px; background:linear-gradient(to bottom, var(--accent), rgba(232,101,10,.15));
+}
+.day-card {
+  position:relative; margin-bottom:12px; padding-left:52px;
+}
+.day-dot {
+  position:absolute; left:20px; top:14px;
+  width:18px; height:18px; border-radius:50%;
+  background:var(--accent); border:3px solid var(--bg);
+  display:flex; align-items:center; justify-content:center;
+  font-size:8px; font-weight:800; color:white; z-index:1;
+}
+.day-header {
+  background:var(--card); border-radius:12px;
+  padding:14px 16px; cursor:pointer;
+  border:1px solid rgba(44,24,16,0.09);
+  transition:background .2s;
+  display:flex; align-items:center; gap:10px;
+}
+.day-header:active { background:var(--card2); }
+.day-header-left { flex:1; }
+.day-num { font-family:'Montserrat',sans-serif; font-size:11px; font-weight:700; color:var(--accent); text-transform:uppercase; letter-spacing:.5px; }
+.day-date { font-size:12px; color:var(--text-muted); }
+.day-title { font-size:15px; font-weight:600; margin-top:3px; }
+.day-chevron { color:var(--text-muted); font-size:14px; transition:transform .3s; }
+.day-card.open .day-chevron { transform:rotate(90deg); }
+.day-body {
+  display:none; background:var(--card2);
+  border-radius:0 0 12px 12px; padding:14px 16px;
+  border:1px solid rgba(44,24,16,0.07); border-top:none;
+  margin-top:-4px;
+}
+.day-card.open .day-body { display:block; }
+.day-activities { list-style:none; }
+.day-activities li {
+  padding:5px 0; font-size:13px; color:#6b4c3b;
+  display:flex; align-items:flex-start; gap:8px;
+}
+.day-activities li::before { content:'→'; color:var(--accent); flex-shrink:0; margin-top:1px; }
+.day-tip {
+  margin-top:10px; padding:10px 12px; border-radius:8px;
+  background:rgba(217,119,6,.08); border:1px solid rgba(217,119,6,.2);
+  font-size:12px; color:#92400e;
+}
+.day-badges { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+
+/* ── HOTEL ── */
+.hotels-list { padding:0 16px 20px; }
+.hotel-card { background:var(--card); border-radius:14px; margin-bottom:14px; overflow:hidden; border:1px solid rgba(44,24,16,0.09); }
+.hotel-top { padding:16px; border-bottom:1px solid rgba(44,24,16,0.07); }
+.hotel-name { font-size:17px; font-weight:700; margin-bottom:4px; }
+.hotel-addr { font-size:12px; color:var(--text-muted); margin-bottom:8px; }
+.hotel-meta { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+.hotel-dates { font-size:12px; color:var(--text-muted); }
+.hotel-bottom { padding:12px 16px; display:flex; align-items:center; justify-content:space-between; }
+.hotel-price { font-family:'Montserrat',sans-serif; font-size:22px; font-weight:800; color:var(--accent); }
+.hotel-price-lbl { font-size:11px; color:var(--text-muted); }
+.hotel-total-box {
+  background:linear-gradient(135deg, rgba(232,101,10,.10), rgba(232,101,10,.04));
+  border:1px solid rgba(232,101,10,.25); border-radius:12px;
+  padding:14px 16px; margin:0 16px 20px;
+  display:flex; justify-content:space-between; align-items:center;
+}
+.hotel-total-lbl { font-size:13px; color:var(--text-muted); }
+.hotel-total-val { font-family:'Montserrat',sans-serif; font-size:24px; font-weight:800; color:var(--accent); }
+
+/* ── MAPPA ── */
+#tab-map { }
+#map-container { flex:1; position:relative; }
+#map { width:100%; height:100%; }
+
+/* ── ALTRO: SOTTO-TAB ── */
+.subtab-bar {
+  display:flex; overflow-x:auto; gap:6px; padding:12px 16px 8px;
+  -webkit-overflow-scrolling:touch; scrollbar-width:none;
+  border-bottom:1px solid rgba(44,24,16,0.09);
+  background:var(--bg); position:sticky; top:0; z-index:10;
+}
+.subtab-bar::-webkit-scrollbar { display:none; }
+.subtab-btn {
+  flex-shrink:0; padding:7px 14px; border-radius:20px; border:none;
+  background:rgba(44,24,16,0.09); color:var(--text-muted);
+  font-size:12px; font-weight:600; cursor:pointer; transition:all .2s;
+  white-space:nowrap;
+}
+.subtab-btn.active { background:var(--accent); color:white; }
+.subtab-content { display:none; padding:16px; }
+.subtab-content.active { display:block; }
+
+/* ── CLIMA ── */
+.weather-location { margin-bottom:12px; }
+.weather-loc-header {
+  background:var(--card); border-radius:12px; padding:14px 16px;
+  cursor:pointer; border:1px solid rgba(44,24,16,0.09);
+  display:flex; justify-content:space-between; align-items:center;
+  transition:background .2s;
+}
+.weather-loc-header:active { background:var(--card2); }
+.weather-loc-name { font-size:15px; font-weight:600; }
+.weather-loc-coords { font-size:11px; color:var(--text-muted); margin-top:2px; }
+.weather-body { display:none; }
+.weather-location.open .weather-body { display:block; }
+.weather-loading { padding:12px; text-align:center; color:var(--text-muted); font-size:13px; }
+.weather-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; padding:8px 0; }
+.weather-day {
+  background:var(--card2); border-radius:10px; padding:8px 4px;
+  text-align:center; border:1px solid rgba(44,24,16,0.07);
+}
+.weather-day .w-date { font-size:10px; color:var(--text-muted); margin-bottom:4px; }
+.weather-day .w-icon { font-size:22px; margin-bottom:4px; }
+.weather-day .w-max { font-size:15px; font-weight:700; color:var(--accent); }
+.weather-day .w-min { font-size:11px; color:var(--text-muted); }
+.weather-day .w-rain { font-size:10px; color:#60a5fa; margin-top:3px; }
+
+/* ── VOLI ── */
+.flight-card { background:var(--card); border-radius:14px; margin-bottom:12px; overflow:hidden; border:1px solid rgba(44,24,16,0.09); }
+.flight-top { padding:14px 16px; }
+.flight-route { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+.flight-city { font-family:'Montserrat',sans-serif; font-size:18px; font-weight:800; }
+.flight-arrow { color:var(--accent); font-size:18px; flex:1; text-align:center; }
+.flight-info { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+.flight-num { font-size:13px; font-weight:700; color:var(--accent); }
+.flight-time { font-size:13px; color:var(--text-muted); }
+.flight-date { font-size:12px; color:var(--text-muted); }
+.flight-bottom { padding:10px 16px; background:rgba(44,24,16,0.03); display:flex; align-items:center; justify-content:space-between; }
+
+/* ── BAGS ── */
+.bag-category { margin-bottom:10px; }
+.bag-cat-header {
+  background:var(--card); border-radius:12px 12px 0 0; padding:12px 16px;
+  cursor:pointer; display:flex; justify-content:space-between; align-items:center;
+  border:1px solid rgba(44,24,16,0.09);
+  transition:background .2s;
+}
+.bag-cat-header:active { background:var(--card2); }
+.bag-cat-title { font-size:14px; font-weight:600; }
+.bag-cat-progress { font-size:12px; color:var(--text-muted); }
+.bag-cat-body { display:none; background:var(--card2); border-radius:0 0 12px 12px; border:1px solid rgba(44,24,16,0.07); border-top:none; padding:8px 0; }
+.bag-category.open .bag-cat-body { display:block; }
+.bag-item {
+  display:flex; align-items:center; gap:10px; padding:8px 16px;
+  cursor:pointer; transition:background .2s;
+}
+.bag-item:active { background:rgba(44,24,16,0.05); }
+.bag-checkbox {
+  width:20px; height:20px; border-radius:6px; border:2px solid rgba(44,24,16,0.25);
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  transition:all .2s;
+}
+.bag-item.checked .bag-checkbox { background:var(--accent); border-color:var(--accent); }
+.bag-item.checked .bag-checkbox::after { content:'✓'; color:white; font-size:12px; font-weight:700; }
+.bag-item-text { font-size:13px; }
+.bag-item.checked .bag-item-text { text-decoration:line-through; color:var(--text-muted); }
+.bags-reset { display:block; margin:16px auto 0; }
+
+/* ── INFO ── */
+.info-section { margin-bottom:16px; }
+.info-section h3 { font-size:13px; text-transform:uppercase; letter-spacing:.8px; color:var(--accent); margin-bottom:10px; }
+.info-item {
+  background:var(--card); border-radius:10px; padding:12px 14px; margin-bottom:8px;
+  border:1px solid rgba(44,24,16,0.07);
+}
+.info-item strong { font-size:13px; display:block; margin-bottom:3px; }
+.info-item span { font-size:12px; color:var(--text-muted); }
+
+/* ── MALL & GAS ── */
+.mall-subtab-bar { display:flex; gap:6px; margin-bottom:14px; }
+.mall-subtab-btn { flex:1; padding:8px; border-radius:8px; border:none; cursor:pointer; font-size:13px; font-weight:600; background:rgba(44,24,16,0.09); color:var(--text-muted); transition:all .2s; }
+.mall-subtab-btn.active { background:var(--accent); color:white; }
+.mall-content { display:none; }
+.mall-content.active { display:block; }
+.poi-card { background:var(--card); border-radius:12px; padding:14px; margin-bottom:10px; border:1px solid rgba(44,24,16,0.07); }
+.poi-name { font-size:15px; font-weight:600; margin-bottom:4px; }
+.poi-addr { font-size:12px; color:var(--text-muted); margin-bottom:8px; }
+
+/* ── DOCS ── */
+.doc-item { background:var(--card); border-radius:10px; padding:12px 14px; margin-bottom:8px; display:flex; align-items:center; gap:10px; border:1px solid rgba(44,24,16,0.07); }
+.doc-icon { font-size:20px; }
+.doc-text { font-size:13px; }
+
+/* ── LOADING pulse ── */
+@keyframes pulse { 0%,100%{opacity:.4} 50%{opacity:1} }
+.loading-pulse { animation:pulse 1.5s ease-in-out infinite; }
+
+/* ── LIVE badge pulse ── */
+@keyframes live-blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+.live-dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--red); animation:live-blink 1s infinite; margin-right:4px; }
+
+/* ── MAP LEGEND ── */
+.map-legend {
+  position:absolute; bottom:16px; left:16px; z-index:500;
+  background:rgba(253,246,227,.95); backdrop-filter:blur(8px);
+  border-radius:10px; padding:10px 14px;
+  border:1px solid rgba(232,101,10,.2); font-size:11px;
+  pointer-events:none;
+}
+.map-legend-item { display:flex; align-items:center; gap:6px; margin-bottom:4px; color:#5a3e30; }
+.map-legend-item:last-child { margin-bottom:0; }
+.leg-line { width:20px; height:3px; border-radius:2px; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     TAB HOME
+═══════════════════════════════════════ -->
+<div class="tab-content active" id="tab-home">
+  <div class="stars-bg" id="starsBg"></div>
+  <div class="home-content">
+    <div class="home-header">
+      <span class="flag">🇺🇸</span>
+      <h1>California Road Trip</h1>
+      <p>Mina &amp; Francesco &nbsp;·&nbsp; 9–19 Settembre 2026</p>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">🗺️</div>
+        <div class="stat-val">~720</div>
+        <div class="stat-lbl">Miglia totali</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📍</div>
+        <div class="stat-val">7</div>
+        <div class="stat-lbl">Tappe</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📅</div>
+        <div class="stat-val">11</div>
+        <div class="stat-lbl">Giorni</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">✈️</div>
+        <div class="stat-val">ITA</div>
+        <div class="stat-lbl">Airways</div>
+      </div>
+    </div>
+
+    <div class="next-card" id="nextTappaCard">
+      <h3>⏭ Prossima tappa</h3>
+      <div id="nextTappaContent">
+        <div class="loading-pulse" style="color:var(--text-muted);font-size:13px;">Calcolo in corso...</div>
+      </div>
+    </div>
+
+    <div class="quick-links">
+      <div class="quick-link" onclick="switchTab('tab-itinerario')">
+        <div class="ql-icon">🗓️</div>
+        <div class="ql-text">Itinerario</div>
+      </div>
+      <div class="quick-link" onclick="switchTab('tab-hotel')">
+        <div class="ql-icon">🏨</div>
+        <div class="ql-text">Hotel</div>
+      </div>
+      <div class="quick-link" onclick="switchTab('tab-map')">
+        <div class="ql-icon">🗺️</div>
+        <div class="ql-text">Mappa</div>
+      </div>
+      <div class="quick-link" onclick="switchTab('tab-altro')">
+        <div class="ql-icon">ℹ️</div>
+        <div class="ql-text">Altro</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     TAB ITINERARIO
+═══════════════════════════════════════ -->
+<div class="tab-content" id="tab-itinerario">
+  <div class="section-header">
+    <h2>🗓️ Itinerario</h2>
+    <p>9–19 Settembre 2026 · 11 giorni in California</p>
+  </div>
+  <div class="timeline">
+
+    <!-- G1 -->
+    <div class="day-card" id="day1">
+      <div class="day-dot">1</div>
+      <div class="day-header" onclick="toggleDay('day1')">
+        <div class="day-header-left">
+          <div class="day-num">Giorno 1 &nbsp;·&nbsp; Mer 9 Settembre</div>
+          <div class="day-title">✈️ Arrivo SFO → San Francisco</div>
+        </div>
+        <div class="day-chevron">›</div>
+      </div>
+      <div class="day-body">
+        <ul class="day-activities">
+          <li>Volo BRI → FCO (06:30, AZ1602)</li>
+          <li>Volo FCO → SFO (09:10, AZ640) — arrivo sera SF</li>
+          <li>Check-in Cornell Hotel de France</li>
+          <li>Passeggiata serale Union Square</li>
+        </ul>
+        <div class="day-badges">
+          <span class="badge badge-green">✅ Hotel prenotato</span>
+          <span class="badge badge-orange">✈️ Volo ITA</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- G2 -->
+    <div class="day-card" id="day2">
+      <div class="day-dot">2</div>
+      <div class="day-header" onclick="toggleDay('day2')">
+        <div class="day-header-left">
+          <div class="day-num">Giorno 2 &nbsp;·&nbsp; Gio 10 Settembre</div>
+          <div class="day-title">🌉 San Francisco — Alcatraz, North Beach, Chinatown</div>
+        </div>
+        <div class="day-chevron">›</div>
+      </div>
+      <div class="day-body">
+        <ul class="day-activities">
+          <li>Alcatraz Island Tour (prenotare online in anticipo!)</li>
+          <li>Fisherman's Wharf &amp; Pier 39</li>
+          <li>North Beach — caffè storici</li>
+          <li>Chinatown — la più grande degli USA</li>
+          <li>Cena in Chinatown</li>
+        </ul>
+        <div class="day-badges">
+          <span class="badge badge-green">✅ Cornell Hotel</span>
+          <span class="badge badge-yellow">⚠️ Prenotare Alcatraz</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- G3 -->
+    <div class="day-card" id="day3">
+      <div class="day-dot">3</div>
+      <div class="day-header" onclick="toggleDay('day3')">
+        <div class="day-header-left">
+          <div class="day-num">Giorno 3 &nbsp;·&nbsp; Ven 11 Settembre</div>
+          <div class="day-title">🌲 SF → Muir Woods → Sausalito → rientro SF</div>
+        </div>
+        <div class="day-chevron">›</div>
+      </div>
+      <div class="day-body">
+        <ul class="day-activities">
+          <li>Muir Woods National Monument — sequoie costiere</li>
+          <li>Vista Golden Gate Bridge da Sausalito</li>
+          <li>Pranzo a Sausalito (fronte mare)</li>
+          <li>Rientro SF in traghetto da Sausalito</li>
+          <li>Sera: Mission District o Haight-Ashbury</li>
+        </ul>
+        <div class="day-tip">⚠️ <strong>Shuttle obbligatorio Muir Woods</strong> — prenotare su gomuirwoods.com con largo anticipo. L'accesso in auto privata è limitato.</div>
+        <div class="day-badges">
+          <span class="badge badge-green">✅ Cornell Hotel</span>
+          <span class="badge badge-red">⚠️ Shuttle Muir Woods DA PRENOTARE</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- G4 -->
+    <div class="day-card" id="day4">
+      <div class="day-dot">4</div>
+      <div class="day-header" onclick="toggleDay('day4')">
+        <div class="day-header-left">
+          <div class="day-num">Giorno 4 &nbsp;·&nbsp; Sab 12 Settembre</div>
+          <div class="day-title">🏙️ SF — Mission District, Haight-Ashbury, Twin Peaks</div>
+        </div>
+        <div class="day-chevron">›</div>
+      </div>
+      <div class="day-body">
+        <ul class="day-activities">
+          <li>Mission District — murales e tacos</li>
+          <li>Dolores Park — vista panoramica</li>
+          <li>Haight-Ashbury — storia hippy, vintage shops</li>
+          <li>Twin Peaks — tramonto panoramico sulla baia</li>
+          <li>Castro District — passeggiata serale</li>
+        </ul>
+        <div class="day-badges">
+          <span class="badge badge-green">✅ Cornell Hotel</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- G5 -->
+    <div class="day-card" id="day5">
+      <div class="day-dot">5</div>
+      <div class="day-header" onclick="toggleDay('day5')">
+        <div class="day-header-left">
+          <div class="day-num">Giorno 5 &nbsp;·&nbsp; Dom 13 Settembre</div>
+          <div class="day-title">🚗 SF → Yosemite (ritiro auto SFO)</div>
+        </div>
+        <div class="day-chevron">›</div>
+      </div>
+      <div class="day-body">
+        <ul class="day-activities">
+          <li>Mattino: last look Golden Gate Bridge</li>
+          <li>Ritiro auto a noleggio all'aeroporto SFO</li>
+          <li>Drive verso Yosemite ~190 mi (~3.5h)</li>
+          <li>Check-in Evergreen Lodge, Groveland</li>
+          <li>Serata al lodge — prime stelle del parco</li>
+        </ul>
+        <div class="day-badges">
+          <span class="badge badge-green">✅ Evergreen Lodge</span>
+          <span class="badge badge-yellow">⚠️ Ritirare auto a noleggio SFO</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- G6 -->
+    <div class="day-card" id="day6">
+      <div class="day-dot">6</div>
+      <div class="day-header" onclick="toggleDay('day6')">
+        <div class="day-header-left">
+          <div class="day-num">Giorno 6 &nbsp;·&nbsp; Lun 14 Settembre</div>
+          <div class="day-title">🏔️ Yosemite Valley — El Capitan, Half Dome, Yosemite Falls</div>
+        </div>
+        <div class="day-chevron">›</div>
+      </div>
+      <div class="day-body">
+        <ul class="day-activities">
+          <li>Yosemite Valley — vista El Capitan e Half Dome</li>
+          <li>Yosemite Falls Trail (facile, 1.5 mi)</li>
+          <li>Valley View e Tunnel View — foto iconiche</li>
+          <li>Mirror Lake loop</li>
+          <li>Pranzo al Yosemite Valley Lodge</li>
+        </ul>
+        <div class="day-tip">💡 Consiglio: entrate nel parco presto mattina per evitare code. America the Beautiful Pass vale per tutti i parchi nazionali.</div>
+        <div class="day-badges">
+          <span class="badge badge-green">✅ Evergreen Lodge</span>
+          <span class="badge badge-orange">🎫 America the Beautiful Pass</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- G7 -->
+    <div class="day-card" id="day7">
+      <div class="day-dot">7</div>
+      <div class="day-header" onclick="toggleDay('day7')">
+        <div class="day-header-left">
+          <div class="day-num">Giorno 7 &nbsp;·&nbsp; Mar 15 Settembre</div>
+          <div class="day-title">🌲 Yosemite → Sequoia National Park</div>
+        </div>
+        <div class="day-chevron">›</div>
+      </div>
+      <div class="day-body">
+        <ul class="day-activities">
+          <li>Partenza mattina — drive ~140 mi via Mariposa</li>
+          <li>Ingresso Sequoia via Big Stump Entrance</li>
+          <li>General Sherman Tree (l'albero più grande del mondo)</li>
+          <li>Congress Trail — passeggiata tra sequoie giganti</li>
+          <li>Check-in Comfort Suites Tulare</li>
+        </ul>
+        <div class="day-badges">
+          <span class="badge badge-green">✅ Comfort Suites Tulare</span>
+          <span class="badge badge-blue">📍 ~140 mi da Yosemite</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- G8 -->
+    <div class="day-card" id="day8">
+      <div class="day-dot">8</div>
+      <div class="day-header" onclick="toggleDay('day8')">
+        <div class="day-header-left">
+          <div class="day-num">Giorno 8 &nbsp;·&nbsp; Mer 16 Settembre</div>
+          <div class="day-title">🌳 Sequoia + Kings Canyon — Scenic Byway</div>
+        </div>
+        <div class="day-chevron">›</div>
+      </div>
+      <div class="day-body">
+        <ul class="day-activities">
+          <li>Mattino: Giant Forest — Moro Rock (scalata panoramica)</li>
+          <li>Tunnel Log — il tronco che attraversi in auto</li>
+          <li>Kings Canyon Scenic Byway (SR-180) — viste canyon</li>
+          <li>Cedar Grove — Kings River overlook</li>
+          <li>Rientro Tulare in serata</li>
+        </ul>
+        <div class="day-badges">
+          <span class="badge badge-green">✅ Comfort Suites Tulare</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- G9 -->
+    <div class="day-card" id="day9">
+      <div class="day-dot">9</div>
+      <div class="day-header" onclick="toggleDay('day9')">
+        <div class="day-header-left">
+          <div class="day-num">Giorno 9 &nbsp;·&nbsp; Gio 17 Settembre</div>
+          <div class="day-title">🦅 Tulare → Pinnacles NP → Firebaugh</div>
+        </div>
+        <div class="day-chevron">›</div>
+      </div>
+      <div class="day-body">
+        <ul class="day-activities">
+          <li>Drive ~120 mi verso Pinnacles NP (via US-101 N)</li>
+          <li>Pinnacles National Park — formazioni vulcaniche</li>
+          <li>Bear Gulch Cave Trail (talvolta chiusa per pipistrelli — verificare)</li>
+          <li>Condor watching — California Condor in volo!</li>
+          <li>Serata check-in Best Western Firebaugh</li>
+        </ul>
+        <div class="day-badges">
+          <span class="badge badge-green">✅ Best Western Apricot Inn</span>
+          <span class="badge badge-yellow">⚠️ Verificare stato cave trail</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- G10 -->
+    <div class="day-card" id="day10">
+      <div class="day-dot">10</div>
+      <div class="day-header" onclick="toggleDay('day10')">
+        <div class="day-header-left">
+          <div class="day-num">Giorno 10 &nbsp;·&nbsp; Ven 18 Settembre</div>
+          <div class="day-title">🌊 Firebaugh → Monterey → Santa Cruz</div>
+        </div>
+        <div class="day-chevron">›</div>
+      </div>
+      <div class="day-body">
+        <ul class="day-activities">
+          <li>Drive a Monterey ~160 mi via US-101</li>
+          <li>Cannery Row — atmosfera Steinbeck</li>
+          <li>Monterey Bay Aquarium</li>
+          <li>17-Mile Drive — paesaggi costieri iconici</li>
+          <li>Serata Santa Cruz, check-in Drift Inn</li>
+          <li>Santa Cruz Beach Boardwalk (storico luna park)</li>
+        </ul>
+        <div class="day-badges">
+          <span class="badge badge-green">✅ Drift Inn Santa Cruz</span>
+          <span class="badge badge-blue">📍 ~160 mi da Firebaugh</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- G11 -->
+    <div class="day-card" id="day11">
+      <div class="day-dot">11</div>
+      <div class="day-header" onclick="toggleDay('day11')">
+        <div class="day-header-left">
+          <div class="day-num">Giorno 11 &nbsp;·&nbsp; Sab 19 Settembre</div>
+          <div class="day-title">✈️ Santa Cruz → SFO → rientro Italia</div>
+        </div>
+        <div class="day-chevron">›</div>
+      </div>
+      <div class="day-body">
+        <ul class="day-activities">
+          <li>Mattina: last look sulla baia di Santa Cruz</li>
+          <li>Drive SFO ~80 mi — riconsegna auto a noleggio</li>
+          <li>Check-in aeroporto SFO (volo 15:15)</li>
+          <li>Volo SFO → FCO (AZ641, 15:15)</li>
+          <li>Arrivo Roma, coincidenza FCO → BRI il 20 sett (AZ1609, 15:15)</li>
+        </ul>
+        <div class="day-badges">
+          <span class="badge badge-orange">✈️ Volo SFO→FCO 15:15</span>
+          <span class="badge badge-blue">📍 ~80 mi da Santa Cruz</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /timeline -->
+</div>
+
+
+<!-- ═══════════════════════════════════════
+     TAB HOTEL
+═══════════════════════════════════════ -->
+<div class="tab-content" id="tab-hotel">
+  <div class="section-header">
+    <h2>🏨 Hotel</h2>
+    <p>5 strutture · tutte prenotate e confermate</p>
+  </div>
+  <div class="hotels-list">
+
+    <div class="hotel-card">
+      <div class="hotel-top">
+        <div class="hotel-name">Cornell Hotel de France</div>
+        <div class="hotel-addr">715 Bush St, San Francisco CA · Union Square</div>
+        <div class="hotel-meta">
+          <span class="badge badge-green">✅ Prenotato</span>
+          <span class="badge badge-blue">G1–G4 · 4 notti</span>
+        </div>
+        <div class="hotel-dates" style="margin-top:8px;">📅 Check-in 9 set · Check-out 13 set</div>
+      </div>
+      <div class="hotel-bottom">
+        <div>
+          <div class="hotel-price">€486</div>
+          <div class="hotel-price-lbl">Colazione inclusa · Cancellazione gratuita</div>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="openMaps(37.7892,-122.4089,'Cornell Hotel de France')">📍 Maps</button>
+      </div>
+    </div>
+
+    <div class="hotel-card">
+      <div class="hotel-top">
+        <div class="hotel-name">Evergreen Lodge at Yosemite</div>
+        <div class="hotel-addr">33160 Evergreen Rd, Groveland CA</div>
+        <div class="hotel-meta">
+          <span class="badge badge-green">✅ Prenotato</span>
+          <span class="badge badge-blue">G5–G6 · 2 notti</span>
+        </div>
+        <div class="hotel-dates" style="margin-top:8px;">📅 Check-in 13 set · Check-out 15 set</div>
+      </div>
+      <div class="hotel-bottom">
+        <div>
+          <div class="hotel-price">€—</div>
+          <div class="hotel-price-lbl">Vicino ingresso Yosemite · Big Oak Flat</div>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="openMaps(37.8610,-119.9063,'Evergreen Lodge Yosemite')">📍 Maps</button>
+      </div>
+    </div>
+
+    <div class="hotel-card">
+      <div class="hotel-top">
+        <div class="hotel-name">Comfort Suites Tulare Sequoia Gateway</div>
+        <div class="hotel-addr">1010 N Blackstone St, Tulare CA</div>
+        <div class="hotel-meta">
+          <span class="badge badge-green">✅ Prenotato</span>
+          <span class="badge badge-blue">G7–G8 · 2 notti</span>
+        </div>
+        <div class="hotel-dates" style="margin-top:8px;">📅 Check-in 15 set · Check-out 17 set · ~1h dal parco</div>
+      </div>
+      <div class="hotel-bottom">
+        <div>
+          <div class="hotel-price">€205</div>
+          <div class="hotel-price-lbl">2 notti totali</div>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="openMaps(36.2138,-119.3473,'Comfort Suites Tulare')">📍 Maps</button>
+      </div>
+    </div>
+
+    <div class="hotel-card">
+      <div class="hotel-top">
+        <div class="hotel-name">Best Western Apricot Inn</div>
+        <div class="hotel-addr">46290 W Panoche Rd, Firebaugh CA · ~55 km da Pinnacles</div>
+        <div class="hotel-meta">
+          <span class="badge badge-green">✅ Prenotato</span>
+          <span class="badge badge-blue">G9 · 1 notte</span>
+        </div>
+        <div class="hotel-dates" style="margin-top:8px;">📅 Check-in 17 set · Check-out 18 set</div>
+      </div>
+      <div class="hotel-bottom">
+        <div>
+          <div class="hotel-price">€113</div>
+          <div class="hotel-price-lbl">Colazione inclusa</div>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="openMaps(36.8629,-120.4567,'Best Western Apricot Inn Firebaugh')">📍 Maps</button>
+      </div>
+    </div>
+
+    <div class="hotel-card">
+      <div class="hotel-top">
+        <div class="hotel-name">Drift Inn</div>
+        <div class="hotel-addr">110 San Lorenzo Blvd, Santa Cruz CA</div>
+        <div class="hotel-meta">
+          <span class="badge badge-green">✅ Prenotato</span>
+          <span class="badge badge-blue">G10 · 1 notte</span>
+        </div>
+        <div class="hotel-dates" style="margin-top:8px;">📅 Check-in 18 set · Check-out 19 set</div>
+      </div>
+      <div class="hotel-bottom">
+        <div>
+          <div class="hotel-price">€—</div>
+          <div class="hotel-price-lbl">Fronte mare · Santa Cruz Boardwalk</div>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="openMaps(36.9711,-122.0208,'Drift Inn Santa Cruz')">📍 Maps</button>
+      </div>
+    </div>
+
+  </div><!-- /hotels-list -->
+
+  <div class="hotel-total-box">
+    <div>
+      <div class="hotel-total-lbl">Totale alloggi confermati</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">Cornell + Comfort Suites + Best Western</div>
+    </div>
+    <div class="hotel-total-val">€804+</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     TAB MAPPA
+═══════════════════════════════════════ -->
+<div class="tab-content" id="tab-map">
+  <div id="map-container" style="flex:1;position:relative;">
+    <div id="map" style="width:100%;height:100%;"></div>
+    <div class="map-legend">
+      <div class="map-legend-item">
+        <div class="leg-line" style="background:var(--accent);border-top:3px dashed var(--accent);height:0;"></div>
+        <span>Percorso road trip</span>
+      </div>
+      <div class="map-legend-item">
+        <div class="leg-line" style="background:#3b82f6;border-top:2px dashed #3b82f6;height:0;"></div>
+        <span>Rotte aeree</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+     TAB ALTRO
+═══════════════════════════════════════ -->
+<div class="tab-content" id="tab-altro">
+  <div class="subtab-bar">
+    <button class="subtab-btn active" onclick="switchSubtab('clima')">🌤️ Clima</button>
+    <button class="subtab-btn" onclick="switchSubtab('voli')">✈️ Voli</button>
+    <button class="subtab-btn" onclick="switchSubtab('mallgas')">🛒 Mall&amp;Gas</button>
+    <button class="subtab-btn" onclick="switchSubtab('docs')">📁 Docs</button>
+    <button class="subtab-btn" onclick="switchSubtab('bags')">🧳 Bags</button>
+    <button class="subtab-btn" onclick="switchSubtab('info')">ℹ️ Info</button>
+  </div>
+
+  <!-- CLIMA -->
+  <div class="subtab-content active" id="subtab-clima">
+    <p style="font-size:12px;color:var(--text-muted);margin-bottom:14px;">Tap su una città per caricare le previsioni meteo (Open-Meteo API)</p>
+
+    <div class="weather-location" id="wloc-sf">
+      <div class="weather-loc-header" onclick="toggleWeather('wloc-sf',37.7749,-122.4194)">
+        <div><div class="weather-loc-name">🌁 San Francisco</div><div class="weather-loc-coords">37.77°N 122.42°W</div></div>
+        <span>›</span>
+      </div>
+      <div class="weather-body" id="wb-wloc-sf"><div class="weather-loading loading-pulse">Caricamento previsioni...</div></div>
+    </div>
+
+    <div class="weather-location" id="wloc-muir">
+      <div class="weather-loc-header" onclick="toggleWeather('wloc-muir',37.8970,-122.5811)">
+        <div><div class="weather-loc-name">🌲 Muir Woods</div><div class="weather-loc-coords">37.90°N 122.58°W</div></div>
+        <span>›</span>
+      </div>
+      <div class="weather-body" id="wb-wloc-muir"><div class="weather-loading loading-pulse">Caricamento previsioni...</div></div>
+    </div>
+
+    <div class="weather-location" id="wloc-yosemite">
+      <div class="weather-loc-header" onclick="toggleWeather('wloc-yosemite',37.7459,-119.5332)">
+        <div><div class="weather-loc-name">🏔️ Yosemite Valley</div><div class="weather-loc-coords">37.75°N 119.53°W</div></div>
+        <span>›</span>
+      </div>
+      <div class="weather-body" id="wb-wloc-yosemite"><div class="weather-loading loading-pulse">Caricamento previsioni...</div></div>
+    </div>
+
+    <div class="weather-location" id="wloc-sequoia">
+      <div class="weather-loc-header" onclick="toggleWeather('wloc-sequoia',36.4864,-118.5658)">
+        <div><div class="weather-loc-name">🌳 Sequoia NP</div><div class="weather-loc-coords">36.49°N 118.57°W</div></div>
+        <span>›</span>
+      </div>
+      <div class="weather-body" id="wb-wloc-sequoia"><div class="weather-loading loading-pulse">Caricamento previsioni...</div></div>
+    </div>
+
+    <div class="weather-location" id="wloc-pinnacles">
+      <div class="weather-loc-header" onclick="toggleWeather('wloc-pinnacles',36.4907,-121.1825)">
+        <div><div class="weather-loc-name">🦅 Pinnacles NP</div><div class="weather-loc-coords">36.49°N 121.18°W</div></div>
+        <span>›</span>
+      </div>
+      <div class="weather-body" id="wb-wloc-pinnacles"><div class="weather-loading loading-pulse">Caricamento previsioni...</div></div>
+    </div>
+
+    <div class="weather-location" id="wloc-monterey">
+      <div class="weather-loc-header" onclick="toggleWeather('wloc-monterey',36.6002,-121.8947)">
+        <div><div class="weather-loc-name">🌊 Monterey</div><div class="weather-loc-coords">36.60°N 121.89°W</div></div>
+        <span>›</span>
+      </div>
+      <div class="weather-body" id="wb-wloc-monterey"><div class="weather-loading loading-pulse">Caricamento previsioni...</div></div>
+    </div>
+
+    <div class="weather-location" id="wloc-santacruz">
+      <div class="weather-loc-header" onclick="toggleWeather('wloc-santacruz',36.9741,-122.0308)">
+        <div><div class="weather-loc-name">🏄 Santa Cruz</div><div class="weather-loc-coords">36.97°N 122.03°W</div></div>
+        <span>›</span>
+      </div>
+      <div class="weather-body" id="wb-wloc-santacruz"><div class="weather-loading loading-pulse">Caricamento previsioni...</div></div>
+    </div>
+  </div>
+
+  <!-- VOLI -->
+  <div class="subtab-content" id="subtab-voli">
+
+    <div class="flight-card" id="f-az1602">
+      <div class="flight-top">
+        <div class="flight-route">
+          <span class="flight-city">BRI</span>
+          <span class="flight-arrow">→</span>
+          <span class="flight-city">FCO</span>
+        </div>
+        <div class="flight-info">
+          <span class="flight-num">AZ1602</span>
+          <span class="flight-time">⏰ 06:30</span>
+          <span class="flight-date">📅 9 Settembre 2026</span>
+        </div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:6px;">ITA Airways · Bari → Roma Fiumicino</div>
+      </div>
+      <div class="flight-bottom">
+        <span id="badge-az1602" class="badge badge-gray">🕐 Programmato</span>
+        <a href="https://www.flightradar24.com/data/flights/az1602" target="_blank" class="btn btn-outline btn-sm">📡 FR24</a>
+      </div>
+    </div>
+
+    <div class="flight-card" id="f-az640">
+      <div class="flight-top">
+        <div class="flight-route">
+          <span class="flight-city">FCO</span>
+          <span class="flight-arrow">→</span>
+          <span class="flight-city">SFO</span>
+        </div>
+        <div class="flight-info">
+          <span class="flight-num">AZ640</span>
+          <span class="flight-time">⏰ 09:10</span>
+          <span class="flight-date">📅 9 Settembre 2026</span>
+        </div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:6px;">ITA Airways · Roma → San Francisco (11h)</div>
+      </div>
+      <div class="flight-bottom">
+        <span id="badge-az640" class="badge badge-gray">🕐 Programmato</span>
+        <a href="https://www.flightradar24.com/data/flights/az640" target="_blank" class="btn btn-outline btn-sm">📡 FR24</a>
+      </div>
+    </div>
+
+    <div class="flight-card" id="f-az641">
+      <div class="flight-top">
+        <div class="flight-route">
+          <span class="flight-city">SFO</span>
+          <span class="flight-arrow">→</span>
+          <span class="flight-city">FCO</span>
+        </div>
+        <div class="flight-info">
+          <span class="flight-num">AZ641</span>
+          <span class="flight-time">⏰ 15:15</span>
+          <span class="flight-date">📅 19 Settembre 2026</span>
+        </div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:6px;">ITA Airways · San Francisco → Roma (11h)</div>
+      </div>
+      <div class="flight-bottom">
+        <span id="badge-az641" class="badge badge-gray">🕐 Programmato</span>
+        <a href="https://www.flightradar24.com/data/flights/az641" target="_blank" class="btn btn-outline btn-sm">📡 FR24</a>
+      </div>
+    </div>
+
+    <div class="flight-card" id="f-az1609">
+      <div class="flight-top">
+        <div class="flight-route">
+          <span class="flight-city">FCO</span>
+          <span class="flight-arrow">→</span>
+          <span class="flight-city">BRI</span>
+        </div>
+        <div class="flight-info">
+          <span class="flight-num">AZ1609</span>
+          <span class="flight-time">⏰ 15:15</span>
+          <span class="flight-date">📅 20 Settembre 2026</span>
+        </div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:6px;">ITA Airways · Roma Fiumicino → Bari</div>
+      </div>
+      <div class="flight-bottom">
+        <span id="badge-az1609" class="badge badge-gray">🕐 Programmato</span>
+        <a href="https://www.flightradar24.com/data/flights/az1609" target="_blank" class="btn btn-outline btn-sm">📡 FR24</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MALL & GAS -->
+  <div class="subtab-content" id="subtab-mallgas">
+    <div class="mall-subtab-bar">
+      <button class="mall-subtab-btn active" onclick="switchMallTab('mall')">🛍️ Mall</button>
+      <button class="mall-subtab-btn" onclick="switchMallTab('gas')">⛽ Gas</button>
+    </div>
+
+    <div class="mall-content active" id="mc-mall">
+      <div class="poi-card">
+        <div class="poi-name">🛍️ Westfield San Francisco Centre</div>
+        <div class="poi-addr">865 Market St, San Francisco CA</div>
+        <button class="btn btn-outline btn-sm" onclick="openMaps(37.7841,-122.4077,'Westfield San Francisco Centre')">📍 Maps</button>
+      </div>
+      <div class="poi-card">
+        <div class="poi-name">🛍️ Stonestown Galleria</div>
+        <div class="poi-addr">3251 20th Ave, San Francisco CA</div>
+        <button class="btn btn-outline btn-sm" onclick="openMaps(37.7283,-122.4761,'Stonestown Galleria')">📍 Maps</button>
+      </div>
+      <div class="poi-card">
+        <div class="poi-name">🛍️ Valley Fair Mall</div>
+        <div class="poi-addr">2855 Stevens Creek Blvd, Santa Clara CA — vicino SFO, lungo rotta G5</div>
+        <button class="btn btn-outline btn-sm" onclick="openMaps(37.3218,-121.9477,'Valley Fair Mall Santa Clara')">📍 Maps</button>
+      </div>
+      <div class="poi-card">
+        <div class="poi-name">🛍️ Visalia Mall</div>
+        <div class="poi-addr">2031 S Mooney Blvd, Visalia CA — vicino Tulare (G7-G8)</div>
+        <button class="btn btn-outline btn-sm" onclick="openMaps(36.3118,-119.3008,'Visalia Mall')">📍 Maps</button>
+      </div>
+      <div class="poi-card">
+        <div class="poi-name">🛍️ Capitola Mall</div>
+        <div class="poi-addr">1855 41st Ave, Capitola CA — vicino Santa Cruz (G10)</div>
+        <button class="btn btn-outline btn-sm" onclick="openMaps(36.9763,-121.9577,'Capitola Mall')">📍 Maps</button>
+      </div>
+    </div>
+
+    <div class="mall-content" id="mc-gas">
+      <div class="info-item" style="margin-bottom:10px;">
+        <strong>⛽ App GasBuddy — Trova il carburante più economico</strong>
+        <span>gasbuddy.com · disponibile su App Store</span>
+      </div>
+      <div class="poi-card">
+        <div class="poi-name">Costco Gas — San Jose (vicino SFO)</div>
+        <div class="poi-addr">2201 Senter Rd, San Jose CA · Prezzi tipicamente più bassi</div>
+        <button class="btn btn-outline btn-sm" onclick="openMaps(37.3064,-121.8388,'Costco Gas San Jose')">📍 Maps</button>
+      </div>
+      <div class="poi-card">
+        <div class="poi-name">Arco / AM-PM — lungo I-5 e US-101</div>
+        <div class="poi-addr">Catena economica diffusa in tutta la California</div>
+      </div>
+      <div class="info-item">
+        <strong>💡 Consigli rifornimento</strong>
+        <span>Fare il pieno prima di entrare nei parchi nazionali (prezzi più alti). Lungo I-5 carburante spesso meno caro. Accettano tutte le carte di credito.</span>
+      </div>
+      <div class="info-item">
+        <strong>🚗 Tipo di carburante</strong>
+        <span>Regular Unleaded (87 octane) per la maggior parte delle auto a noleggio. Verificare con il noleggiatore.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOCS -->
+  <div class="subtab-content" id="subtab-docs">
+    <div class="info-item" style="border:1px solid rgba(232,101,10,.25);background:rgba(232,101,10,.07);margin-bottom:16px;">
+      <strong>📁 Cartella documenti condivisa</strong>
+      <span>[Link Dropbox/Google Drive da aggiungere]</span>
+    </div>
+    <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">Documenti da preparare e portare:</p>
+    <div class="doc-item"><div class="doc-icon">🛂</div><div class="doc-text">Passaporti validi (x2) — scad. almeno 6 mesi dopo rientro</div></div>
+    <div class="doc-item"><div class="doc-icon">🪪</div><div class="doc-text">Patenti di guida (x2) + Patente internazionale</div></div>
+    <div class="doc-item"><div class="doc-icon">✈️</div><div class="doc-text">Biglietti aerei (PDF o screenshot offline)</div></div>
+    <div class="doc-item"><div class="doc-icon">🏨</div><div class="doc-text">Conferme hotel (tutte e 5, stampa + PDF)</div></div>
+    <div class="doc-item"><div class="doc-icon">🚗</div><div class="doc-text">Conferma auto a noleggio SFO</div></div>
+    <div class="doc-item"><div class="doc-icon">🛡️</div><div class="doc-text">Assicurazione viaggio + carta EHIC (se copre USA)</div></div>
+    <div class="doc-item"><div class="doc-icon">🎫</div><div class="doc-text">Biglietti Alcatraz (prenotare online)</div></div>
+    <div class="doc-item"><div class="doc-icon">🌲</div><div class="doc-text">America the Beautiful Pass (o conferma acquisto online)</div></div>
+    <div class="doc-item"><div class="doc-icon">🚌</div><div class="doc-text">Prenotazione shuttle Muir Woods (gomuirwoods.com)</div></div>
+    <div class="doc-item"><div class="doc-icon">💳</div><div class="doc-text">Carta di credito (no commissioni estero) + Revolut/Wise</div></div>
+  </div>
+
+  <!-- BAGS -->
+  <div class="subtab-content" id="subtab-bags">
+    <p style="font-size:12px;color:var(--text-muted);margin-bottom:14px;">Spunta gli elementi mentre fai la valigia. Stato salvato automaticamente.</p>
+
+    <div class="bag-category" id="bagcat-abbigliamento">
+      <div class="bag-cat-header" onclick="toggleBagCat('bagcat-abbigliamento')">
+        <span class="bag-cat-title">👕 Abbigliamento</span>
+        <span class="bag-cat-progress" id="prog-bagcat-abbigliamento">0/10</span>
+      </div>
+      <div class="bag-cat-body">
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="abb-1"><div class="bag-checkbox"></div><div class="bag-item-text">T-shirt (x5)</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="abb-2"><div class="bag-checkbox"></div><div class="bag-item-text">Pantaloni lunghi (x2)</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="abb-3"><div class="bag-checkbox"></div><div class="bag-item-text">Shorts (x3)</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="abb-4"><div class="bag-checkbox"></div><div class="bag-item-text">Felpa</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="abb-5"><div class="bag-checkbox"></div><div class="bag-item-text">Giacca leggera</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="abb-6"><div class="bag-checkbox"></div><div class="bag-item-text">Scarpe da ginnastica</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="abb-7"><div class="bag-checkbox"></div><div class="bag-item-text">Sandali</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="abb-8"><div class="bag-checkbox"></div><div class="bag-item-text">Intimo (x7)</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="abb-9"><div class="bag-checkbox"></div><div class="bag-item-text">Calze (x7)</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="abb-10"><div class="bag-checkbox"></div><div class="bag-item-text">Pigiama</div></div>
+      </div>
+    </div>
+
+    <div class="bag-category" id="bagcat-sole">
+      <div class="bag-cat-header" onclick="toggleBagCat('bagcat-sole')">
+        <span class="bag-cat-title">🕶️ Sole &amp; UV</span>
+        <span class="bag-cat-progress" id="prog-bagcat-sole">0/4</span>
+      </div>
+      <div class="bag-cat-body">
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="sol-1"><div class="bag-checkbox"></div><div class="bag-item-text">Occhiali da sole</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="sol-2"><div class="bag-checkbox"></div><div class="bag-item-text">Crema solare SPF50</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="sol-3"><div class="bag-checkbox"></div><div class="bag-item-text">Cappello/berretto</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="sol-4"><div class="bag-checkbox"></div><div class="bag-item-text">Lip balm SPF</div></div>
+      </div>
+    </div>
+
+    <div class="bag-category" id="bagcat-hike">
+      <div class="bag-cat-header" onclick="toggleBagCat('bagcat-hike')">
+        <span class="bag-cat-title">🥾 Trekking &amp; Hike</span>
+        <span class="bag-cat-progress" id="prog-bagcat-hike">0/5</span>
+      </div>
+      <div class="bag-cat-body">
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="hike-1"><div class="bag-checkbox"></div><div class="bag-item-text">Scarpe da trekking</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="hike-2"><div class="bag-checkbox"></div><div class="bag-item-text">Zaino daypack</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="hike-3"><div class="bag-checkbox"></div><div class="bag-item-text">Borraccia 1L</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="hike-4"><div class="bag-checkbox"></div><div class="bag-item-text">Bastoncini trekking (opzionale)</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="hike-5"><div class="bag-checkbox"></div><div class="bag-item-text">Calze da trekking (x3)</div></div>
+      </div>
+    </div>
+
+    <div class="bag-category" id="bagcat-farmaci">
+      <div class="bag-cat-header" onclick="toggleBagCat('bagcat-farmaci')">
+        <span class="bag-cat-title">💊 Farmaci &amp; Salute</span>
+        <span class="bag-cat-progress" id="prog-bagcat-farmaci">0/6</span>
+      </div>
+      <div class="bag-cat-body">
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="far-1"><div class="bag-checkbox"></div><div class="bag-item-text">Antidolorifici</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="far-2"><div class="bag-checkbox"></div><div class="bag-item-text">Antistaminico</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="far-3"><div class="bag-checkbox"></div><div class="bag-item-text">Cerotti assortiti</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="far-4"><div class="bag-checkbox"></div><div class="bag-item-text">Spray doposole / after-sun</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="far-5"><div class="bag-checkbox"></div><div class="bag-item-text">Disinfettante mani</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="far-6"><div class="bag-checkbox"></div><div class="bag-item-text">Farmaci personali</div></div>
+      </div>
+    </div>
+
+    <div class="bag-category" id="bagcat-tech">
+      <div class="bag-cat-header" onclick="toggleBagCat('bagcat-tech')">
+        <span class="bag-cat-title">💻 Tech &amp; Foto</span>
+        <span class="bag-cat-progress" id="prog-bagcat-tech">0/6</span>
+      </div>
+      <div class="bag-cat-body">
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="tec-1"><div class="bag-checkbox"></div><div class="bag-item-text">iPhone + cavo Lightning/USB-C</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="tec-2"><div class="bag-checkbox"></div><div class="bag-item-text">Power bank</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="tec-3"><div class="bag-checkbox"></div><div class="bag-item-text">Adattatore presa USA (Tipo A/B)</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="tec-4"><div class="bag-checkbox"></div><div class="bag-item-text">Cuffie / AirPods</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="tec-5"><div class="bag-checkbox"></div><div class="bag-item-text">Macchina fotografica + schede SD</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="tec-6"><div class="bag-checkbox"></div><div class="bag-item-text">Caricabatterie auto (presa 12V)</div></div>
+      </div>
+    </div>
+
+    <div class="bag-category" id="bagcat-road">
+      <div class="bag-cat-header" onclick="toggleBagCat('bagcat-road')">
+        <span class="bag-cat-title">🚗 Road Trip</span>
+        <span class="bag-cat-progress" id="prog-bagcat-road">0/5</span>
+      </div>
+      <div class="bag-cat-body">
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="rod-1"><div class="bag-checkbox"></div><div class="bag-item-text">America the Beautiful Pass</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="rod-2"><div class="bag-checkbox"></div><div class="bag-item-text">Patente internazionale</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="rod-3"><div class="bag-checkbox"></div><div class="bag-item-text">Carta di credito (no commissioni)</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="rod-4"><div class="bag-checkbox"></div><div class="bag-item-text">Mappe offline scaricate (Google/Apple Maps)</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="rod-5"><div class="bag-checkbox"></div><div class="bag-item-text">Playlist Spotify / podcast offline</div></div>
+      </div>
+    </div>
+
+    <div class="bag-category" id="bagcat-docs">
+      <div class="bag-cat-header" onclick="toggleBagCat('bagcat-docs')">
+        <span class="bag-cat-title">📄 Documenti</span>
+        <span class="bag-cat-progress" id="prog-bagcat-docs">0/6</span>
+      </div>
+      <div class="bag-cat-body">
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="doc-1"><div class="bag-checkbox"></div><div class="bag-item-text">Passaporto (x2)</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="doc-2"><div class="bag-checkbox"></div><div class="bag-item-text">Patente italiana (x2)</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="doc-3"><div class="bag-checkbox"></div><div class="bag-item-text">Prenotazioni hotel (stampa)</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="doc-4"><div class="bag-checkbox"></div><div class="bag-item-text">Biglietti aerei</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="doc-5"><div class="bag-checkbox"></div><div class="bag-item-text">Assicurazione viaggio</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="doc-6"><div class="bag-checkbox"></div><div class="bag-item-text">Conferma auto a noleggio</div></div>
+      </div>
+    </div>
+
+    <div class="bag-category" id="bagcat-soldi">
+      <div class="bag-cat-header" onclick="toggleBagCat('bagcat-soldi')">
+        <span class="bag-cat-title">💰 Soldi &amp; Pagamenti</span>
+        <span class="bag-cat-progress" id="prog-bagcat-soldi">0/4</span>
+      </div>
+      <div class="bag-cat-body">
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="sol2-1"><div class="bag-checkbox"></div><div class="bag-item-text">Carta Revolut / Wise (no commissioni)</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="sol2-2"><div class="bag-checkbox"></div><div class="bag-item-text">Carta credito backup (Visa/Mastercard)</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="sol2-3"><div class="bag-checkbox"></div><div class="bag-item-text">Contanti USD ~$200</div></div>
+        <div class="bag-item" onclick="toggleBagItem(this)" data-id="sol2-4"><div class="bag-checkbox"></div><div class="bag-item-text">Apple/Google Pay configurato</div></div>
+      </div>
+    </div>
+
+    <button class="btn btn-outline bags-reset" onclick="resetBags()">🗑️ Reset tutto</button>
+  </div>
+
+  <!-- INFO -->
+  <div class="subtab-content" id="subtab-info">
+    <div class="info-section">
+      <h3>🚨 Numeri utili</h3>
+      <div class="info-item"><strong>🆘 Emergenze USA</strong><span>911 (polizia, ambulanza, vigili del fuoco)</span></div>
+      <div class="info-item"><strong>🇮🇹 Consolato Italiano San Francisco</strong><span>+1 415 292 9210 · 2590 Webster St</span></div>
+      <div class="info-item"><strong>💳 Blocco carte</strong><span>Intesa: 800 303 303 · Revolut: app · Visa: +1 800 847 2911</span></div>
+    </div>
+
+    <div class="info-section">
+      <h3>🚗 Guida in USA</h3>
+      <div class="info-item"><strong>↔️ Si guida a destra</strong><span>Limite autostradale: 65-70 mph (~110 km/h). In città: 25-35 mph.</span></div>
+      <div class="info-item"><strong>🛑 Regole particolari</strong><span>Turn right on red consentito (dopo stop completo) salvo segnale. 4-way stop: precedenza chi arriva prima.</span></div>
+      <div class="info-item"><strong>📱 Telefono alla guida</strong><span>Vietato in California. Hands-free obbligatorio. Multa salata.</span></div>
+    </div>
+
+    <div class="info-section">
+      <h3>💱 Valuta &amp; Cambio</h3>
+      <div class="info-item"><strong>💵 Dollaro USA (USD)</strong><span>1€ ≈ $1.08 (luglio 2026 — verificare prima di partire)</span></div>
+      <div class="info-item"><strong>💡 Consiglio</strong><span>Revolut/Wise per pagamenti: tasso interbancario. Evitare ATM negli aeroporti (commissioni alte).</span></div>
+      <div class="info-item"><strong>🪙 Mance</strong><span>Obbligatorie al ristorante: 15-20%. Taxi: 10-15%. Hotel: $2-5/notte al fattorino.</span></div>
+    </div>
+
+    <div class="info-section">
+      <h3>🕐 Fuso orario</h3>
+      <div class="info-item"><strong>🌍 California = PDT (UTC-7)</strong><span>-9 ore rispetto all'Italia (UTC+2 in estate). Mezzanotte in Italia = 15:00 in California.</span></div>
+    </div>
+
+    <div class="info-section">
+      <h3>🔌 Elettricità</h3>
+      <div class="info-item"><strong>🔌 Presa Tipo A/B · 110V · 60Hz</strong><span>Adattatore necessario. I dispositivi USB/laptop moderni funzionano senza trasformatore.</span></div>
+    </div>
+
+    <div class="info-section">
+      <h3>📱 Telefonia</h3>
+      <div class="info-item"><strong>📶 Roaming</strong><span>Verificare piano con il proprio operatore. In alternativa: eSIM USA (es. Airalo, Holafly) più economica.</span></div>
+      <div class="info-item"><strong>🌐 WiFi</strong><span>Tutti gli hotel includono WiFi. Nei parchi nazionali connettività limitata o assente.</span></div>
+    </div>
+
+    <div class="info-section">
+      <h3>🌡️ Clima Settembre</h3>
+      <div class="info-item"><strong>🌁 San Francisco</strong><span>18-22°C, nebbia mattutina frequente, vento. Portare felpa!</span></div>
+      <div class="info-item"><strong>🏔️ Yosemite/Sequoia</strong><span>25-35°C di giorno, fresco/freddo la notte in quota. Strati!</span></div>
+      <div class="info-item"><strong>🌊 Costa (Monterey/Santa Cruz)</strong><span>18-24°C, oceano freddo, vento. Giacca utile la sera.</span></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+     BOTTOM NAVIGATION
+═══════════════════════════════════════ -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" id="nav-tab-home" onclick="switchTab('tab-home')">
+    <span class="nav-icon">🏠</span>Home
+  </button>
+  <button class="nav-btn" id="nav-tab-itinerario" onclick="switchTab('tab-itinerario')">
+    <span class="nav-icon">🗓️</span>Itinerario
+  </button>
+  <button class="nav-btn" id="nav-tab-hotel" onclick="switchTab('tab-hotel')">
+    <span class="nav-icon">🏨</span>Hotel
+  </button>
+  <button class="nav-btn" id="nav-tab-map" onclick="switchTab('tab-map')">
+    <span class="nav-icon">🗺️</span>Mappa
+  </button>
+  <button class="nav-btn" id="nav-tab-altro" onclick="switchTab('tab-altro')">
+    <span class="nav-icon">ℹ️</span>Altro
+  </button>
+</nav>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+// ═══════════════════════════════════════
+// TAB SWITCHING
+// ═══════════════════════════════════════
+let currentTab = 'tab-home';
+let mapInitialized = false;
+
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  document.getElementById('nav-' + tabId).classList.add('active');
+  currentTab = tabId;
+  if (tabId === 'tab-map' && !mapInitialized) {
+    setTimeout(initMap, 100);
+  }
+}
+
+// ═══════════════════════════════════════
+// ACCORDION — ITINERARIO
+// ═══════════════════════════════════════
+function toggleDay(id) {
+  const card = document.getElementById(id);
+  card.classList.toggle('open');
+}
+
+// ═══════════════════════════════════════
+// STELLE ANIMATE — HOME
+// ═══════════════════════════════════════
+(function createStars() {
+  const container = document.getElementById('starsBg');
+  for (let i = 0; i < 80; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    const size = Math.random() * 2.5 + 0.5;
+    const x = Math.random() * 100;
+    const y = Math.random() * 100;
+    const delay = Math.random() * 4;
+    const duration = 2 + Math.random() * 4;
+    const opacity = 0.3 + Math.random() * 0.7;
+    star.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${x}%; top:${y}%;
+      --d:${duration}s; --op:${opacity};
+      animation-delay:${delay}s;
+    `;
+    container.appendChild(star);
+  }
+})();
+
+// ═══════════════════════════════════════
+// PROSSIMA TAPPA — HOME
+// ═══════════════════════════════════════
+const TRIP_DAYS = [
+  { g:1, date:'2026-09-09', title:'✈️ Arrivo SFO → San Francisco', hotel:'Cornell Hotel de France' },
+  { g:2, date:'2026-09-10', title:'🌉 Alcatraz, North Beach, Chinatown', hotel:'Cornell Hotel' },
+  { g:3, date:'2026-09-11', title:'🌲 Muir Woods → Sausalito → SF', hotel:'Cornell Hotel' },
+  { g:4, date:'2026-09-12', title:'🏙️ Mission District, Haight-Ashbury, Twin Peaks', hotel:'Cornell Hotel' },
+  { g:5, date:'2026-09-13', title:'🚗 SF → Yosemite', hotel:'Evergreen Lodge' },
+  { g:6, date:'2026-09-14', title:'🏔️ Yosemite Valley', hotel:'Evergreen Lodge' },
+  { g:7, date:'2026-09-15', title:'🌲 Yosemite → Sequoia NP', hotel:'Comfort Suites Tulare' },
+  { g:8, date:'2026-09-16', title:'🌳 Sequoia + Kings Canyon', hotel:'Comfort Suites Tulare' },
+  { g:9, date:'2026-09-17', title:'🦅 Tulare → Pinnacles → Firebaugh', hotel:'Best Western Apricot Inn' },
+  { g:10, date:'2026-09-18', title:'🌊 Firebaugh → Monterey → Santa Cruz', hotel:'Drift Inn Santa Cruz' },
+  { g:11, date:'2026-09-19', title:'✈️ Santa Cruz → SFO → rientro Italia', hotel:'—' },
+];
+
+function renderNextTappa() {
+  const now = new Date();
+  const today = now.toISOString().slice(0,10);
+  let found = null;
+  for (const d of TRIP_DAYS) {
+    if (d.date >= today) { found = d; break; }
+  }
+  const el = document.getElementById('nextTappaContent');
+  if (!found) {
+    el.innerHTML = `<div style="color:var(--text-muted);font-size:14px;">🎉 Il viaggio è concluso! Rivivi i ricordi.</div>`;
+    return;
+  }
+  const isToday = found.date === today;
+  const dDate = new Date(found.date + 'T12:00:00+02:00');
+  const diffMs = dDate - now;
+  const diffDays = Math.ceil(diffMs / (1000*60*60*24));
+  el.innerHTML = `
+    <div style="display:flex;align-items:flex-end;gap:8px;">
+      <div class="next-day-num">G${found.g}</div>
+      <div>
+        ${isToday ? '<span class="badge badge-red" style="margin-bottom:4px;">🔴 OGGI!</span>' : `<span class="badge badge-orange" style="margin-bottom:4px;">fra ${diffDays} giorn${diffDays===1?'o':'i'}</span>`}
+      </div>
+    </div>
+    <div class="next-day-date">${formatDate(found.date)}</div>
+    <div class="next-day-title">${found.title}</div>
+    ${found.hotel !== '—' ? `<div style="font-size:12px;color:var(--text-muted);margin-top:6px;">🏨 ${found.hotel}</div>` : ''}
+  `;
+}
+
+function formatDate(iso) {
+  const d = new Date(iso + 'T12:00:00');
+  return d.toLocaleDateString('it-IT', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+}
+
+renderNextTappa();
+
+// ═══════════════════════════════════════
+// VOLI — BADGE STATUS
+// ═══════════════════════════════════════
+const FLIGHTS = [
+  { id:'az1602', date:'2026-09-09', hour:6, min:30 },
+  { id:'az640',  date:'2026-09-09', hour:9, min:10 },
+  { id:'az641',  date:'2026-09-19', hour:15, min:15 },
+  { id:'az1609', date:'2026-09-20', hour:15, min:15 },
+];
+
+function updateFlightBadges() {
+  const now = new Date();
+  FLIGHTS.forEach(f => {
+    const dep = new Date(`${f.date}T${String(f.hour).padStart(2,'0')}:${String(f.min).padStart(2,'0')}:00+02:00`);
+    const arr = new Date(dep.getTime() + 13*60*60*1000); // ~13h finestra
+    const el = document.getElementById('badge-' + f.id);
+    if (!el) return;
+    if (now < dep) {
+      const diff = dep - now;
+      const days = Math.floor(diff/(1000*60*60*24));
+      el.className = 'badge badge-gray';
+      el.innerHTML = `🕐 Programmato${days>0?' · fra '+days+'g':''}`;
+    } else if (now >= dep && now <= arr) {
+      el.className = 'badge badge-red';
+      el.innerHTML = `<span class="live-dot"></span>LIVE`;
+    } else {
+      el.className = 'badge badge-green';
+      el.innerHTML = `✅ Completato`;
+    }
+  });
+}
+updateFlightBadges();
+
+// ═══════════════════════════════════════
+// MAPPA LEAFLET
+// ═══════════════════════════════════════
+function initMap() {
+  if (mapInitialized) return;
+  mapInitialized = true;
+
+  const mapDiv = document.getElementById('map');
+  mapDiv.style.height = (window.innerHeight - 60) + 'px';
+
+  const map = L.map('map', {
+    center: [37.5, -119.5],
+    zoom: 6,
+    zoomControl: true,
+    attributionControl: true
+  });
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap',
+    maxZoom: 18
+  }).addTo(map);
+
+  // Tappe road trip
+  const stops = [
+    { name:'San Francisco', coords:[37.7749,-122.4194], hotel:'Cornell Hotel de France', day:'G1-G4' },
+    { name:'Muir Woods', coords:[37.8970,-122.5811], hotel:'escursione da SF', day:'G3' },
+    { name:'Yosemite Valley', coords:[37.7459,-119.5332], hotel:'Evergreen Lodge', day:'G5-G6' },
+    { name:'Sequoia NP', coords:[36.4864,-118.5658], hotel:'Comfort Suites Tulare', day:'G7-G8' },
+    { name:'Pinnacles NP', coords:[36.4907,-121.1825], hotel:'Best Western Firebaugh', day:'G9' },
+    { name:'Monterey', coords:[36.6002,-121.8947], hotel:'tappa giornata', day:'G10' },
+    { name:'Santa Cruz', coords:[36.9741,-122.0308], hotel:'Drift Inn', day:'G10-G11' },
+  ];
+
+  // Polillinea percorso
+  const routeCoords = stops.filter(s => s.name !== 'Muir Woods').map(s => s.coords);
+  L.polyline(routeCoords, {
+    color: '#ff6600',
+    weight: 3,
+    dashArray: '8,6',
+    opacity: 0.85
+  }).addTo(map);
+
+  // Marker numerati
+  stops.forEach((stop, i) => {
+    const n = stop.name === 'Muir Woods' ? '🌲' : String(i + (stop.name === 'Muir Woods' ? 0 : 0));
+    const num = ['1','🌲','2','3','4','5','6'][i];
+    const icon = L.divIcon({
+      className: '',
+      html: `<div style="
+        background:#e8650a; color:white; border-radius:50%;
+        width:28px; height:28px; display:flex; align-items:center;
+        justify-content:center; font-size:12px; font-weight:800;
+        border:2px solid white; box-shadow:0 2px 6px rgba(0,0,0,.4);
+      ">${num}</div>`,
+      iconSize: [28,28],
+      iconAnchor: [14,14]
+    });
+    L.marker(stop.coords, { icon })
+      .bindPopup(`<b>${stop.name}</b><br><span style="color:#666;font-size:12px;">${stop.day}</span><br><span style="font-size:11px;">${stop.hotel}</span>`)
+      .addTo(map);
+  });
+
+  // Linee volo (blu tratteggiate)
+  const BRI = [41.1389, 16.7627];
+  const FCO = [41.8003, 12.2389];
+  const SFO = [37.6213,-122.3790];
+
+  const flightStyle = { color:'#3b82f6', weight:2, dashArray:'5,5', opacity:0.6 };
+  L.polyline([BRI, FCO], flightStyle).addTo(map);
+  L.polyline([FCO, SFO], flightStyle).addTo(map);
+
+  // Airport markers
+  const airportIcon = L.divIcon({
+    className:'',
+    html:`<div style="font-size:18px;line-height:1;">✈️</div>`,
+    iconSize:[20,20], iconAnchor:[10,10]
+  });
+  L.marker(BRI, {icon:airportIcon}).bindPopup('<b>Bari (BRI)</b>').addTo(map);
+  L.marker(FCO, {icon:airportIcon}).bindPopup('<b>Roma Fiumicino (FCO)</b>').addTo(map);
+  L.marker(SFO, {icon:airportIcon}).bindPopup('<b>San Francisco (SFO)</b>').addTo(map);
+}
+
+// ═══════════════════════════════════════
+// SUBTAB ALTRO
+// ═══════════════════════════════════════
+function switchSubtab(id) {
+  document.querySelectorAll('.subtab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.subtab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('subtab-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function switchMallTab(id) {
+  document.querySelectorAll('.mall-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.mall-subtab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('mc-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ═══════════════════════════════════════
+// METEO — Open-Meteo
+// ═══════════════════════════════════════
+const wmoIcons = {
+  0:'☀️', 1:'🌤️', 2:'⛅', 3:'☁️',
+  45:'🌫️', 48:'🌫️',
+  51:'🌦️', 53:'🌦️', 55:'🌧️',
+  61:'🌧️', 63:'🌧️', 65:'🌧️',
+  71:'❄️', 73:'❄️', 75:'❄️', 77:'🌨️',
+  80:'🌦️', 81:'🌦️', 82:'⛈️',
+  95:'⛈️', 96:'⛈️', 99:'⛈️'
+};
+const wmoText = {
+  0:'Sereno', 1:'Poco nuvoloso', 2:'Parzialmente nuvoloso', 3:'Coperto',
+  45:'Nebbia', 48:'Nebbia',
+  51:'Pioggerella', 53:'Pioggerella', 55:'Pioggerella',
+  61:'Pioggia', 63:'Pioggia mod.', 65:'Pioggia forte',
+  71:'Neve', 73:'Neve mod.', 75:'Neve forte', 77:'Nevischio',
+  80:'Rovesci', 81:'Rovesci mod.', 82:'Rovesci forti',
+  95:'Temporale', 96:'Temporale', 99:'Temporale forte'
+};
+
+const weatherLoaded = {};
+
+async function toggleWeather(locId, lat, lon) {
+  const loc = document.getElementById(locId);
+  const isOpen = loc.classList.contains('open');
+  // chiudi tutti
+  document.querySelectorAll('.weather-location').forEach(l => l.classList.remove('open'));
+  if (isOpen) return;
+  loc.classList.add('open');
+  if (weatherLoaded[locId]) return;
+  weatherLoaded[locId] = true;
+  const bodyEl = document.getElementById('wb-' + locId);
+  try {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode&timezone=America%2FLos_Angeles&forecast_days=7`;
+    const res = await fetch(url);
+    const data = await res.json();
+    const days = data.daily;
+    let html = '<div class="weather-grid">';
+    for (let i = 0; i < days.time.length; i++) {
+      const d = new Date(days.time[i] + 'T12:00:00');
+      const dd = d.toLocaleDateString('it-IT', {weekday:'short', day:'numeric'});
+      const wc = days.weathercode[i];
+      const icon = wmoIcons[wc] || '❓';
+      const tmax = Math.round(days.temperature_2m_max[i]);
+      const tmin = Math.round(days.temperature_2m_min[i]);
+      const rain = days.precipitation_sum[i];
+      html += `<div class="weather-day">
+        <div class="w-date">${dd}</div>
+        <div class="w-icon">${icon}</div>
+        <div class="w-max">${tmax}°</div>
+        <div class="w-min">${tmin}°</div>
+        ${rain > 0 ? `<div class="w-rain">💧${rain}mm</div>` : ''}
+      </div>`;
+    }
+    html += '</div>';
+    bodyEl.innerHTML = html;
+  } catch(e) {
+    bodyEl.innerHTML = `<div style="padding:12px;color:#ef4444;font-size:13px;">Errore nel caricamento del meteo. Riprova più tardi.</div>`;
+  }
+}
+
+// ═══════════════════════════════════════
+// BAGS — CHECKLIST
+// ═══════════════════════════════════════
+const BAGS_KEY = 'california_bags_2026';
+
+function loadBagsState() {
+  try { return JSON.parse(localStorage.getItem(BAGS_KEY)) || {}; } catch(e) { return {}; }
+}
+function saveBagsState(state) {
+  try { localStorage.setItem(BAGS_KEY, JSON.stringify(state)); } catch(e) {}
+}
+
+function toggleBagItem(el) {
+  const id = el.dataset.id;
+  const state = loadBagsState();
+  if (el.classList.contains('checked')) {
+    el.classList.remove('checked');
+    delete state[id];
+  } else {
+    el.classList.add('checked');
+    state[id] = true;
+  }
+  saveBagsState(state);
+  updateAllCatProgress();
+}
+
+function toggleBagCat(catId) {
+  document.getElementById(catId).classList.toggle('open');
+}
+
+function updateAllCatProgress() {
+  const state = loadBagsState();
+  document.querySelectorAll('.bag-category').forEach(cat => {
+    const items = cat.querySelectorAll('.bag-item');
+    const total = items.length;
+    let done = 0;
+    items.forEach(it => {
+      if (state[it.dataset.id]) {
+        it.classList.add('checked');
+        done++;
+      } else {
+        it.classList.remove('checked');
+      }
+    });
+    const prog = cat.querySelector('.bag-cat-progress');
+    if (prog) prog.textContent = `${done}/${total}`;
+    if (done === total && total > 0) {
+      prog.style.color = 'var(--green)';
+    } else {
+      prog.style.color = 'var(--text-muted)';
+    }
+  });
+}
+
+function resetBags() {
+  if (confirm('Resettare tutta la checklist?')) {
+    localStorage.removeItem(BAGS_KEY);
+    updateAllCatProgress();
+  }
+}
+
+// Inizializza checklist
+updateAllCatProgress();
+
+// ═══════════════════════════════════════
+// MAPS LINK
+// ═══════════════════════════════════════
+function openMaps(lat, lon, name) {
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const isMac = navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1;
+  if (isIOS || isMac) {
+    window.location.href = `comgooglemaps://?q=${encodeURIComponent(name)}&center=${lat},${lon}`;
+    setTimeout(() => {
+      window.open(`https://maps.google.com/?q=${lat},${lon}`, '_blank');
+    }, 500);
+  } else {
+    window.open(`https://maps.google.com/?q=${lat},${lon}`, '_blank');
+  }
+}
+
+// ═══════════════════════════════════════
+// PWA MANIFEST
+// ═══════════════════════════════════════
+(function() {
+  const manifest = {
+    name: 'California Road Trip 2026',
+    short_name: 'CA Trip',
+    start_url: '.',
+    display: 'standalone',
+    background_color: '#fdf6e3',
+    theme_color: '#f5a623',
+    icons: [{
+      src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🇺🇸</text></svg>",
+      sizes: '192x192',
+      type: 'image/svg+xml'
+    }]
+  };
+  const blob = new Blob([JSON.stringify(manifest)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('link');
+  link.rel = 'manifest'; link.href = url;
+  document.head.appendChild(link);
+})();
+</script>
+</body>
+</html>
