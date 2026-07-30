@@ -2255,7 +2255,7 @@ const JB_ID  = '019fb2f5-5481-7a1b-bed9-d7a2f8651043';
 const JB_URL = `https://jsonblob.com/api/jsonBlob/${JB_ID}`;
 const JB_HEADS = { 'Content-Type': 'application/json', 'Accept': 'application/json' };
 
-let speseArr = [];
+let speseArr = null;
 
 async function fetchSpese() {
   setSpStatus('⏳ Sincronizzazione…', '#888');
@@ -2286,7 +2286,7 @@ function setSpStatus(msg, color) {
 }
 
 function renderSpese() {
-  const arr = speseArr;
+  const arr = speseArr || [];
   const list = document.getElementById('sp-list');
   const empty = document.getElementById('sp-empty');
   const totalEl = document.getElementById('sp-total');
@@ -2327,7 +2327,7 @@ async function addSpesa() {
   const day    = document.getElementById('sp-day').value;
   const chi    = document.getElementById('sp-chi').value;
   if (!desc || isNaN(amount) || amount <= 0) { alert('Inserisci descrizione e importo valido'); return; }
-  if (!speseArr.length && speseArr !== undefined) { alert('Lista non ancora caricata. Tocca 🔄 Aggiorna prima.'); return; }
+  if (speseArr === null) { alert('Lista non ancora caricata. Tocca 🔄 Aggiorna prima.'); return; }
   const btnEl = document.getElementById('sp-add-btn');
   btnEl.disabled = true;
   setSpStatus('⏳ Salvataggio…', '#888');
